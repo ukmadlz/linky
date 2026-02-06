@@ -3,7 +3,7 @@ import { posthogServer } from "./posthog";
 export async function trackDashboardAction(
 	userId: string,
 	action: string,
-	properties?: Record<string, any>
+	properties?: Record<string, unknown>
 ) {
 	try {
 		posthogServer.capture({

@@ -43,6 +43,7 @@ export default function LinkButton({ link, buttonColor, buttonTextColor }: LinkB
 
 	return (
 		<button
+			type="button"
 			onClick={handleClick}
 			className="w-full py-4 px-6 rounded-lg font-medium transition-all duration-200 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md flex items-center justify-center gap-3"
 			style={{

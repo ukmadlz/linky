@@ -45,8 +45,11 @@ export default function SettingsForm({ user }: SettingsFormProps) {
 				<h2 className="text-xl font-semibold mb-4">Profile</h2>
 				<div className="space-y-4">
 					<div>
-						<label className="block text-sm font-medium text-gray-700 mb-1">Display Name</label>
+						<label htmlFor="display-name" className="block text-sm font-medium text-gray-700 mb-1">
+							Display Name
+						</label>
 						<input
+							id="display-name"
 							type="text"
 							value={formData.name}
 							onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -55,8 +58,11 @@ export default function SettingsForm({ user }: SettingsFormProps) {
 					</div>
 
 					<div>
-						<label className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
+						<label htmlFor="bio" className="block text-sm font-medium text-gray-700 mb-1">
+							Bio
+						</label>
 						<textarea
+							id="bio"
 							value={formData.bio}
 							onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
 							rows={4}
@@ -67,8 +73,11 @@ export default function SettingsForm({ user }: SettingsFormProps) {
 					</div>
 
 					<div>
-						<label className="block text-sm font-medium text-gray-700 mb-1">Avatar URL</label>
+						<label htmlFor="avatar-url" className="block text-sm font-medium text-gray-700 mb-1">
+							Avatar URL
+						</label>
 						<input
+							id="avatar-url"
 							type="url"
 							value={formData.avatarUrl}
 							onChange={(e) => setFormData({ ...formData, avatarUrl: e.target.value })}
@@ -78,6 +87,7 @@ export default function SettingsForm({ user }: SettingsFormProps) {
 					</div>
 
 					<button
+						type="button"
 						onClick={handleSave}
 						disabled={loading}
 						className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -125,6 +135,7 @@ export default function SettingsForm({ user }: SettingsFormProps) {
 						Get unlimited links, advanced themes, detailed analytics, and remove branding.
 					</p>
 					<button
+						type="button"
 						onClick={async () => {
 							try {
 								const response = await fetch("/api/stripe/checkout", {
@@ -151,6 +162,7 @@ export default function SettingsForm({ user }: SettingsFormProps) {
 						You are on the Pro plan. Manage your subscription through the Stripe billing portal.
 					</p>
 					<button
+						type="button"
 						onClick={async () => {
 							try {
 								const response = await fetch("/api/stripe/portal", {

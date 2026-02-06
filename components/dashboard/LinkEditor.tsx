@@ -117,7 +117,7 @@ export default function LinkEditor({ link, onSave, onCancel }: LinkEditorProps) 
 				</div>
 
 				<div>
-					<label className="block text-sm font-medium text-gray-700 mb-2">Icon (optional)</label>
+					<div className="block text-sm font-medium text-gray-700 mb-2">Icon (optional)</div>
 					<div className="flex flex-wrap gap-2">
 						<button
 							type="button"

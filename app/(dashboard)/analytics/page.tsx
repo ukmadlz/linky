@@ -30,6 +30,8 @@ export default async function AnalyticsPage() {
 							fill="none"
 							stroke="currentColor"
 							viewBox="0 0 24 24"
+							role="img"
+							aria-label="Analytics chart icon"
 						>
 							<path
 								strokeLinecap="round"
@@ -44,7 +46,10 @@ export default async function AnalyticsPage() {
 						Track clicks over time, see top performing links, analyze traffic sources, and view
 						geographic distribution.
 					</p>
-					<button className="bg-blue-600 text-white py-3 px-8 rounded-md hover:bg-blue-700 text-lg">
+					<button
+						type="button"
+						className="bg-blue-600 text-white py-3 px-8 rounded-md hover:bg-blue-700 text-lg"
+					>
 						Upgrade to Pro - $9/month
 					</button>
 				</div>
