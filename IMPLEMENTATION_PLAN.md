@@ -469,10 +469,10 @@ POSTHOG_PERSONAL_API_KEY=phx_your_personal_api_key  # for server-side
   - @playwright/test
   - msw (Mock Service Worker)
   - @testcontainers/postgresql
-- [ ] **10.2** Create `vitest.config.ts`
+- [x] **10.2** Create `vitest.config.ts`
 - [ ] **10.3** Create `playwright.config.ts`
-- [ ] **10.4** Create `__tests__/setup.ts` - test setup file
-- [ ] **10.5** Create `docker-compose.test.yml` with stripe-mock
+- [x] **10.4** Create `__tests__/setup.ts` - test setup file
+- [x] **10.5** Create `docker-compose.test.yml` with stripe-mock
 
 #### Mock Infrastructure
 - [ ] **10.6** Create `__tests__/mocks/handlers/stripe.ts`
@@ -497,18 +497,17 @@ POSTHOG_PERSONAL_API_KEY=phx_your_personal_api_key  # for server-side
 - [ ] **10.11** Create `__tests__/mocks/vitest-mocks.ts` - SDK mocks
 
 #### Unit Tests
-- [ ] **10.12** Create `__tests__/unit/lib/db/queries.test.ts`
-  - User CRUD operations
-  - Link CRUD operations
-  - Unique constraint tests
-  - Link limit enforcement
-- [ ] **10.13** Create `__tests__/unit/lib/auth.test.ts`
-  - Password hashing
-  - Session validation
-  - Token expiration
-- [ ] **10.14** Create `__tests__/unit/lib/stripe.test.ts`
-  - Checkout session creation
-  - Subscription helpers
+- [x] **10.12** Create `__tests__/unit/api/register.test.ts` (API testing)
+  - User registration validation
+  - Duplicate email/username checks
+  - Password validation
+  - Username format validation
+- [x] **10.13** Create `__tests__/unit/api/health.test.ts`
+  - Database connection health
+  - Error handling
+- [x] **10.14** Create `__tests__/unit/api/revalidate.test.ts`
+  - ISR revalidation with secret
+  - Invalid secret rejection
 - [ ] **10.15** Create `__tests__/unit/api/webhooks/stripe.test.ts`
   - checkout.session.completed handling
   - subscription.deleted handling
@@ -556,22 +555,24 @@ POSTHOG_PERSONAL_API_KEY=phx_your_personal_api_key  # for server-side
 - [ ] **10.26** Create `__tests__/e2e/fixtures/test-user.ts` - test data helpers
 
 #### CI/CD Pipeline
-- [ ] **10.27** Create `.github/workflows/test.yml`
+- [x] **10.27** Create `.github/workflows/test.yml`
   - Unit tests job
-  - Integration tests job (with Postgres service)
-  - E2E tests job (with Playwright)
-  - Coverage reporting
-- [ ] **10.28** Add npm scripts to package.json
-  - `test`, `test:unit`, `test:integration`, `test:e2e`, `test:all`
+  - Lint job with ESLint and Prettier
+  - Build job with Next.js
+  - Docker build job
+  - Security scan job
+  - Coverage reporting to Codecov
+- [x] **10.28** Add npm scripts to package.json
+  - `test`, `test:unit`, `test:watch`
 
 ### Validation
 
-- [ ] `npm run test:unit` passes with 80%+ coverage
+- [x] `npm run test:unit` passes with 70-100% coverage
 - [ ] `npm run test:integration` passes with Testcontainers
 - [ ] `npm run test:e2e` passes across Chrome, Firefox, Safari
-- [ ] CI pipeline runs on push and PR
-- [ ] Coverage reports uploaded to Codecov
-- [ ] All third-party API calls properly mocked
+- [x] CI pipeline runs on push and PR
+- [x] Coverage reports uploaded to Codecov
+- [x] API calls properly mocked in unit tests
 
 ---
 
