@@ -1,0 +1,117 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://linky:linky@db:5432/linky
+      - VALKEY_URL=redis://valkey:6379
+    depends_on:
+      - db
+      - valkey
+    command: npm run dev
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: linky
+      POSTGRES_USER: linky
+      POSTGRES_PASSWORD: linky
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U linky"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  valkey:
+    image: valkey/valkey:8-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - valkey_data:/data
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "localhost:8123/ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  posthog-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: posthog
+      POSTGRES_USER: posthog
+      POSTGRES_PASSWORD: posthog
+    volumes:
+      - posthog_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U posthog"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  posthog-valkey:
+    image: valkey/valkey:8-alpine
+    volumes:
+      - posthog_valkey_data:/data
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  posthog:
+    image: posthog/posthog:latest
+    depends_on:
+      - posthog-db
+      - posthog-valkey
+      - clickhouse
+    environment:
+      DATABASE_URL: postgres://posthog:posthog@posthog-db:5432/posthog
+      REDIS_URL: redis://posthog-valkey:6379
+      CLICKHOUSE_HOST: clickhouse
+      CLICKHOUSE_DATABASE: posthog
+      SECRET_KEY: posthog-dev-secret-key-change-in-production
+      SITE_URL: http://localhost:8000
+      DISABLE_SECURE_SSL_REDIRECT: "true"
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "localhost:8000/_health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  postgres_data:
+  valkey_data:
+  posthog_db_data:
+  posthog_valkey_data:
+  clickhouse_data:
