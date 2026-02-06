@@ -1,4 +1,4 @@
-import { eq, and, desc } from "drizzle-orm";
+import { eq, and, desc, sql } from "drizzle-orm";
 import { db } from "./index";
 import { users, links, linkClicks, subscriptions, type User, type Link, type NewUser, type NewLink, type NewLinkClick } from "./schema";
 
@@ -67,15 +67,18 @@ export async function deleteLink(id: string) {
 export async function incrementLinkClicks(id: string) {
   const [link] = await db
     .update(links)
-    .set({ clicks: db.$count(links.clicks) + 1 })
+    .set({ clicks: sql`${links.clicks} + 1` })
     .where(eq(links.id, id))
     .returning();
   return link;
 }
 
 export async function countLinksByUserId(userId: string) {
-  const result = await db.$count(links, eq(links.userId, userId));
-  return result;
+  const result = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(links)
+    .where(eq(links.userId, userId));
+  return result[0]?.count || 0;
 }
 
 // Link click queries (for Pro users)
