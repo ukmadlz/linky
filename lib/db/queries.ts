@@ -18,6 +18,11 @@ export async function getUserById(id: string) {
   return user;
 }
 
+export async function getUserByStripeCustomerId(customerId: string) {
+  const [user] = await db.select().from(users).where(eq(users.stripeCustomerId, customerId)).limit(1);
+  return user;
+}
+
 export async function createUser(data: NewUser) {
   const [user] = await db.insert(users).values(data).returning();
   return user;

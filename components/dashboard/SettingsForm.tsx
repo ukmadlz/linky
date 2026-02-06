@@ -123,17 +123,58 @@ export default function SettingsForm({ user }: SettingsFormProps) {
         </div>
       </div>
 
-      {/* Billing (Stripe integration placeholder) */}
-      {!user.isPro && (
+      {/* Billing */}
+      {!user.isPro ? (
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-2">Upgrade to Pro</h2>
           <p className="text-gray-600 mb-4">
             Get unlimited links, advanced themes, detailed analytics, and remove branding.
           </p>
-          <button className="bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700">
+          <button
+            onClick={async () => {
+              try {
+                const response = await fetch("/api/stripe/checkout", {
+                  method: "POST",
+                });
+                const { url } = await response.json();
+                if (url) {
+                  window.location.href = url;
+                }
+              } catch (error) {
+                console.error("Checkout error:", error);
+                alert("Failed to start checkout");
+              }
+            }}
+            className="bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700"
+          >
             Upgrade for $9/month
           </button>
-          <p className="text-xs text-gray-500 mt-2">Stripe integration coming soon</p>
+        </div>
+      ) : (
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h2 className="text-xl font-semibold mb-4">Billing</h2>
+          <p className="text-gray-600 mb-4">
+            You are on the Pro plan. Manage your subscription through the Stripe billing portal.
+          </p>
+          <button
+            onClick={async () => {
+              try {
+                const response = await fetch("/api/stripe/portal", {
+                  method: "POST",
+                });
+                const { url } = await response.json();
+                if (url) {
+                  window.location.href = url;
+                }
+              } catch (error) {
+                console.error("Portal error:", error);
+                alert("Failed to open billing portal");
+              }
+            }}
+            className="bg-gray-600 text-white py-2 px-6 rounded-md hover:bg-gray-700"
+          >
+            Manage Subscription
+          </button>
         </div>
       )}
     </div>
