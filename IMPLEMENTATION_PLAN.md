@@ -578,32 +578,32 @@ POSTHOG_PERSONAL_API_KEY=phx_your_personal_api_key  # for server-side
 ## Final Verification Checklist
 
 ### Functional Tests
-- [ ] User can register with unique username
-- [ ] User can log in and access dashboard
-- [ ] User can create, edit, delete, and reorder links
-- [ ] User can customize theme (colors, fonts, button styles)
-- [ ] Public page displays user's links correctly
-- [ ] Link clicks are tracked
-- [ ] User can upgrade to Pro via Stripe
-- [ ] Pro features unlock after payment
-- [ ] User can manage subscription in billing portal
-- [ ] Analytics dashboard shows click data (Pro only)
+- [x] User can register with unique username
+- [x] User can log in and access dashboard
+- [x] User can create, edit, delete, and reorder links
+- [x] User can customize theme (colors, fonts, button styles)
+- [x] Public page displays user's links correctly
+- [x] Link clicks are tracked
+- [x] User can upgrade to Pro via Stripe
+- [x] Pro features unlock after payment
+- [x] User can manage subscription in billing portal
+- [x] Analytics dashboard shows click data (Pro only)
 
 ### Infrastructure Tests
-- [ ] All Docker services start correctly
-- [ ] Database migrations apply successfully
-- [ ] ValKey caching works
-- [ ] Nginx proxies requests correctly
-- [ ] SSL/TLS configured properly
-- [ ] PostHog self-hosted accessible and receiving events
-- [ ] ClickHouse ingesting data properly
+- [x] All Docker services start correctly
+- [x] Database migrations apply successfully
+- [x] ValKey caching works
+- [x] Nginx proxies requests correctly
+- [x] SSL/TLS configured properly
+- [x] PostHog self-hosted accessible and receiving events
+- [x] ClickHouse ingesting data properly
 
 ### Observability Tests
-- [ ] Traces visible in Jaeger
-- [ ] Metrics visible in Prometheus
-- [ ] Grafana dashboards populated
-- [ ] Database queries traced
-- [ ] External API calls traced
+- [x] Traces visible in Jaeger
+- [x] Metrics visible in Prometheus
+- [x] Grafana dashboards populated
+- [x] Database queries traced
+- [x] External API calls traced
 
 ### Test Suite
 - [ ] Unit tests: 80%+ coverage
