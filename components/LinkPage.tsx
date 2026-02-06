@@ -3,6 +3,8 @@
 import { User, Link } from "@/lib/db/schema";
 import LinkButton from "./LinkButton";
 import Image from "next/image";
+import { usePostHog } from "posthog-js/react";
+import { useEffect } from "react";
 
 interface LinkPageProps {
   user: User;
@@ -10,6 +12,15 @@ interface LinkPageProps {
 }
 
 export default function LinkPage({ user, links }: LinkPageProps) {
+  const posthog = usePostHog();
+
+  useEffect(() => {
+    // Track page view
+    posthog?.capture("page_viewed", {
+      username: user.username,
+      linkCount: links.length,
+    });
+  }, [posthog, user.username, links.length]);
   const theme = user.theme ? JSON.parse(user.theme as string) : {};
   const backgroundColor = theme.backgroundColor || "#ffffff";
   const buttonColor = theme.buttonColor || "#000000";

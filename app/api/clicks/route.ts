@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { incrementLinkClicks, getLinkById, getUserById } from "@/lib/db/queries";
+import { incrementLinkClicks, getLinkById, getUserById, createLinkClick } from "@/lib/db/queries";
+import { posthogServer } from "@/lib/posthog";
 
 export async function POST(request: Request) {
   try {
@@ -27,8 +28,34 @@ export async function POST(request: Request) {
     // Check if user is Pro for detailed tracking
     const user = await getUserById(link.userId);
 
-    // TODO: Store detailed click data in linkClicks table for Pro users
-    // This will be implemented when PostHog integration is complete
+    // Store detailed click data for Pro users
+    if (user?.isPro) {
+      const userAgent = request.headers.get("user-agent") || undefined;
+      const referrer = request.headers.get("referer") || undefined;
+
+      // Store in database
+      await createLinkClick({
+        linkId,
+        userAgent,
+        referrer,
+        // Country and city would be extracted from IP in production
+        country: undefined,
+        city: undefined,
+      });
+    }
+
+    // Track with PostHog server-side
+    posthogServer.capture({
+      distinctId: link.userId,
+      event: "link_clicked_server",
+      properties: {
+        linkId: link.id,
+        linkTitle: link.title,
+        linkUrl: link.url,
+        userId: link.userId,
+        isPro: user?.isPro || false,
+      },
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {

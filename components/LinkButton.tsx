@@ -2,6 +2,7 @@
 
 import { Link } from "@/lib/db/schema";
 import { useState } from "react";
+import { usePostHog } from "posthog-js/react";
 
 interface LinkButtonProps {
   link: Link;
@@ -11,11 +12,19 @@ interface LinkButtonProps {
 
 export default function LinkButton({ link, buttonColor, buttonTextColor }: LinkButtonProps) {
   const [isClicking, setIsClicking] = useState(false);
+  const posthog = usePostHog();
 
   const handleClick = async () => {
     setIsClicking(true);
 
-    // Track click
+    // Track click with PostHog
+    posthog?.capture("link_clicked", {
+      linkId: link.id,
+      linkTitle: link.title,
+      linkUrl: link.url,
+    });
+
+    // Track click in database
     try {
       await fetch("/api/clicks", {
         method: "POST",
