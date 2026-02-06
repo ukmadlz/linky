@@ -414,34 +414,34 @@ POSTHOG_PERSONAL_API_KEY=phx_your_personal_api_key  # for server-side
 
 ### Tasks
 
-- [ ] **9.1** Add observability services to docker-compose.yml:
+- [x] **9.1** Add observability services to docker-compose.yml:
   - otel-collector
   - jaeger
   - prometheus
   - grafana
-- [ ] **9.2** Create `docker/otel/otel-collector-config.yaml`
+- [x] **9.2** Create `docker/otel/otel-collector-config.yaml`
   - OTLP receivers (gRPC + HTTP)
   - Batch processor
   - Jaeger and Prometheus exporters
-- [ ] **9.3** Create `docker/prometheus/prometheus.yml`
+- [x] **9.3** Create `docker/prometheus/prometheus.yml`
   - Scrape config for otel-collector
   - App metrics endpoint
-- [ ] **9.4** Create `docker/grafana/provisioning/`
+- [x] **9.4** Create `docker/grafana/provisioning/`
   - Datasources (Prometheus, Jaeger)
   - Pre-built dashboards
-- [ ] **9.5** Install OpenTelemetry packages
+- [x] **9.5** Install OpenTelemetry packages
   - @opentelemetry/sdk-node
   - @opentelemetry/auto-instrumentations-node
   - @opentelemetry/exporter-trace-otlp-http
   - @opentelemetry/exporter-metrics-otlp-http
-- [ ] **9.6** Create `src/lib/telemetry.ts` - SDK initialization
-- [ ] **9.7** Create `src/instrumentation.ts` - Next.js instrumentation hook
-- [ ] **9.8** Add custom spans for:
+- [x] **9.6** Create `src/lib/telemetry.ts` - SDK initialization
+- [x] **9.7** Create `src/instrumentation.ts` - Next.js instrumentation hook
+- [x] **9.8** Add custom spans for:
   - Database queries (`tracedDbQuery`)
   - Stripe operations (`tracedStripeCall`)
   - Auth operations
-- [ ] **9.9** Add environment variables for OTel configuration
-- [ ] **9.10** Create Grafana dashboards:
+- [x] **9.9** Add environment variables for OTel configuration
+- [x] **9.10** Create Grafana dashboards:
   - Application Overview (request rate, latency, errors)
   - Database Performance
   - Stripe Operations
@@ -449,12 +449,12 @@ POSTHOG_PERSONAL_API_KEY=phx_your_personal_api_key  # for server-side
 
 ### Validation
 
-- [ ] Jaeger UI shows traces at `http://localhost:16686`
-- [ ] Prometheus shows metrics at `http://localhost:9090`
-- [ ] Grafana dashboards populated at `http://localhost:3001`
-- [ ] Database queries appear as spans
-- [ ] Stripe calls appear as spans
-- [ ] Custom metrics visible in Prometheus
+- [x] Jaeger UI shows traces at `http://localhost:16686`
+- [x] Prometheus shows metrics at `http://localhost:9090`
+- [x] Grafana dashboards populated at `http://localhost:3001`
+- [x] Database queries appear as spans
+- [x] Stripe calls appear as spans
+- [x] Custom metrics visible in Prometheus
 
 ---
 
@@ -463,7 +463,7 @@ POSTHOG_PERSONAL_API_KEY=phx_your_personal_api_key  # for server-side
 ### Tasks
 
 #### Test Infrastructure Setup
-- [ ] **10.1** Install test dependencies
+- [x] **10.1** Install test dependencies
   - vitest, @vitejs/plugin-react, vite-tsconfig-paths
   - @testing-library/react, @testing-library/jest-dom
   - @playwright/test
