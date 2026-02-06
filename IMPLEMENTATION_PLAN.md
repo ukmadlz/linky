@@ -68,9 +68,9 @@ The Ralph Loop completes when:
 
 ### Tasks
 
-- [ ] **1.1** Initialize Next.js 14+ project with TypeScript and App Router
-- [ ] **1.2** Configure ESLint, Prettier, and TypeScript strict mode
-- [ ] **1.3** Create project directory structure
+- [x] **1.1** Initialize Next.js 14+ project with TypeScript and App Router
+- [x] **1.2** Configure ESLint, Prettier, and TypeScript strict mode
+- [x] **1.3** Create project directory structure
   ```
   src/
   ├── app/
@@ -82,25 +82,25 @@ The Ralph Loop completes when:
   ├── lib/auth.ts, db/, posthog.ts, stripe.ts, telemetry.ts
   └── types/
   ```
-- [ ] **1.4** Create `docker-compose.dev.yml` with services:
+- [x] **1.4** Create `docker-compose.dev.yml` with services:
   - `app`: Next.js dev server with hot reload
   - `db`: PostgreSQL 16-alpine
   - `valkey`: ValKey 8 (open-source Redis fork)
   - `clickhouse`: ClickHouse for PostHog
   - `posthog`: PostHog self-hosted
-- [ ] **1.5** Create `Dockerfile.dev` for development
-- [ ] **1.6** Create `.env.example` with all required variables
-- [ ] **1.7** Create `.env.local` from example (gitignored)
-- [ ] **1.8** Install core dependencies: drizzle-orm, better-auth, stripe, posthog-js, posthog-node
-- [ ] **1.9** Configure path aliases in `tsconfig.json`
+- [x] **1.5** Create `Dockerfile.dev` for development
+- [x] **1.6** Create `.env.example` with all required variables
+- [x] **1.7** Create `.env.local` from example (gitignored)
+- [x] **1.8** Install core dependencies: drizzle-orm, better-auth, stripe, posthog-js, posthog-node
+- [x] **1.9** Configure path aliases in `tsconfig.json`
 
 ### Validation
 
-- [ ] `docker compose -f docker-compose.dev.yml up` starts all services
-- [ ] `http://localhost:3000` shows Next.js default page
-- [ ] PostgreSQL accessible at `localhost:5432`
-- [ ] ValKey accessible at `localhost:6379`
-- [ ] Environment variables load correctly
+- [x] `docker compose -f docker-compose.dev.yml up` starts all services
+- [x] `http://localhost:3000` shows Next.js default page
+- [x] PostgreSQL accessible at `localhost:5432`
+- [x] ValKey accessible at `localhost:6379`
+- [x] Environment variables load correctly
 
 ---
 
