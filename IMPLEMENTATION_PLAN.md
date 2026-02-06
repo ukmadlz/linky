@@ -333,41 +333,41 @@ POSTHOG_PERSONAL_API_KEY=phx_your_personal_api_key  # for server-side
 
 ### Tasks
 
-- [ ] **7.1** Create `src/lib/stripe.ts` - Stripe client and helpers
-- [ ] **7.2** Create Stripe products and prices in dashboard
+- [x] **7.1** Create `src/lib/stripe.ts` - Stripe client and helpers
+- [x] **7.2** Create Stripe products and prices in dashboard
   - Pro plan: $9/month
-- [ ] **7.3** Create `src/app/api/stripe/checkout/route.ts`
+- [x] **7.3** Create `src/app/api/stripe/checkout/route.ts`
   - Create checkout session
   - Include userId in metadata
   - Configure success/cancel URLs
-- [ ] **7.4** Create `src/app/api/stripe/portal/route.ts`
+- [x] **7.4** Create `src/app/api/stripe/portal/route.ts`
   - Create billing portal session
-- [ ] **7.5** Create `src/app/api/webhooks/stripe/route.ts`
+- [x] **7.5** Create `src/app/api/webhooks/stripe/route.ts`
   - Verify webhook signature
   - Handle `checkout.session.completed`
   - Handle `customer.subscription.updated`
   - Handle `customer.subscription.deleted`
   - Handle `invoice.payment_failed`
-- [ ] **7.6** Add billing section to settings page
+- [x] **7.6** Add billing section to settings page
   - Show current plan
   - Upgrade button (Free users)
   - Manage subscription button (Pro users)
-- [ ] **7.7** Implement Pro feature gating
+- [x] **7.7** Implement Pro feature gating
   - Unlimited links
   - Advanced themes
   - Analytics access
   - Remove branding
-- [ ] **7.8** Add Stripe CLI for local webhook testing
-- [ ] **7.9** Handle subscription status in middleware
+- [x] **7.8** Add Stripe CLI for local webhook testing
+- [x] **7.9** Handle subscription status in middleware
 
 ### Validation
 
-- [ ] Checkout redirects to Stripe
-- [ ] Webhook updates user to Pro after payment
-- [ ] Pro features unlock immediately
-- [ ] Billing portal accessible
-- [ ] Subscription cancellation downgrades user
-- [ ] Link limit enforced for free users
+- [x] Checkout redirects to Stripe
+- [x] Webhook updates user to Pro after payment
+- [x] Pro features unlock immediately
+- [x] Billing portal accessible
+- [x] Subscription cancellation downgrades user
+- [x] Link limit enforced for free users
 
 ---
 
