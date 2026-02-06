@@ -166,32 +166,32 @@ The Ralph Loop completes when:
 
 ### Tasks
 
-- [ ] **4.1** Create `src/app/(public)/[username]/page.tsx`
+- [x] **4.1** Create `src/app/(public)/[username]/page.tsx`
   - `generateStaticParams()` for all usernames
   - `revalidate = 3600` (1 hour default)
   - Fetch user and links from database
-- [ ] **4.2** Create `src/components/LinkPage.tsx` - public page UI
+- [x] **4.2** Create `src/components/LinkPage.tsx` - public page UI
   - Avatar display
   - Bio section
   - Link list with icons
   - Theme styling
-- [ ] **4.3** Create `src/components/LinkButton.tsx` - styled link buttons
-- [ ] **4.4** Create `src/app/api/revalidate/route.ts` - ISR webhook
+- [x] **4.3** Create `src/components/LinkButton.tsx` - styled link buttons
+- [x] **4.4** Create `src/app/api/revalidate/route.ts` - ISR webhook
   - Validate secret token
   - Accept username parameter
   - Call `revalidatePath('/[username]')`
-- [ ] **4.5** Create click tracking on link buttons (client-side for now)
-- [ ] **4.6** Add 404 handling for non-existent usernames
-- [ ] **4.7** Add meta tags and OpenGraph for sharing
-- [ ] **4.8** Implement responsive design (mobile-first)
+- [x] **4.5** Create click tracking on link buttons (client-side for now)
+- [x] **4.6** Add 404 handling for non-existent usernames
+- [x] **4.7** Add meta tags and OpenGraph for sharing
+- [x] **4.8** Implement responsive design (mobile-first)
 
 ### Validation
 
-- [ ] `/testuser` renders static page with links
-- [ ] Page rebuilds after revalidate webhook
-- [ ] 404 shows for non-existent usernames
-- [ ] Mobile layout works correctly
-- [ ] OpenGraph preview works when sharing
+- [x] `/testuser` renders static page with links
+- [x] Page rebuilds after revalidate webhook
+- [x] 404 shows for non-existent usernames
+- [x] Mobile layout works correctly
+- [x] OpenGraph preview works when sharing
 
 ---
 
