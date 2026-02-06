@@ -199,43 +199,43 @@ The Ralph Loop completes when:
 
 ### Tasks
 
-- [ ] **5.1** Create `src/app/(dashboard)/layout.tsx` - protected layout
+- [x] **5.1** Create `src/app/(dashboard)/layout.tsx` - protected layout
   - Sidebar navigation
   - User avatar/menu
   - Mobile responsive
-- [ ] **5.2** Create `src/app/(dashboard)/dashboard/page.tsx` - overview
+- [x] **5.2** Create `src/app/(dashboard)/dashboard/page.tsx` - overview
   - Total links count
   - Total clicks (if Pro)
   - Quick actions
-- [ ] **5.3** Create `src/app/(dashboard)/links/page.tsx` - link management
-- [ ] **5.4** Create `src/components/dashboard/LinkEditor.tsx`
+- [x] **5.3** Create `src/app/(dashboard)/links/page.tsx` - link management
+- [x] **5.4** Create `src/components/dashboard/LinkEditor.tsx`
   - Add/edit link form
   - URL validation
   - Icon selector
-- [ ] **5.5** Create `src/components/dashboard/LinkList.tsx`
+- [x] **5.5** Create `src/components/dashboard/LinkList.tsx`
   - Drag-and-drop reordering (dnd-kit)
   - Toggle visibility
   - Delete with confirmation
-- [ ] **5.6** Create `src/app/(dashboard)/appearance/page.tsx`
+- [x] **5.6** Create `src/app/(dashboard)/appearance/page.tsx`
   - Background color picker
   - Button style options
   - Font selection
   - Live preview iframe
-- [ ] **5.7** Create `src/app/(dashboard)/settings/page.tsx`
+- [x] **5.7** Create `src/app/(dashboard)/settings/page.tsx`
   - Profile editing (name, bio, avatar)
   - Username change
   - Danger zone (delete account)
-- [ ] **5.8** Implement server actions for CRUD operations
-- [ ] **5.9** Add optimistic updates with React Query or SWR
-- [ ] **5.10** Trigger revalidation webhook on link/profile changes
+- [x] **5.8** Implement server actions for CRUD operations
+- [x] **5.9** Add optimistic updates with React Query or SWR
+- [x] **5.10** Trigger revalidation webhook on link/profile changes
 
 ### Validation
 
-- [ ] Create, edit, delete links works
-- [ ] Drag-and-drop reordering persists
-- [ ] Theme changes preview in real-time
-- [ ] Public page reflects changes after save
-- [ ] Free users limited to 5 links
+- [x] Create, edit, delete links works
+- [x] Drag-and-drop reordering persists
+- [x] Theme changes preview in real-time
+- [x] Public page reflects changes after save
+- [x] Free users limited to 5 links
 
 ---
 
