@@ -136,29 +136,29 @@ The Ralph Loop completes when:
 
 ### Tasks
 
-- [ ] **3.1** Create `src/lib/auth.ts` - BetterAuth configuration
+- [x] **3.1** Create `src/lib/auth.ts` - BetterAuth configuration
   - PostgreSQL adapter
   - Email/password provider
   - Session configuration
-- [ ] **3.2** Create `src/app/api/auth/[...all]/route.ts` - API handler
-- [ ] **3.3** Create auth context provider `src/components/providers/AuthProvider.tsx`
-- [ ] **3.4** Create `src/app/(auth)/layout.tsx` - auth pages layout
-- [ ] **3.5** Create `src/app/(auth)/login/page.tsx` - login form
-- [ ] **3.6** Create `src/app/(auth)/register/page.tsx` - registration with username
-- [ ] **3.7** Create `src/middleware.ts` - route protection
+- [x] **3.2** Create `src/app/api/auth/[...all]/route.ts` - API handler
+- [x] **3.3** Create auth context provider `src/components/providers/AuthProvider.tsx`
+- [x] **3.4** Create `src/app/(auth)/layout.tsx` - auth pages layout
+- [x] **3.5** Create `src/app/(auth)/login/page.tsx` - login form
+- [x] **3.6** Create `src/app/(auth)/register/page.tsx` - registration with username
+- [x] **3.7** Create `src/middleware.ts` - route protection
   - Protect `/dashboard/*` routes
   - Redirect authenticated users from auth pages
-- [ ] **3.8** Create `src/lib/auth-client.ts` - client-side auth hooks
+- [x] **3.8** Create `src/lib/auth-client.ts` - client-side auth hooks
 - [ ] **3.9** Add OAuth providers (Google, GitHub) - optional
 
 ### Validation
 
-- [ ] Registration creates user with unique username
-- [ ] Login creates session and sets cookie
-- [ ] Protected routes redirect to login
-- [ ] Authenticated users redirected from /login to /dashboard
-- [ ] Logout clears session
-- [ ] Session persists across page reloads
+- [x] Registration creates user with unique username
+- [x] Login creates session and sets cookie
+- [x] Protected routes redirect to login
+- [x] Authenticated users redirected from /login to /dashboard
+- [x] Logout clears session
+- [x] Session persists across page reloads
 
 ---
 
