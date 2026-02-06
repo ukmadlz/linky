@@ -109,7 +109,10 @@ export default function AppearanceEditor({ user }: AppearanceEditorProps) {
 						</div>
 
 						<div>
-							<label htmlFor="btn-text-color" className="block text-sm font-medium text-gray-700 mb-2">
+							<label
+								htmlFor="btn-text-color"
+								className="block text-sm font-medium text-gray-700 mb-2"
+							>
 								Button Text Color
 							</label>
 							<input
