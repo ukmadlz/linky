@@ -8,6 +8,12 @@ import {
 } from "@/lib/db/queries";
 import { stripe } from "@/lib/stripe";
 
+// Extended type for Stripe Subscription with period fields
+type SubscriptionWithPeriod = Stripe.Subscription & {
+	current_period_start: number;
+	current_period_end: number;
+};
+
 export async function POST(request: Request) {
 	const body = await request.text();
 	const signature = request.headers.get("stripe-signature");
@@ -49,7 +55,9 @@ export async function POST(request: Request) {
 				// Get subscription details
 				const subscriptionId = session.subscription as string;
 				if (subscriptionId) {
-					const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+					const subscription = (await stripe.subscriptions.retrieve(
+						subscriptionId
+					)) as unknown as SubscriptionWithPeriod;
 
 					// Create subscription record
 					await createSubscription({
