@@ -375,38 +375,38 @@ POSTHOG_PERSONAL_API_KEY=phx_your_personal_api_key  # for server-side
 
 ### Tasks
 
-- [ ] **8.1** Create `docker/Dockerfile` - multi-stage production build
+- [x] **8.1** Create `docker/Dockerfile` - multi-stage production build
   ```dockerfile
   FROM node:20-alpine AS builder
   # Build stage
   FROM node:20-alpine AS runner
   # Production stage with standalone output
   ```
-- [ ] **8.2** Create `docker-compose.yml` - production orchestration
+- [x] **8.2** Create `docker-compose.yml` - production orchestration
   - app, db, valkey, nginx services
   - PostHog stack (posthog, posthog-db, posthog-valkey, clickhouse)
   - Named volumes for data persistence
   - Health checks
-- [ ] **8.3** Create `docker/nginx/nginx.conf`
+- [x] **8.3** Create `docker/nginx/nginx.conf`
   - Reverse proxy to app
   - SSL termination
   - Gzip compression
   - Security headers
-- [ ] **8.4** Configure Next.js `output: 'standalone'` in next.config.js
-- [ ] **8.5** Create production environment file template
-- [ ] **8.6** Add Docker healthcheck endpoints
-- [ ] **8.7** Configure container resource limits
-- [ ] **8.8** Create `docker-compose.override.yml` for local overrides
-- [ ] **8.9** Document deployment process
+- [x] **8.4** Configure Next.js `output: 'standalone'` in next.config.js
+- [x] **8.5** Create production environment file template
+- [x] **8.6** Add Docker healthcheck endpoints
+- [x] **8.7** Configure container resource limits
+- [x] **8.8** Create `docker-compose.override.yml` for local overrides
+- [x] **8.9** Document deployment process
 
 ### Validation
 
-- [ ] `docker compose build` succeeds
-- [ ] `docker compose up -d` starts all services
-- [ ] App accessible via nginx on port 80
-- [ ] SSL works with valid certificate
-- [ ] Database data persists across restarts
-- [ ] Logs accessible via `docker compose logs`
+- [x] `docker compose build` succeeds
+- [x] `docker compose up -d` starts all services
+- [x] App accessible via nginx on port 80
+- [x] SSL works with valid certificate
+- [x] Database data persists across restarts
+- [x] Logs accessible via `docker compose logs`
 
 ---
 
