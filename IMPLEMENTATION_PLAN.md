@@ -244,7 +244,7 @@ The Ralph Loop completes when:
 ### Tasks
 
 #### PostHog Infrastructure
-- [ ] **6.1** Add PostHog services to docker-compose:
+- [x] **6.1** Add PostHog services to docker-compose:
   ```yaml
   posthog:
     image: posthog/posthog:latest
@@ -284,28 +284,28 @@ The Ralph Loop completes when:
         soft: 262144
         hard: 262144
   ```
-- [ ] **6.2** Create PostHog volume mounts for persistence
-- [ ] **6.3** Configure PostHog initial setup (project, API key)
-- [ ] **6.4** Set up PostHog behind nginx reverse proxy (production)
+- [x] **6.2** Create PostHog volume mounts for persistence
+- [x] **6.3** Configure PostHog initial setup (project, API key)
+- [x] **6.4** Set up PostHog behind nginx reverse proxy (production)
 
 #### Application Integration
-- [ ] **6.5** Create `src/lib/posthog.ts` - PostHog client setup
+- [x] **6.5** Create `src/lib/posthog.ts` - PostHog client setup
   - Point to self-hosted instance (http://localhost:8000 dev, https://posthog.yourdomain.com prod)
-- [ ] **6.6** Create `src/components/providers/PostHogProvider.tsx`
-- [ ] **6.7** Add PostHog provider to root layout
-- [ ] **6.8** Implement client-side tracking:
+- [x] **6.6** Create `src/components/providers/PostHogProvider.tsx`
+- [x] **6.7** Add PostHog provider to root layout
+- [x] **6.8** Implement client-side tracking:
   - `page_viewed` on public pages
   - `link_clicked` with linkId, title, username
   - `dashboard_action` for key actions
-- [ ] **6.9** Create `src/lib/posthog-server.ts` - server-side client
-- [ ] **6.10** Implement server-side click tracking with full metadata
-- [ ] **6.11** Store clicks in `linkClicks` table for Pro users
-- [ ] **6.12** Create `src/app/(dashboard)/analytics/page.tsx` (Pro only)
+- [x] **6.9** Create `src/lib/posthog-server.ts` - server-side client
+- [x] **6.10** Implement server-side click tracking with full metadata
+- [x] **6.11** Store clicks in `linkClicks` table for Pro users
+- [x] **6.12** Create `src/app/(dashboard)/analytics/page.tsx` (Pro only)
   - Clicks over time chart
   - Top performing links
   - Traffic sources
   - Geographic distribution
-- [ ] **6.13** Configure feature flags in PostHog for Pro features
+- [x] **6.13** Configure feature flags in PostHog for Pro features
 
 ### Environment Variables
 ```env
@@ -318,14 +318,14 @@ POSTHOG_PERSONAL_API_KEY=phx_your_personal_api_key  # for server-side
 
 ### Validation
 
-- [ ] PostHog UI accessible at `http://localhost:8000`
-- [ ] Initial setup completed (project created)
-- [ ] Events appear in PostHog dashboard
-- [ ] Link clicks tracked with correct properties
-- [ ] Analytics page shows data for Pro users
-- [ ] Free users see upgrade prompt on analytics page
-- [ ] Feature flags work correctly
-- [ ] ClickHouse ingesting events properly
+- [x] PostHog UI accessible at `http://localhost:8000`
+- [x] Initial setup completed (project created)
+- [x] Events appear in PostHog dashboard
+- [x] Link clicks tracked with correct properties
+- [x] Analytics page shows data for Pro users
+- [x] Free users see upgrade prompt on analytics page
+- [x] Feature flags work correctly
+- [x] ClickHouse ingesting events properly
 
 ---
 
