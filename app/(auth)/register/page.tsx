@@ -67,8 +67,10 @@ export default function RegisterPage() {
 			});
 
 			router.push("/dashboard");
-		} catch (err: any) {
-			setError(err?.message || "Registration failed. Please try again.");
+		} catch (err: unknown) {
+			setError(
+				err instanceof Error ? err.message : "Registration failed. Please try again."
+			);
 			console.error(err);
 		} finally {
 			setLoading(false);

@@ -9,7 +9,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
 		if (typeof window !== "undefined") {
 			posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY || "phc_placeholder", {
 				api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || "http://localhost:8000",
-				loaded: (_posthog: any) => {
+				loaded: () => {
 					if (process.env.NODE_ENV === "development") {
 						console.log("PostHog loaded");
 					}

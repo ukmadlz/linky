@@ -53,11 +53,19 @@ function SortableLinkItem({
 		>
 			{/* Drag handle */}
 			<button
+				type="button"
 				{...attributes}
 				{...listeners}
 				className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600"
 			>
-				<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<svg
+					className="w-5 h-5"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+					role="img"
+					aria-label="Drag handle"
+				>
 					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" />
 				</svg>
 			</button>
@@ -78,18 +86,21 @@ function SortableLinkItem({
 			{/* Actions */}
 			<div className="flex gap-2">
 				<button
+					type="button"
 					onClick={onToggle}
 					className="px-3 py-1 text-sm border border-gray-300 rounded-md hover:bg-gray-50"
 				>
 					{link.isActive ? "Hide" : "Show"}
 				</button>
 				<button
+					type="button"
 					onClick={onEdit}
 					className="px-3 py-1 text-sm border border-gray-300 rounded-md hover:bg-gray-50"
 				>
 					Edit
 				</button>
 				<button
+					type="button"
 					onClick={onDelete}
 					className="px-3 py-1 text-sm text-red-600 border border-red-300 rounded-md hover:bg-red-50"
 				>
@@ -199,6 +210,7 @@ export default function LinkList({ initialLinks, userId, isPro }: LinkListProps)
 			{/* Add button */}
 			{!isCreating && !editingLink && (
 				<button
+					type="button"
 					onClick={() =>
 						canAddLink ? setIsCreating(true) : alert("Upgrade to Pro for unlimited links")
 					}

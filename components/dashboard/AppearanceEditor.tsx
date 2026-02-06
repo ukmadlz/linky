@@ -59,6 +59,7 @@ export default function AppearanceEditor({ user }: AppearanceEditorProps) {
 						{PRESET_COLORS.map((preset) => (
 							<button
 								key={preset.name}
+								type="button"
 								onClick={() =>
 									setTheme({
 										...theme,
@@ -82,10 +83,11 @@ export default function AppearanceEditor({ user }: AppearanceEditorProps) {
 					<h2 className="text-xl font-semibold mb-4">Custom Colors</h2>
 					<div className="space-y-4">
 						<div>
-							<label className="block text-sm font-medium text-gray-700 mb-2">
+							<label htmlFor="bg-color" className="block text-sm font-medium text-gray-700 mb-2">
 								Background Color
 							</label>
 							<input
+								id="bg-color"
 								type="color"
 								value={theme.backgroundColor}
 								onChange={(e) => setTheme({ ...theme, backgroundColor: e.target.value })}
@@ -94,8 +96,11 @@ export default function AppearanceEditor({ user }: AppearanceEditorProps) {
 						</div>
 
 						<div>
-							<label className="block text-sm font-medium text-gray-700 mb-2">Button Color</label>
+							<label htmlFor="btn-color" className="block text-sm font-medium text-gray-700 mb-2">
+								Button Color
+							</label>
 							<input
+								id="btn-color"
 								type="color"
 								value={theme.buttonColor}
 								onChange={(e) => setTheme({ ...theme, buttonColor: e.target.value })}
@@ -104,10 +109,11 @@ export default function AppearanceEditor({ user }: AppearanceEditorProps) {
 						</div>
 
 						<div>
-							<label className="block text-sm font-medium text-gray-700 mb-2">
+							<label htmlFor="btn-text-color" className="block text-sm font-medium text-gray-700 mb-2">
 								Button Text Color
 							</label>
 							<input
+								id="btn-text-color"
 								type="color"
 								value={theme.buttonTextColor}
 								onChange={(e) => setTheme({ ...theme, buttonTextColor: e.target.value })}
@@ -131,6 +137,7 @@ export default function AppearanceEditor({ user }: AppearanceEditorProps) {
 				</div>
 
 				<button
+					type="button"
 					onClick={handleSave}
 					disabled={loading}
 					className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
