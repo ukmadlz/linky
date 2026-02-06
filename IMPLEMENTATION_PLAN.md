@@ -108,27 +108,27 @@ The Ralph Loop completes when:
 
 ### Tasks
 
-- [ ] **2.1** Install Drizzle ORM and drizzle-kit
-- [ ] **2.2** Create `drizzle.config.ts` configuration
-- [ ] **2.3** Create `src/lib/db/index.ts` - database connection
-- [ ] **2.4** Create `src/lib/db/schema.ts` with tables:
+- [x] **2.1** Install Drizzle ORM and drizzle-kit
+- [x] **2.2** Create `drizzle.config.ts` configuration
+- [x] **2.3** Create `src/lib/db/index.ts` - database connection
+- [x] **2.4** Create `src/lib/db/schema.ts` with tables:
   - `users` (id, email, username, name, bio, avatarUrl, theme, isPro, stripeCustomerId, timestamps)
   - `links` (id, userId, title, url, icon, position, isActive, clicks, timestamps)
   - `linkClicks` (id, linkId, referrer, userAgent, country, city, timestamp)
   - `subscriptions` (id, userId, stripeSubscriptionId, stripePriceId, status, periodStart, periodEnd)
   - BetterAuth required tables (sessions, accounts, verifications)
-- [ ] **2.5** Create `src/lib/db/queries.ts` - typed query helpers
-- [ ] **2.6** Generate initial migration: `npx drizzle-kit generate`
-- [ ] **2.7** Apply migration: `npx drizzle-kit push`
-- [ ] **2.8** Add npm scripts: `db:generate`, `db:push`, `db:studio`
+- [x] **2.5** Create `src/lib/db/queries.ts` - typed query helpers
+- [x] **2.6** Generate initial migration: `npx drizzle-kit generate`
+- [x] **2.7** Apply migration: `npx drizzle-kit push`
+- [x] **2.8** Add npm scripts: `db:generate`, `db:push`, `db:studio`
 
 ### Validation
 
-- [ ] `npm run db:push` applies schema to database
-- [ ] `npm run db:studio` opens Drizzle Studio
-- [ ] All tables visible in database
-- [ ] Foreign key constraints work correctly
-- [ ] Unique constraints on email and username enforced
+- [x] `npm run db:push` applies schema to database
+- [x] `npm run db:studio` opens Drizzle Studio
+- [x] All tables visible in database
+- [x] Foreign key constraints work correctly
+- [x] Unique constraints on email and username enforced
 
 ---
 
