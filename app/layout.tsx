@@ -4,22 +4,22 @@ import { AuthProvider } from "@/components/providers/AuthProvider";
 import { PostHogProvider } from "@/components/providers/PostHogProvider";
 
 export const metadata: Metadata = {
-  title: "Linky - Self-Hosted Link in Bio",
-  description: "A self-hosted Linktree alternative",
+	title: "Linky - Self-Hosted Link in Bio",
+	description: "A self-hosted Linktree alternative",
 };
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body>
-        <PostHogProvider>
-          <AuthProvider>{children}</AuthProvider>
-        </PostHogProvider>
-      </body>
-    </html>
-  );
+	return (
+		<html lang="en">
+			<body>
+				<PostHogProvider>
+					<AuthProvider>{children}</AuthProvider>
+				</PostHogProvider>
+			</body>
+		</html>
+	);
 }
