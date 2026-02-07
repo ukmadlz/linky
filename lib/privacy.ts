@@ -82,9 +82,10 @@ export async function exportUserData(userId: string): Promise<{
 
 		// Get user's link clicks (via their links)
 		const linkIds = userLinks.map((link) => link.id);
-		const clicks = linkIds.length > 0
-			? await db.select().from(linkClicks).where(inArray(linkClicks.linkId, linkIds))
-			: [];
+		const clicks =
+			linkIds.length > 0
+				? await db.select().from(linkClicks).where(inArray(linkClicks.linkId, linkIds))
+				: [];
 
 		// Get user's subscription
 		const [subscription] = await db

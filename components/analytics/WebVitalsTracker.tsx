@@ -189,7 +189,7 @@ export function WebVitalsTracker() {
 
 			try {
 				// @ts-expect-error - durationThreshold is not in standard PerformanceObserverInit but supported in modern browsers
-			observer.observe({ type: "event", buffered: true, durationThreshold: 40 });
+				observer.observe({ type: "event", buffered: true, durationThreshold: 40 });
 
 				// Report INP when page is hidden or unloaded
 				const reportINP = () => {

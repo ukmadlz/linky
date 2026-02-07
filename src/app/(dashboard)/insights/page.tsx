@@ -1,6 +1,5 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { calculateExperimentResults } from "@/lib/analytics/ab-testing";
 import { getRetentionMetrics } from "@/lib/analytics/retention";
 import { getPathAnalysis } from "@/lib/analytics/user-paths";
 import { auth } from "@/lib/auth";

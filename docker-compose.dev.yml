@@ -98,6 +98,8 @@ services:
       REDIS_URL: redis://posthog-valkey:6379
       CLICKHOUSE_HOST: clickhouse
       CLICKHOUSE_DATABASE: posthog
+      CLICKHOUSE_SECURE: "false"
+      CLICKHOUSE_VERIFY: "false"
       SECRET_KEY: posthog-dev-secret-key-change-in-production
       SITE_URL: http://localhost:8000
       DISABLE_SECURE_SSL_REDIRECT: "true"
