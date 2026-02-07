@@ -325,7 +325,7 @@ The Ralph Loop completes when:
   - Track user properties (isPro, createdAt, linkCount, theme)
   - Set super properties for all events (environment, version)
   - Track anonymous users and merge on authentication
-- [ ] **6.17** Implement custom event tracking
+- [x] **6.17** Implement custom event tracking
   - `user_registered` - track registration source and method
   - `user_logged_in` - track login method
   - `link_created` - track link details (hasIcon, url domain)
