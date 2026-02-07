@@ -3,6 +3,7 @@
 import posthog from "posthog-js";
 import { PostHogProvider as PHProvider } from "posthog-js/react";
 import { useEffect } from "react";
+import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
 	useEffect(() => {
@@ -14,12 +15,29 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
 						console.log("PostHog loaded");
 					}
 				},
-				capture_pageview: false,
+				capture_pageview: false, // We handle this manually with PageViewTracker
 				capture_pageleave: true,
 				autocapture: false,
+				// Set super properties that apply to all events
+				persistence: "localStorage",
+				session_recording: {
+					maskAllInputs: true,
+					maskTextSelector: "[data-private]",
+				},
+			});
+
+			// Set super properties
+			posthog.register({
+				app_version: process.env.NEXT_PUBLIC_APP_VERSION || "1.0.0",
+				environment: process.env.NODE_ENV,
 			});
 		}
 	}, []);
 
-	return <PHProvider client={posthog}>{children}</PHProvider>;
+	return (
+		<PHProvider client={posthog}>
+			<PageViewTracker />
+			{children}
+		</PHProvider>
+	);
 }
