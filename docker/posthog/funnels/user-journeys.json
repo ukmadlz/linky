@@ -1,0 +1,366 @@
+{
+  "funnels": [
+    {
+      "name": "Registration Funnel",
+      "description": "Track user journey from landing to first link creation",
+      "type": "conversion",
+      "steps": [
+        {
+          "event": "$pageview",
+          "filters": {
+            "properties": [
+              {
+                "key": "$current_url",
+                "value": "/",
+                "type": "event"
+              }
+            ]
+          },
+          "name": "Landing Page View"
+        },
+        {
+          "event": "$pageview",
+          "filters": {
+            "properties": [
+              {
+                "key": "$current_url",
+                "value": "/register",
+                "type": "event"
+              }
+            ]
+          },
+          "name": "Registration Page View"
+        },
+        {
+          "event": "user_registered",
+          "name": "User Registered"
+        },
+        {
+          "event": "$pageview",
+          "filters": {
+            "properties": [
+              {
+                "key": "$current_url",
+                "operator": "regex",
+                "value": "/dashboard",
+                "type": "event"
+              }
+            ]
+          },
+          "name": "Dashboard View"
+        },
+        {
+          "event": "link_created",
+          "name": "First Link Created"
+        }
+      ],
+      "window": "30 days",
+      "exclusions": [],
+      "breakdown": ["$referring_domain", "utm_source"]
+    },
+    {
+      "name": "Activation Funnel",
+      "description": "Track new users completing key activation steps",
+      "type": "conversion",
+      "steps": [
+        {
+          "event": "user_logged_in",
+          "filters": {
+            "properties": [
+              {
+                "key": "method",
+                "value": ["credentials", "google", "github"],
+                "type": "event"
+              }
+            ]
+          },
+          "name": "First Login"
+        },
+        {
+          "event": "link_created",
+          "name": "Create First Link"
+        },
+        {
+          "event": "theme_customized",
+          "name": "Customize Theme"
+        },
+        {
+          "event": "profile_shared",
+          "name": "Share Profile"
+        }
+      ],
+      "window": "7 days",
+      "exclusions": [],
+      "breakdown": ["$initial_referring_domain", "registration_source"]
+    },
+    {
+      "name": "Upgrade Funnel",
+      "description": "Track conversion from free to Pro",
+      "type": "conversion",
+      "steps": [
+        {
+          "event": "$pageview",
+          "filters": {
+            "properties": [
+              {
+                "key": "$current_url",
+                "value": "/pricing",
+                "type": "event"
+              }
+            ]
+          },
+          "name": "View Pricing"
+        },
+        {
+          "event": "upgrade_clicked",
+          "name": "Click Upgrade Button"
+        },
+        {
+          "event": "checkout_started",
+          "name": "Start Checkout"
+        },
+        {
+          "event": "payment_submitted",
+          "name": "Submit Payment"
+        },
+        {
+          "event": "upgrade_completed",
+          "name": "Upgrade Completed"
+        }
+      ],
+      "window": "14 days",
+      "exclusions": [
+        {
+          "event": "subscription_cancelled",
+          "between_step": [1, 5]
+        }
+      ],
+      "breakdown": ["utm_campaign", "feature_trigger"]
+    },
+    {
+      "name": "Retention Funnel",
+      "description": "Track user retention over time",
+      "type": "retention",
+      "steps": [
+        {
+          "event": "user_registered",
+          "name": "Day 0 - Registration"
+        },
+        {
+          "event": "$pageview",
+          "filters": {
+            "properties": [
+              {
+                "key": "days_since_registration",
+                "operator": "exact",
+                "value": "1",
+                "type": "person"
+              }
+            ]
+          },
+          "name": "Day 1 - Return"
+        },
+        {
+          "event": "$pageview",
+          "filters": {
+            "properties": [
+              {
+                "key": "days_since_registration",
+                "operator": "exact",
+                "value": "7",
+                "type": "person"
+              }
+            ]
+          },
+          "name": "Day 7 - Weekly Return"
+        },
+        {
+          "event": "$pageview",
+          "filters": {
+            "properties": [
+              {
+                "key": "days_since_registration",
+                "operator": "exact",
+                "value": "30",
+                "type": "person"
+              }
+            ]
+          },
+          "name": "Day 30 - Monthly Return"
+        }
+      ],
+      "window": "60 days",
+      "exclusions": [],
+      "breakdown": ["isPro", "registration_method"]
+    },
+    {
+      "name": "Feature Discovery Funnel",
+      "description": "Track discovery and adoption of key features",
+      "type": "conversion",
+      "steps": [
+        {
+          "event": "link_created",
+          "filters": {
+            "properties": [
+              {
+                "key": "link_count",
+                "operator": "exact",
+                "value": "1",
+                "type": "person"
+              }
+            ]
+          },
+          "name": "Create First Link"
+        },
+        {
+          "event": "link_reordered",
+          "name": "Reorder Links"
+        },
+        {
+          "event": "link_toggled",
+          "name": "Hide/Show Link"
+        },
+        {
+          "event": "theme_customized",
+          "name": "Customize Theme"
+        },
+        {
+          "event": "analytics_viewed",
+          "name": "View Analytics"
+        }
+      ],
+      "window": "30 days",
+      "exclusions": [],
+      "breakdown": ["isPro", "user_segment"]
+    },
+    {
+      "name": "Checkout Drop-off Analysis",
+      "description": "Identify where users drop off during checkout",
+      "type": "drop-off",
+      "steps": [
+        {
+          "event": "checkout_started",
+          "name": "Checkout Started"
+        },
+        {
+          "event": "checkout_information_completed",
+          "name": "Information Completed"
+        },
+        {
+          "event": "checkout_payment_method_selected",
+          "name": "Payment Method Selected"
+        },
+        {
+          "event": "payment_submitted",
+          "name": "Payment Submitted"
+        },
+        {
+          "event": "upgrade_completed",
+          "name": "Upgrade Completed"
+        }
+      ],
+      "window": "1 hour",
+      "exclusions": [],
+      "breakdown": ["payment_method", "device_type"]
+    },
+    {
+      "name": "Link Performance Funnel",
+      "description": "Track link creation to first click",
+      "type": "conversion",
+      "steps": [
+        {
+          "event": "link_created",
+          "name": "Link Created"
+        },
+        {
+          "event": "profile_shared",
+          "name": "Profile Shared"
+        },
+        {
+          "event": "$pageview",
+          "filters": {
+            "properties": [
+              {
+                "key": "$current_url",
+                "operator": "regex",
+                "value": "/[^/]+$",
+                "type": "event"
+              }
+            ]
+          },
+          "name": "Public Profile Viewed"
+        },
+        {
+          "event": "link_clicked",
+          "name": "Link Clicked"
+        }
+      ],
+      "window": "14 days",
+      "exclusions": [],
+      "breakdown": ["link_title", "icon"]
+    },
+    {
+      "name": "Onboarding Completion",
+      "description": "Track completion of onboarding steps",
+      "type": "conversion",
+      "steps": [
+        {
+          "event": "user_registered",
+          "name": "User Registered"
+        },
+        {
+          "event": "onboarding_started",
+          "name": "Onboarding Started"
+        },
+        {
+          "event": "profile_info_completed",
+          "name": "Profile Info Completed"
+        },
+        {
+          "event": "first_link_added",
+          "name": "First Link Added"
+        },
+        {
+          "event": "theme_selected",
+          "name": "Theme Selected"
+        },
+        {
+          "event": "onboarding_completed",
+          "name": "Onboarding Completed"
+        }
+      ],
+      "window": "1 day",
+      "exclusions": [
+        {
+          "event": "onboarding_skipped",
+          "between_step": [1, 6]
+        }
+      ],
+      "breakdown": ["registration_method", "device_type"]
+    }
+  ],
+  "configuration": {
+    "default_window": "30 days",
+    "conversion_window_type": "first_touch",
+    "exclusion_type": "between_steps",
+    "breakdown_limit": 10,
+    "min_sample_size": 100,
+    "confidence_level": 0.95
+  },
+  "insights": {
+    "drop_off_alerts": {
+      "enabled": true,
+      "threshold": 0.5,
+      "notification_channels": ["slack", "email"]
+    },
+    "conversion_rate_tracking": {
+      "enabled": true,
+      "baseline_period": "30 days",
+      "comparison_period": "7 days"
+    },
+    "cohort_comparison": {
+      "enabled": true,
+      "cohorts": ["New Users", "Returning Users", "Pro Users"]
+    }
+  }
+}

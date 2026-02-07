@@ -1,0 +1,399 @@
+{
+  "cohorts": [
+    {
+      "name": "New Users (Last 7 Days)",
+      "description": "Users who registered in the last 7 days",
+      "filters": {
+        "properties": {
+          "type": "AND",
+          "values": [
+            {
+              "key": "$created_at",
+              "value": "7d",
+              "operator": "date_from",
+              "type": "person"
+            }
+          ]
+        }
+      },
+      "is_static": false
+    },
+    {
+      "name": "New Users (Last 30 Days)",
+      "description": "Users who registered in the last 30 days",
+      "filters": {
+        "properties": {
+          "type": "AND",
+          "values": [
+            {
+              "key": "$created_at",
+              "value": "30d",
+              "operator": "date_from",
+              "type": "person"
+            }
+          ]
+        }
+      },
+      "is_static": false
+    },
+    {
+      "name": "New Users (Last 90 Days)",
+      "description": "Users who registered in the last 90 days",
+      "filters": {
+        "properties": {
+          "type": "AND",
+          "values": [
+            {
+              "key": "$created_at",
+              "value": "90d",
+              "operator": "date_from",
+              "type": "person"
+            }
+          ]
+        }
+      },
+      "is_static": false
+    },
+    {
+      "name": "Active Users (Last 7 Days)",
+      "description": "Users who logged in within the last 7 days",
+      "filters": {
+        "properties": {
+          "type": "AND",
+          "values": [
+            {
+              "key": "user_logged_in",
+              "event_type": "events",
+              "time_value": "7d",
+              "time_interval": "day",
+              "operator": "date_from",
+              "type": "behavioral"
+            }
+          ]
+        }
+      },
+      "is_static": false
+    },
+    {
+      "name": "Active Users (Last 30 Days)",
+      "description": "Users who logged in within the last 30 days",
+      "filters": {
+        "properties": {
+          "type": "AND",
+          "values": [
+            {
+              "key": "user_logged_in",
+              "event_type": "events",
+              "time_value": "30d",
+              "time_interval": "day",
+              "operator": "date_from",
+              "type": "behavioral"
+            }
+          ]
+        }
+      },
+      "is_static": false
+    },
+    {
+      "name": "Engaged Users",
+      "description": "Users with 5+ links created",
+      "filters": {
+        "properties": {
+          "type": "AND",
+          "values": [
+            {
+              "key": "linkCount",
+              "value": "5",
+              "operator": "gte",
+              "type": "person"
+            }
+          ]
+        }
+      },
+      "is_static": false
+    },
+    {
+      "name": "Pro Users",
+      "description": "Users with active Pro subscription",
+      "filters": {
+        "properties": {
+          "type": "AND",
+          "values": [
+            {
+              "key": "isPro",
+              "value": "true",
+              "operator": "exact",
+              "type": "person"
+            }
+          ]
+        }
+      },
+      "is_static": false
+    },
+    {
+      "name": "Free Users",
+      "description": "Users without Pro subscription",
+      "filters": {
+        "properties": {
+          "type": "AND",
+          "values": [
+            {
+              "key": "isPro",
+              "value": ["false", null],
+              "operator": "is_not",
+              "type": "person"
+            }
+          ]
+        }
+      },
+      "is_static": false
+    },
+    {
+      "name": "Churned Users",
+      "description": "Users with no activity in 30+ days",
+      "filters": {
+        "properties": {
+          "type": "AND",
+          "values": [
+            {
+              "key": "$pageview",
+              "event_type": "events",
+              "time_value": "30d",
+              "time_interval": "day",
+              "operator": "date_to",
+              "type": "behavioral",
+              "negation": true
+            }
+          ]
+        }
+      },
+      "is_static": false
+    },
+    {
+      "name": "At-Risk Users",
+      "description": "Active users who haven't logged in for 14+ days",
+      "filters": {
+        "properties": {
+          "type": "AND",
+          "values": [
+            {
+              "key": "$created_at",
+              "value": "90d",
+              "operator": "date_from",
+              "type": "person"
+            },
+            {
+              "key": "user_logged_in",
+              "event_type": "events",
+              "time_value": "14d",
+              "time_interval": "day",
+              "operator": "date_to",
+              "type": "behavioral",
+              "negation": true
+            }
+          ]
+        }
+      },
+      "is_static": false
+    },
+    {
+      "name": "Power Users",
+      "description": "Pro users with 10+ links and weekly activity",
+      "filters": {
+        "properties": {
+          "type": "AND",
+          "values": [
+            {
+              "key": "isPro",
+              "value": "true",
+              "operator": "exact",
+              "type": "person"
+            },
+            {
+              "key": "linkCount",
+              "value": "10",
+              "operator": "gte",
+              "type": "person"
+            },
+            {
+              "key": "user_logged_in",
+              "event_type": "events",
+              "time_value": "7d",
+              "time_interval": "day",
+              "operator": "date_from",
+              "type": "behavioral"
+            }
+          ]
+        }
+      },
+      "is_static": false
+    },
+    {
+      "name": "Link Limit Reached",
+      "description": "Free users with 5 links (at limit)",
+      "filters": {
+        "properties": {
+          "type": "AND",
+          "values": [
+            {
+              "key": "isPro",
+              "value": ["false", null],
+              "operator": "is_not",
+              "type": "person"
+            },
+            {
+              "key": "linkCount",
+              "value": "5",
+              "operator": "gte",
+              "type": "person"
+            }
+          ]
+        }
+      },
+      "is_static": false
+    },
+    {
+      "name": "Recent Upgraders",
+      "description": "Users who upgraded to Pro in last 30 days",
+      "filters": {
+        "properties": {
+          "type": "AND",
+          "values": [
+            {
+              "key": "isPro",
+              "value": "true",
+              "operator": "exact",
+              "type": "person"
+            },
+            {
+              "key": "upgrade_completed",
+              "event_type": "events",
+              "time_value": "30d",
+              "time_interval": "day",
+              "operator": "date_from",
+              "type": "behavioral"
+            }
+          ]
+        }
+      },
+      "is_static": false
+    },
+    {
+      "name": "Theme Customizers",
+      "description": "Users who have customized their theme",
+      "filters": {
+        "properties": {
+          "type": "AND",
+          "values": [
+            {
+              "key": "theme_customized",
+              "event_type": "events",
+              "operator": "gte",
+              "value": "1",
+              "type": "behavioral"
+            }
+          ]
+        }
+      },
+      "is_static": false
+    },
+    {
+      "name": "High Click-Through Users",
+      "description": "Users with profiles receiving 100+ clicks",
+      "filters": {
+        "properties": {
+          "type": "AND",
+          "values": [
+            {
+              "key": "total_clicks",
+              "value": "100",
+              "operator": "gte",
+              "type": "person"
+            }
+          ]
+        }
+      },
+      "is_static": false
+    },
+    {
+      "name": "Mobile Users",
+      "description": "Users who primarily access via mobile",
+      "filters": {
+        "properties": {
+          "type": "AND",
+          "values": [
+            {
+              "key": "$device_type",
+              "value": "Mobile",
+              "operator": "exact",
+              "type": "person"
+            }
+          ]
+        }
+      },
+      "is_static": false
+    },
+    {
+      "name": "Organic Signups",
+      "description": "Users who signed up via organic channels",
+      "filters": {
+        "properties": {
+          "type": "AND",
+          "values": [
+            {
+              "key": "$initial_utm_source",
+              "value": ["google", "bing", "duckduckgo", "organic"],
+              "operator": "exact",
+              "type": "person"
+            }
+          ]
+        }
+      },
+      "is_static": false
+    },
+    {
+      "name": "Referral Signups",
+      "description": "Users who signed up via referral",
+      "filters": {
+        "properties": {
+          "type": "AND",
+          "values": [
+            {
+              "key": "$initial_utm_source",
+              "value": "referral",
+              "operator": "exact",
+              "type": "person"
+            }
+          ]
+        }
+      },
+      "is_static": false
+    }
+  ],
+  "configuration": {
+    "auto_refresh": true,
+    "refresh_interval": "24h",
+    "cache_results": true
+  },
+  "insights": {
+    "cohort_trends": {
+      "enabled": true,
+      "metrics": ["size", "growth_rate", "conversion_rate"]
+    },
+    "cohort_comparison": {
+      "enabled": true,
+      "compare_cohorts": [
+        ["Pro Users", "Free Users"],
+        ["Active Users (Last 7 Days)", "Churned Users"],
+        ["Power Users", "Engaged Users"]
+      ]
+    },
+    "alerts": {
+      "enabled": true,
+      "thresholds": {
+        "churned_users_percentage": 0.1,
+        "at_risk_users_count": 50
+      }
+    }
+  }
+}

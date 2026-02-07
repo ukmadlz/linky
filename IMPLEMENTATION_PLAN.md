@@ -344,33 +344,33 @@ The Ralph Loop completes when:
   - Set up custom data attributes for tracking
 
 #### Product Analytics (PostHog)
-- [ ] **6.19** Create user journey funnels
+- [x] **6.19** Create user journey funnels
   - Registration funnel: landing → register → verify → first link
   - Activation funnel: first login → create link → customize theme → share
   - Upgrade funnel: view pricing → click upgrade → checkout → payment
   - Retention funnel: day 0 → day 1 → day 7 → day 30
-- [ ] **6.20** Set up cohort analysis
+- [x] **6.20** Set up cohort analysis
   - New users cohort (registered in last 7/30/90 days)
   - Active users cohort (logged in in last 7 days)
   - Power users cohort (5+ links, customized theme)
   - Pro users cohort (isPro = true)
   - Churned users cohort (no activity in 30 days)
-- [ ] **6.21** Implement retention analysis
+- [x] **6.21** Implement retention analysis
   - Track weekly active users (WAU)
   - Track monthly active users (MAU)
   - Calculate WAU/MAU ratio for stickiness
   - Monitor retention curves (day 1, 7, 30)
-- [ ] **6.22** Create user path analysis
+- [x] **6.22** Create user path analysis
   - Track common navigation patterns
   - Identify drop-off points in key flows
   - Monitor feature discovery paths
   - Analyze user journey variations
-- [ ] **6.23** Set up A/B testing infrastructure
+- [x] **6.23** Set up A/B testing infrastructure
   - Configure feature flags for experiments
   - Create experiment groups
   - Track experiment exposure and conversions
   - Set up statistical significance calculations
-- [ ] **6.24** Implement product insights dashboards
+- [x] **6.24** Implement product insights dashboards
   - Create dashboard for daily active metrics
   - Create dashboard for feature adoption
   - Create dashboard for conversion rates
@@ -402,7 +402,7 @@ The Ralph Loop completes when:
   - Monitor API response times
   - Track database query performance
   - Identify slow pages and routes
-- [ ] **6.30** Create error monitoring dashboard
+- [x] **6.30** Create error monitoring dashboard
   - Error rate over time
   - Top errors by frequency
   - Error distribution by page/route
@@ -410,7 +410,7 @@ The Ralph Loop completes when:
   - User impact analysis (% of users affected)
 
 #### Analytics & Error Tracking Integration
-- [ ] **6.31** Connect PostHog to monitoring tools
+- [x] **6.31** Connect PostHog to monitoring tools
   - Integrate with Grafana for unified dashboards
   - Connect to Sentry for enhanced error tracking (optional)
   - Set up data export to BigQuery/S3 for long-term storage
