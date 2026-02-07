@@ -677,51 +677,51 @@ POSTHOG_PERSONAL_API_KEY=phx_your_personal_api_key  # for server-side
   - Page display
   - Link clicks
   - Theme rendering
-- [ ] **10.25** Create `__tests__/e2e/stripe-checkout.spec.ts`
+- [x] **10.25** Create `__tests__/e2e/stripe-checkout.spec.ts`
   - Upgrade flow
   - Pro features unlock
 - [x] **10.26** Create `__tests__/e2e/fixtures/test-user.ts` - test data helpers
 
 #### Accessibility & Performance Testing
-- [ ] **10.27** Install accessibility testing dependencies
+- [x] **10.27** Install accessibility testing dependencies
   - @axe-core/playwright or @axe-core/react
   - axe-core
-- [ ] **10.28** Create `__tests__/a11y/accessibility.spec.ts`
+- [x] **10.28** Create `__tests__/a11y/accessibility.spec.ts`
   - Test all main pages for WCAG 2.1 AA compliance
   - Check login/register forms for proper labels and ARIA
   - Verify dashboard pages for keyboard navigation
   - Test public link pages for screen reader compatibility
   - Check color contrast ratios
   - Verify focus indicators
-- [ ] **10.29** Create `__tests__/a11y/axe-config.ts`
+- [x] **10.29** Create `__tests__/a11y/axe-config.ts`
   - Configure axe-core rules
   - Set up custom rules for project-specific needs
   - Define accessibility violation thresholds
-- [ ] **10.30** Install Lighthouse CI dependencies
+- [x] **10.30** Install Lighthouse CI dependencies
   - @lhci/cli
   - lighthouse
-- [ ] **10.31** Create `lighthouserc.json` configuration
+- [x] **10.31** Create `lighthouserc.json` configuration
   - Define performance budgets (FCP < 1.5s, LCP < 2.5s, TTI < 3.5s)
   - Set up accessibility score threshold (>= 90)
   - Configure SEO and best practices checks
   - Define desktop and mobile assertions
-- [ ] **10.32** Create `.github/workflows/lighthouse.yml`
+- [x] **10.32** Create `.github/workflows/lighthouse.yml`
   - Run Lighthouse CI on PRs
   - Test public link pages
   - Test dashboard pages (authenticated)
   - Upload reports as artifacts
   - Comment performance metrics on PRs
-- [ ] **10.33** Create `__tests__/performance/lighthouse.test.ts`
+- [x] **10.33** Create `__tests__/performance/lighthouse.test.ts`
   - Local Lighthouse performance tests
   - Test First Contentful Paint (FCP)
   - Test Largest Contentful Paint (LCP)
   - Test Time to Interactive (TTI)
   - Test Cumulative Layout Shift (CLS)
-- [ ] **10.34** Add accessibility tests to E2E suite
+- [x] **10.34** Add accessibility tests to E2E suite
   - Integrate axe-core checks into existing Playwright tests
   - Add keyboard navigation tests
   - Add screen reader compatibility tests
-- [ ] **10.35** Create performance monitoring dashboard
+- [x] **10.35** Create performance monitoring dashboard
   - Set up Grafana dashboard for Core Web Vitals
   - Track performance metrics over time
   - Alert on performance regressions
