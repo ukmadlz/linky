@@ -640,11 +640,11 @@ POSTHOG_PERSONAL_API_KEY=phx_your_personal_api_key  # for server-side
   - checkout.session.completed handling
   - subscription.deleted handling
   - Invalid signature rejection
-- [ ] **10.16** Create `__tests__/unit/components/LinkEditor.test.tsx`
+- [x] **10.16** Create `__tests__/unit/components/LinkEditor.test.tsx`
   - Render with existing data
   - URL validation
   - onSave callback
-- [ ] **10.17** Create `__tests__/unit/components/LinkList.test.tsx`
+- [x] **10.17** Create `__tests__/unit/components/LinkList.test.tsx`
   - Render link list
   - Delete confirmation
   - Toggle visibility
