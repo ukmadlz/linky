@@ -664,23 +664,23 @@ POSTHOG_PERSONAL_API_KEY=phx_your_personal_api_key  # for server-side
 - [x] **10.21** Create `__tests__/helpers/test-db.ts` - test database utilities
 
 #### End-to-End Tests
-- [ ] **10.22** Create `__tests__/e2e/auth.spec.ts`
+- [x] **10.22** Create `__tests__/e2e/auth.spec.ts`
   - Registration flow
   - Login flow
   - Logout flow
-- [ ] **10.23** Create `__tests__/e2e/dashboard.spec.ts`
+- [x] **10.23** Create `__tests__/e2e/dashboard.spec.ts`
   - Link creation
   - Link editing
   - Drag-and-drop reordering
   - Theme customization
-- [ ] **10.24** Create `__tests__/e2e/public-page.spec.ts`
+- [x] **10.24** Create `__tests__/e2e/public-page.spec.ts`
   - Page display
   - Link clicks
   - Theme rendering
 - [ ] **10.25** Create `__tests__/e2e/stripe-checkout.spec.ts`
   - Upgrade flow
   - Pro features unlock
-- [ ] **10.26** Create `__tests__/e2e/fixtures/test-user.ts` - test data helpers
+- [x] **10.26** Create `__tests__/e2e/fixtures/test-user.ts` - test data helpers
 
 #### Accessibility & Performance Testing
 - [ ] **10.27** Install accessibility testing dependencies
