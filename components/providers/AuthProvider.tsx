@@ -3,15 +3,15 @@
 import { useEffect, useState } from "react";
 import { usePostHogIdentify } from "@/hooks/usePostHogIdentify";
 import { useSession } from "@/lib/auth-client";
-import type { User } from "@/lib/db/schema";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const { data: session } = useSession();
-	const [user, setUser] = useState<User | null>(null);
+	// biome-ignore lint/suspicious/noExplicitAny: Session user type is complex
+	const [user, setUser] = useState<any>(null);
 
 	useEffect(() => {
 		if (session?.user) {
-			setUser(session.user as User);
+			setUser(session.user);
 		} else {
 			setUser(null);
 		}

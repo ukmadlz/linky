@@ -188,7 +188,7 @@ export function WebVitalsTracker() {
 			});
 
 			try {
-				observer.observe({ type: "event", buffered: true, durationThreshold: 40 });
+				observer.observe({ type: "event", buffered: true, durationThreshold: 40 } as PerformanceObserverInit);
 
 				// Report INP when page is hidden or unloaded
 				const reportINP = () => {
