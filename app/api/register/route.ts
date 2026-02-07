@@ -49,6 +49,10 @@ export async function POST(request: Request) {
 			theme: JSON.stringify({}),
 		});
 
+		if (!user) {
+			return NextResponse.json({ error: "Failed to create user" }, { status: 500 });
+		}
+
 		return NextResponse.json(
 			{
 				success: true,

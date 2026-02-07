@@ -16,11 +16,11 @@ export interface DatabaseError {
  * Wrap database operations with error tracking
  */
 export async function withDatabaseErrorTracking<T>(
-	operation: string,
-	table: string,
 	fn: () => Promise<T>,
-	context?: Record<string, unknown>,
+	context: Record<string, unknown> & { operation: string; table: string },
 ): Promise<T> {
+	const { operation, table, ...otherContext } = context;
+
 	try {
 		const startTime = Date.now();
 		const result = await fn();
@@ -35,7 +35,7 @@ export async function withDatabaseErrorTracking<T>(
 				table,
 				duration_ms: duration,
 				success: true,
-				...context,
+				...otherContext,
 			},
 		});
 
@@ -50,7 +50,7 @@ export async function withDatabaseErrorTracking<T>(
 				table,
 				error_message: error instanceof Error ? error.message : String(error),
 				error_stack: error instanceof Error ? error.stack : undefined,
-				...context,
+				...otherContext,
 			},
 		});
 
