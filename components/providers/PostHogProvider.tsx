@@ -18,7 +18,19 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
 				},
 				capture_pageview: false, // We handle this manually with PageViewTracker
 				capture_pageleave: true,
-				autocapture: false,
+				// Enable autocapture for automatic event tracking
+				autocapture: {
+					// Capture all clicks on buttons, links, and form submissions
+					dom_event_allowlist: ["click", "change", "submit"],
+					// Capture element attributes for better context
+					capture_copied_text: true,
+					// CSS selectors to ignore
+					element_allowlist: ["button", "a", "input[type=submit]", "form"],
+					// Custom attribute for tracking
+					url_allowlist: undefined,
+					// Capture form field names (but not values for privacy)
+					capture_form_submit_name: true,
+				},
 				// Set super properties that apply to all events
 				persistence: "localStorage",
 				session_recording: {

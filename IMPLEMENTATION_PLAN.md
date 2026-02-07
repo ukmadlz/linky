@@ -337,7 +337,7 @@ The Ralph Loop completes when:
   - `upgrade_initiated` - track upgrade button clicks
   - `upgrade_completed` - track successful upgrades
   - `subscription_cancelled` - track cancellation reasons
-- [ ] **6.18** Configure PostHog autocapture
+- [x] **6.18** Configure PostHog autocapture
   - Enable autocapture for all button clicks
   - Enable autocapture for form submissions
   - Configure element selectors for key interactions
