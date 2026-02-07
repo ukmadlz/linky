@@ -151,7 +151,7 @@ The Ralph Loop completes when:
   - Protect `/dashboard/*` routes
   - Redirect authenticated users from auth pages
 - [x] **3.8** Create `src/lib/auth-client.ts` - client-side auth hooks
-- [ ] **3.9** Add OAuth providers (Google, GitHub) - optional
+- [x] **3.9** Add OAuth providers (Google, GitHub) - optional
 
 ### Validation
 
