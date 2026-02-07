@@ -17,7 +17,7 @@ export interface DatabaseError {
  */
 export async function withDatabaseErrorTracking<T>(
 	fn: () => Promise<T>,
-	context: Record<string, unknown> & { operation: string; table: string },
+	context: Record<string, unknown> & { operation: string; table: string }
 ): Promise<T> {
 	const { operation, table, ...otherContext } = context;
 

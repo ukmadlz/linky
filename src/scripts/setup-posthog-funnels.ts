@@ -89,7 +89,7 @@ async function setupFunnels() {
 	console.log("3. Configure cohort breakdowns for deeper analysis");
 }
 
-async function createFunnel(funnel: Funnel, configuration: FunnelsConfig["configuration"]) {
+async function createFunnel(funnel: Funnel, _configuration: FunnelsConfig["configuration"]) {
 	// Convert window string to hours
 	const windowHours = parseWindowToHours(funnel.window);
 
