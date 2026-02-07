@@ -11,6 +11,7 @@ import {
 	type User,
 	users,
 } from "./schema";
+import { withDatabaseErrorTracking } from "./db-error-handler";
 
 // User queries
 export async function getUserByEmail(email: string) {
@@ -38,17 +39,36 @@ export async function getUserByStripeCustomerId(customerId: string) {
 }
 
 export async function createUser(data: NewUser) {
-	const [user] = await db.insert(users).values(data).returning();
-	return user;
+	return withDatabaseErrorTracking(
+		async () => {
+			const [user] = await db.insert(users).values(data).returning();
+			return user;
+		},
+		{
+			operation: "create",
+			table: "users",
+			email: data.email,
+			username: data.username,
+		}
+	);
 }
 
 export async function updateUser(id: string, data: Partial<User>) {
-	const [user] = await db
-		.update(users)
-		.set({ ...data, updatedAt: new Date() })
-		.where(eq(users.id, id))
-		.returning();
-	return user;
+	return withDatabaseErrorTracking(
+		async () => {
+			const [user] = await db
+				.update(users)
+				.set({ ...data, updatedAt: new Date() })
+				.where(eq(users.id, id))
+				.returning();
+			return user;
+		},
+		{
+			operation: "update",
+			table: "users",
+			user_id: id,
+		}
+	);
 }
 
 export async function deleteUser(id: string) {
@@ -74,8 +94,17 @@ export async function getLinkById(id: string) {
 }
 
 export async function createLink(data: NewLink) {
-	const [link] = await db.insert(links).values(data).returning();
-	return link;
+	return withDatabaseErrorTracking(
+		async () => {
+			const [link] = await db.insert(links).values(data).returning();
+			return link;
+		},
+		{
+			operation: "create",
+			table: "links",
+			user_id: data.userId,
+		}
+	);
 }
 
 export async function updateLink(id: string, data: Partial<Link>) {
@@ -146,20 +175,38 @@ export async function getSubscriptionByUserId(userId: string) {
 export async function createSubscription(
 	data: Omit<typeof subscriptions.$inferInsert, "id" | "createdAt" | "updatedAt">
 ) {
-	const [subscription] = await db.insert(subscriptions).values(data).returning();
-	return subscription;
+	return withDatabaseErrorTracking(
+		async () => {
+			const [subscription] = await db.insert(subscriptions).values(data).returning();
+			return subscription;
+		},
+		{
+			operation: "create",
+			table: "subscriptions",
+			user_id: data.userId,
+		}
+	);
 }
 
 export async function updateSubscription(
 	userId: string,
 	data: Partial<typeof subscriptions.$inferSelect>
 ) {
-	const [subscription] = await db
-		.update(subscriptions)
-		.set({ ...data, updatedAt: new Date() })
-		.where(eq(subscriptions.userId, userId))
-		.returning();
-	return subscription;
+	return withDatabaseErrorTracking(
+		async () => {
+			const [subscription] = await db
+				.update(subscriptions)
+				.set({ ...data, updatedAt: new Date() })
+				.where(eq(subscriptions.userId, userId))
+				.returning();
+			return subscription;
+		},
+		{
+			operation: "update",
+			table: "subscriptions",
+			user_id: userId,
+		}
+	);
 }
 
 export async function deleteSubscription(userId: string) {

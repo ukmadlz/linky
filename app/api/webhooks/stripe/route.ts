@@ -7,6 +7,7 @@ import {
 	updateUser,
 } from "@/lib/db/queries";
 import { stripe } from "@/lib/stripe";
+import { trackAPIError, trackExternalAPIError } from "@/lib/posthog-server-error-tracking";
 
 // Extended type for Stripe Subscription with period fields
 type SubscriptionWithPeriod = Stripe.Subscription & {
@@ -31,6 +32,10 @@ export async function POST(request: Request) {
 			process.env.STRIPE_WEBHOOK_SECRET || "whsec_placeholder"
 		);
 	} catch (error) {
+		await trackExternalAPIError("stripe-webhook", error, {
+			endpoint: "/api/webhooks/stripe",
+			error_type: "signature_verification_failed",
+		});
 		console.error("Webhook signature verification failed:", error);
 		return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
 	}
@@ -55,19 +60,28 @@ export async function POST(request: Request) {
 				// Get subscription details
 				const subscriptionId = session.subscription as string;
 				if (subscriptionId) {
-					const subscription = (await stripe.subscriptions.retrieve(
-						subscriptionId
-					)) as unknown as SubscriptionWithPeriod;
+					try {
+						const subscription = (await stripe.subscriptions.retrieve(
+							subscriptionId
+						)) as unknown as SubscriptionWithPeriod;
 
-					// Create subscription record
-					await createSubscription({
-						userId,
-						stripeSubscriptionId: subscriptionId,
-						stripePriceId: subscription.items.data[0].price.id,
-						status: subscription.status,
-						periodStart: new Date(subscription.current_period_start * 1000),
-						periodEnd: new Date(subscription.current_period_end * 1000),
-					});
+						// Create subscription record
+						await createSubscription({
+							userId,
+							stripeSubscriptionId: subscriptionId,
+							stripePriceId: subscription.items.data[0].price.id,
+							status: subscription.status,
+							periodStart: new Date(subscription.current_period_start * 1000),
+							periodEnd: new Date(subscription.current_period_end * 1000),
+						});
+					} catch (stripeError) {
+						await trackExternalAPIError("stripe-api", stripeError, {
+							endpoint: "subscriptions.retrieve",
+							subscription_id: subscriptionId,
+							user_id: userId,
+						});
+						throw stripeError;
+					}
 				}
 
 				console.log(`User ${userId} upgraded to Pro`);
@@ -115,6 +129,10 @@ export async function POST(request: Request) {
 
 		return NextResponse.json({ received: true });
 	} catch (error) {
+		await trackAPIError(error, request, {
+			event_type: event.type,
+			webhook_source: "stripe",
+		});
 		console.error("Webhook handler error:", error);
 		return NextResponse.json({ error: "Webhook handler failed" }, { status: 500 });
 	}
