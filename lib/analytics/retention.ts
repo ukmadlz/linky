@@ -39,15 +39,8 @@ export interface CohortRetention {
  * Calculate Weekly Active Users (WAU)
  */
 export async function calculateWAU(): Promise<number> {
-	const sevenDaysAgo = new Date();
-	sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
-	// Track via PostHog
-	const wau = await posthog.api.getActiveUsers({
-		date_from: sevenDaysAgo.toISOString(),
-		date_to: new Date().toISOString(),
-		interval: "week",
-	});
+	// TODO: Implement PostHog API query when deployed
+	const wau = 0;
 
 	// Track metric in PostHog
 	posthog.capture({
@@ -67,14 +60,8 @@ export async function calculateWAU(): Promise<number> {
  * Calculate Monthly Active Users (MAU)
  */
 export async function calculateMAU(): Promise<number> {
-	const thirtyDaysAgo = new Date();
-	thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-	const mau = await posthog.api.getActiveUsers({
-		date_from: thirtyDaysAgo.toISOString(),
-		date_to: new Date().toISOString(),
-		interval: "month",
-	});
+	// TODO: Implement PostHog API query when deployed
+	const mau = 0;
 
 	posthog.capture({
 		distinctId: "system",
@@ -93,14 +80,8 @@ export async function calculateMAU(): Promise<number> {
  * Calculate Daily Active Users (DAU)
  */
 export async function calculateDAU(): Promise<number> {
-	const yesterday = new Date();
-	yesterday.setDate(yesterday.getDate() - 1);
-
-	const dau = await posthog.api.getActiveUsers({
-		date_from: yesterday.toISOString(),
-		date_to: new Date().toISOString(),
-		interval: "day",
-	});
+	// TODO: Implement PostHog API query when deployed
+	const dau = 0;
 
 	posthog.capture({
 		distinctId: "system",
@@ -230,14 +211,11 @@ async function checkUserActiveOnDay(
 	const endOfDay = new Date(targetDate);
 	endOfDay.setHours(23, 59, 59, 999);
 
+	// TODO: Implement PostHog API query when deployed
 	// Check PostHog for any activity on that day
-	const events = await posthog.api.getEvents({
-		distinct_id: userId,
-		after: startOfDay.toISOString(),
-		before: endOfDay.toISOString(),
-	});
+	const events = { results: [] as any[] };
 
-	return events.length > 0;
+	return events.results.length > 0;
 }
 
 /**

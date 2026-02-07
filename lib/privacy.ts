@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import { db } from "./db";
 import { linkClicks, links, subscriptions, users } from "./db/schema";
 
@@ -16,16 +16,13 @@ export async function deleteUserData(userId: string): Promise<void> {
 		// You'll need to manually delete from ClickHouse or use PostHog's GDPR tools
 		await deleteUserFromPostHog(userId);
 
-		// 2. Delete user's link clicks
-		await db.delete(linkClicks).where(eq(linkClicks.userId, userId));
-
-		// 3. Delete user's links
+		// 2. Delete user's links (link clicks will cascade delete automatically)
 		await db.delete(links).where(eq(links.userId, userId));
 
-		// 4. Delete user's subscription
+		// 3. Delete user's subscription
 		await db.delete(subscriptions).where(eq(subscriptions.userId, userId));
 
-		// 5. Delete user account
+		// 4. Delete user account
 		await db.delete(users).where(eq(users.id, userId));
 
 		console.log(`Deleted all data for user ${userId}`);
@@ -83,8 +80,11 @@ export async function exportUserData(userId: string): Promise<{
 		// Get user's links
 		const userLinks = await db.select().from(links).where(eq(links.userId, userId));
 
-		// Get user's link clicks
-		const clicks = await db.select().from(linkClicks).where(eq(linkClicks.userId, userId));
+		// Get user's link clicks (via their links)
+		const linkIds = userLinks.map((link) => link.id);
+		const clicks = linkIds.length > 0
+			? await db.select().from(linkClicks).where(inArray(linkClicks.linkId, linkIds))
+			: [];
 
 		// Get user's subscription
 		const [subscription] = await db
@@ -116,7 +116,8 @@ export async function anonymizeUserData(userId: string): Promise<void> {
 				email: `deleted-${userId}@anonymized.local`,
 				username: `deleted-${userId}`,
 				name: "Deleted User",
-				image: null,
+				bio: null,
+				avatarUrl: null,
 				stripeCustomerId: null,
 				updatedAt: new Date(),
 			})

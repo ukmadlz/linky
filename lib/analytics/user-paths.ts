@@ -21,7 +21,7 @@ export interface PathNode {
 
 export interface PathAnalysis {
 	commonPaths: UserPath[];
-	dropOffPoints: Array<{ page: string; dropOffRate: number }>;
+	dropOffPoints: Array<{ page: string; dropOffRate: number; visits: number; exits: number }>;
 	featureDiscovery: Record<string, { discovered: number; time_to_discover: number }>;
 	journeyVariations: Array<{ variation: string; count: number }>;
 }
@@ -52,15 +52,8 @@ export function trackPageNavigation(
  */
 export async function getCommonUserPaths(limit = 10): Promise<UserPath[]> {
 	// Query PostHog for page navigation sequences
-	const pathQuery = {
-		kind: "EventsQuery",
-		select: ["properties.from_page", "properties.to_page", "properties.duration_ms"],
-		event: "page_navigation",
-		after: "-30d",
-		limit: 10000,
-	};
-
-	const events = await posthog.api.query(pathQuery);
+	// TODO: Implement PostHog API query when deployed
+	const events = { results: [] as any[] };
 
 	// Build path sequences
 	const pathMap = new Map<string, { count: number; durations: number[] }>();
@@ -123,16 +116,10 @@ export async function getCommonUserPaths(limit = 10): Promise<UserPath[]> {
  * Identify drop-off points in user journeys
  */
 export async function identifyDropOffPoints(): Promise<
-	Array<{ page: string; dropOffRate: number }>
+	Array<{ page: string; dropOffRate: number; visits: number; exits: number }>
 > {
-	// Query page views and track where users exit
-	const pageViews = await posthog.api.query({
-		kind: "EventsQuery",
-		select: ["properties.$current_url", "distinct_id", "timestamp"],
-		event: "$pageview",
-		after: "-7d",
-		limit: 10000,
-	});
+	// TODO: Implement PostHog API query when deployed
+	const pageViews = { results: [] as any[] };
 
 	// Build page visit and exit map
 	const pageStats = new Map<string, { visits: number; exits: number; nextPages: Set<string> }>();
@@ -221,23 +208,9 @@ export async function analyzeFeatureDiscovery(): Promise<
 	const featureStats: Record<string, { discovered: number; time_to_discover: number }> = {};
 
 	for (const feature of features) {
-		// Get users who performed this action
-		const featureEvents = await posthog.api.query({
-			kind: "EventsQuery",
-			select: ["distinct_id", "timestamp"],
-			event: feature,
-			after: "-30d",
-			limit: 1000,
-		});
-
-		// Get registration times for these users
-		const userRegistrations = await posthog.api.query({
-			kind: "EventsQuery",
-			select: ["distinct_id", "timestamp"],
-			event: "user_registered",
-			after: "-30d",
-			limit: 1000,
-		});
+		// TODO: Implement PostHog API queries when deployed
+		const featureEvents = { results: [] as any[] };
+		const userRegistrations = { results: [] as any[] };
 
 		const registrationMap = new Map<string, Date>();
 		for (const event of userRegistrations.results) {
@@ -283,14 +256,8 @@ export async function analyzeFeatureDiscovery(): Promise<
 export async function analyzeJourneyVariations(
 	goal: string
 ): Promise<Array<{ variation: string; count: number }>> {
-	// Get all sessions that resulted in the goal
-	const goalEvents = await posthog.api.query({
-		kind: "EventsQuery",
-		select: ["distinct_id", "timestamp"],
-		event: goal,
-		after: "-30d",
-		limit: 1000,
-	});
+	// TODO: Implement PostHog API query when deployed
+	const goalEvents = { results: [] as any[] };
 
 	// For each goal completion, get the path that led to it
 	const journeyVariations = new Map<string, number>();
@@ -299,19 +266,8 @@ export async function analyzeJourneyVariations(
 		const userId = goalEvent.distinct_id;
 		const goalTime = new Date(goalEvent.timestamp);
 
-		// Get page views leading up to the goal
-		const leadingEvents = await posthog.api.query({
-			kind: "EventsQuery",
-			select: ["properties.$current_url", "timestamp"],
-			event: "$pageview",
-			where: [
-				`distinct_id = '${userId}'`,
-				`timestamp <= '${goalTime.toISOString()}'`,
-				`timestamp >= '${new Date(goalTime.getTime() - 60 * 60 * 1000).toISOString()}'`, // 1 hour window
-			],
-			orderBy: ["timestamp ASC"],
-			limit: 20,
-		});
+		// TODO: Implement PostHog API query when deployed
+		const leadingEvents = { results: [] as any[] };
 
 		// Build path string
 		const path = leadingEvents.results.map((e) => e.properties.$current_url).join(" → ");

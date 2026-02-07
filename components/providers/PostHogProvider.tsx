@@ -32,11 +32,9 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
 					// Capture element attributes for better context
 					capture_copied_text: true,
 					// CSS selectors to ignore
-					element_allowlist: ["button", "a", "input[type=submit]", "form"],
+					element_allowlist: ["button", "a", "input", "form"],
 					// Custom attribute for tracking
 					url_allowlist: undefined,
-					// Capture form field names (but not values for privacy)
-					capture_form_submit_name: true,
 				},
 				// Set super properties that apply to all events
 				persistence: "localStorage",
