@@ -650,18 +650,18 @@ POSTHOG_PERSONAL_API_KEY=phx_your_personal_api_key  # for server-side
   - Toggle visibility
 
 #### Integration Tests
-- [ ] **10.18** Create `__tests__/integration/auth-flow.test.ts`
+- [x] **10.18** Create `__tests__/integration/auth-flow.test.ts`
   - Full registration → login → dashboard flow
   - Session persistence
-- [ ] **10.19** Create `__tests__/integration/link-management.test.ts`
+- [x] **10.19** Create `__tests__/integration/link-management.test.ts`
   - CRUD operations with database
   - Reordering
   - Link limits
-- [ ] **10.20** Create `__tests__/integration/subscription.test.ts`
+- [x] **10.20** Create `__tests__/integration/subscription.test.ts`
   - Checkout flow with stripe-mock
   - Webhook processing
   - Feature unlocking
-- [ ] **10.21** Create `__tests__/helpers/test-db.ts` - test database utilities
+- [x] **10.21** Create `__tests__/helpers/test-db.ts` - test database utilities
 
 #### End-to-End Tests
 - [ ] **10.22** Create `__tests__/e2e/auth.spec.ts`
