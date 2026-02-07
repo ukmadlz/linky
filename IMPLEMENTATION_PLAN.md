@@ -636,7 +636,7 @@ POSTHOG_PERSONAL_API_KEY=phx_your_personal_api_key  # for server-side
 - [x] **10.14** Create `__tests__/unit/api/revalidate.test.ts`
   - ISR revalidation with secret
   - Invalid secret rejection
-- [ ] **10.15** Create `__tests__/unit/api/webhooks/stripe.test.ts`
+- [x] **10.15** Create `__tests__/unit/api/webhooks/stripe.test.ts`
   - checkout.session.completed handling
   - subscription.deleted handling
   - Invalid signature rejection
