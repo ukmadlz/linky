@@ -598,31 +598,31 @@ POSTHOG_PERSONAL_API_KEY=phx_your_personal_api_key  # for server-side
   - msw (Mock Service Worker)
   - @testcontainers/postgresql
 - [x] **10.2** Create `vitest.config.ts`
-- [ ] **10.3** Create `playwright.config.ts`
+- [x] **10.3** Create `playwright.config.ts`
 - [x] **10.4** Create `__tests__/setup.ts` - test setup file
 - [x] **10.5** Create `docker-compose.test.yml` with stripe-mock
 
 #### Mock Infrastructure
-- [ ] **10.6** Create `__tests__/mocks/handlers/stripe.ts`
+- [x] **10.6** Create `__tests__/mocks/handlers/stripe.ts`
   - Checkout session endpoints
   - Customer endpoints
   - Subscription endpoints
   - Billing portal endpoints
-- [ ] **10.7** Create `__tests__/mocks/factories/stripe-events.ts`
+- [x] **10.7** Create `__tests__/mocks/factories/stripe-events.ts`
   - `createStripeEvent()` factory
   - `signStripeWebhook()` signature generator
   - Pre-built fixtures (checkoutCompleted, subscriptionCanceled, etc.)
-- [ ] **10.8** Create `__tests__/mocks/handlers/posthog.ts`
+- [x] **10.8** Create `__tests__/mocks/handlers/posthog.ts`
   - Mock self-hosted PostHog endpoints
   - Capture endpoint with event storage
   - Decide endpoint for feature flags
   - `getCapturedEvents()` for assertions
-- [ ] **10.9** Create `__tests__/mocks/handlers/betterauth.ts`
+- [x] **10.9** Create `__tests__/mocks/handlers/betterauth.ts`
   - Register/login endpoints
   - Session management
   - `createMockUser()` and `createMockSession()` helpers
-- [ ] **10.10** Create `__tests__/mocks/server.ts` - MSW server setup
-- [ ] **10.11** Create `__tests__/mocks/vitest-mocks.ts` - SDK mocks
+- [x] **10.10** Create `__tests__/mocks/server.ts` - MSW server setup
+- [x] **10.11** Create `__tests__/mocks/vitest-mocks.ts` - SDK mocks
 
 #### Unit Tests
 - [x] **10.12** Create `__tests__/unit/api/register.test.ts` (API testing)
