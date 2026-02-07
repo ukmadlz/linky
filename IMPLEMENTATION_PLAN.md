@@ -377,7 +377,7 @@ The Ralph Loop completes when:
   - Create dashboard for user engagement
 
 #### Error Tracking (PostHog)
-- [ ] **6.25** Set up client-side error tracking
+- [x] **6.25** Set up client-side error tracking
   - Capture unhandled errors with window.onerror
   - Capture unhandled promise rejections
   - Track error stack traces and context
