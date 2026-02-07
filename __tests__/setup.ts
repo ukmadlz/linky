@@ -1,10 +1,26 @@
 import "@testing-library/jest-dom";
 import { cleanup } from "@testing-library/react";
-import { afterEach } from "vitest";
+import { afterEach, beforeAll, afterAll } from "vitest";
+import { setupMockServer, resetMockServer, closeMockServer } from "./mocks/server";
+import { clearCapturedEvents } from "./mocks/handlers/posthog";
+import { clearMockAuth } from "./mocks/handlers/betterauth";
 
-// Cleanup after each test
+// Setup MSW server
+beforeAll(() => {
+	setupMockServer();
+});
+
+// Reset handlers and clear captured data after each test
 afterEach(() => {
 	cleanup();
+	resetMockServer();
+	clearCapturedEvents();
+	clearMockAuth();
+});
+
+// Close server after all tests
+afterAll(() => {
+	closeMockServer();
 });
 
 // Mock environment variables
