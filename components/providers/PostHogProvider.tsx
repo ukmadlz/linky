@@ -5,6 +5,7 @@ import { PostHogProvider as PHProvider } from "posthog-js/react";
 import { useEffect } from "react";
 import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import { SessionTracker } from "@/components/analytics/SessionTracker";
+import { WebVitalsTracker } from "@/components/analytics/WebVitalsTracker";
 import { setupGlobalErrorHandlers } from "@/lib/posthog-error-tracking";
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
@@ -55,6 +56,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
 		<PHProvider client={posthog}>
 			<PageViewTracker />
 			<SessionTracker />
+			<WebVitalsTracker />
 			{children}
 		</PHProvider>
 	);
