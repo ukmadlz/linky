@@ -17,6 +17,8 @@ All core infrastructure components are open source and self-hosted.
 | Infrastructure | Docker + Docker Compose |
 | Static Generation | ISR with webhook-triggered rebuilds |
 | Testing | Vitest + React Testing Library + Playwright |
+| Accessibility Testing | @axe-core/playwright + axe-core (WCAG 2.1 AA) |
+| Performance Testing | Lighthouse CI + Core Web Vitals monitoring |
 | Observability | OpenTelemetry (Apache 2.0) → Jaeger (Apache 2.0) + Prometheus (Apache 2.0) + Grafana OSS (AGPL) |
 | Event Storage | ClickHouse (Apache 2.0) |
 
@@ -554,22 +556,73 @@ POSTHOG_PERSONAL_API_KEY=phx_your_personal_api_key  # for server-side
   - Pro features unlock
 - [ ] **10.26** Create `__tests__/e2e/fixtures/test-user.ts` - test data helpers
 
+#### Accessibility & Performance Testing
+- [ ] **10.27** Install accessibility testing dependencies
+  - @axe-core/playwright or @axe-core/react
+  - axe-core
+- [ ] **10.28** Create `__tests__/a11y/accessibility.spec.ts`
+  - Test all main pages for WCAG 2.1 AA compliance
+  - Check login/register forms for proper labels and ARIA
+  - Verify dashboard pages for keyboard navigation
+  - Test public link pages for screen reader compatibility
+  - Check color contrast ratios
+  - Verify focus indicators
+- [ ] **10.29** Create `__tests__/a11y/axe-config.ts`
+  - Configure axe-core rules
+  - Set up custom rules for project-specific needs
+  - Define accessibility violation thresholds
+- [ ] **10.30** Install Lighthouse CI dependencies
+  - @lhci/cli
+  - lighthouse
+- [ ] **10.31** Create `lighthouserc.json` configuration
+  - Define performance budgets (FCP < 1.5s, LCP < 2.5s, TTI < 3.5s)
+  - Set up accessibility score threshold (>= 90)
+  - Configure SEO and best practices checks
+  - Define desktop and mobile assertions
+- [ ] **10.32** Create `.github/workflows/lighthouse.yml`
+  - Run Lighthouse CI on PRs
+  - Test public link pages
+  - Test dashboard pages (authenticated)
+  - Upload reports as artifacts
+  - Comment performance metrics on PRs
+- [ ] **10.33** Create `__tests__/performance/lighthouse.test.ts`
+  - Local Lighthouse performance tests
+  - Test First Contentful Paint (FCP)
+  - Test Largest Contentful Paint (LCP)
+  - Test Time to Interactive (TTI)
+  - Test Cumulative Layout Shift (CLS)
+- [ ] **10.34** Add accessibility tests to E2E suite
+  - Integrate axe-core checks into existing Playwright tests
+  - Add keyboard navigation tests
+  - Add screen reader compatibility tests
+- [ ] **10.35** Create performance monitoring dashboard
+  - Set up Grafana dashboard for Core Web Vitals
+  - Track performance metrics over time
+  - Alert on performance regressions
+
 #### CI/CD Pipeline
-- [x] **10.27** Create `.github/workflows/test.yml`
+- [x] **10.36** Create `.github/workflows/test.yml`
   - Unit tests job
   - Lint job with ESLint and Prettier
   - Build job with Next.js
   - Docker build job
   - Security scan job
   - Coverage reporting to Codecov
-- [x] **10.28** Add npm scripts to package.json
+- [x] **10.37** Add npm scripts to package.json
   - `test`, `test:unit`, `test:watch`
+  - `test:a11y` - run accessibility tests
+  - `test:perf` - run performance tests
+  - `lighthouse` - run Lighthouse locally
 
 ### Validation
 
 - [x] `npm run test:unit` passes with 70-100% coverage
 - [ ] `npm run test:integration` passes with Testcontainers
 - [ ] `npm run test:e2e` passes across Chrome, Firefox, Safari
+- [ ] `npm run test:a11y` passes with no critical accessibility violations
+- [ ] `npm run test:perf` meets performance budgets
+- [ ] Lighthouse CI scores >= 90 for accessibility
+- [ ] Core Web Vitals within recommended thresholds (FCP < 1.5s, LCP < 2.5s, CLS < 0.1)
 - [x] CI pipeline runs on push and PR
 - [x] Coverage reports uploaded to Codecov
 - [x] API calls properly mocked in unit tests
@@ -610,6 +663,9 @@ POSTHOG_PERSONAL_API_KEY=phx_your_personal_api_key  # for server-side
 - [ ] Unit tests: 80%+ coverage
 - [ ] Integration tests: all passing
 - [ ] E2E tests: all passing across browsers
+- [ ] Accessibility tests: WCAG 2.1 AA compliant, no critical violations
+- [ ] Performance tests: Core Web Vitals within thresholds
+- [ ] Lighthouse scores: Accessibility >= 90, Performance >= 85
 - [ ] CI pipeline: green
 
 ---
