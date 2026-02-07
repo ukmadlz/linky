@@ -20,6 +20,11 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
 				},
 				capture_pageview: false, // We handle this manually with PageViewTracker
 				capture_pageleave: true,
+				// Privacy settings
+				mask_all_text: false,
+				mask_all_element_attributes: false,
+				ip: process.env.NEXT_PUBLIC_POSTHOG_DISABLE_IP_TRACKING !== "true",
+				property_denylist: ["$initial_referrer", "$initial_referring_domain"], // Optionally block referrer tracking
 				// Enable autocapture for automatic event tracking
 				autocapture: {
 					// Capture all clicks on buttons, links, and form submissions

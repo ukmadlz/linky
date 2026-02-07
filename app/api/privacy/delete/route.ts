@@ -1,0 +1,49 @@
+import { NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
+import { deleteUserData } from "@/lib/privacy";
+import { trackAPIError } from "@/lib/posthog-server-error-tracking";
+
+/**
+ * GDPR Data Deletion endpoint
+ * Allows users to permanently delete all their personal data
+ */
+export async function POST(request: Request) {
+	try {
+		const session = await auth.api.getSession({ headers: request.headers });
+
+		if (!session) {
+			return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+		}
+
+		const userId = session.user.id;
+
+		// Get confirmation from request body
+		const body = await request.json();
+		const { confirm } = body;
+
+		if (confirm !== "DELETE_MY_DATA") {
+			return NextResponse.json(
+				{ error: "Invalid confirmation. Send { confirm: 'DELETE_MY_DATA' }" },
+				{ status: 400 }
+			);
+		}
+
+		// Delete all user data
+		await deleteUserData(userId);
+
+		// Log out the user (delete session)
+		// Note: This depends on your auth setup
+		// For better-auth, you might need to call session.delete()
+
+		return NextResponse.json({
+			success: true,
+			message: "All your data has been permanently deleted",
+		});
+	} catch (error) {
+		await trackAPIError(error, request, {
+			operation: "data_deletion",
+		});
+		console.error("Data deletion failed:", error);
+		return NextResponse.json({ error: "Failed to delete data" }, { status: 500 });
+	}
+}
