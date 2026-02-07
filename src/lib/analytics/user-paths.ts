@@ -33,7 +33,7 @@ export function trackPageNavigation(
 	userId: string,
 	fromPage: string,
 	toPage: string,
-	duration: number,
+	duration: number
 ) {
 	posthog.capture({
 		distinctId: userId,
@@ -122,7 +122,9 @@ export async function getCommonUserPaths(limit = 10): Promise<UserPath[]> {
 /**
  * Identify drop-off points in user journeys
  */
-export async function identifyDropOffPoints(): Promise<Array<{ page: string; dropOffRate: number }>> {
+export async function identifyDropOffPoints(): Promise<
+	Array<{ page: string; dropOffRate: number }>
+> {
 	// Query page views and track where users exit
 	const pageViews = await posthog.api.query({
 		kind: "EventsQuery",
@@ -133,10 +135,7 @@ export async function identifyDropOffPoints(): Promise<Array<{ page: string; dro
 	});
 
 	// Build page visit and exit map
-	const pageStats = new Map<
-		string,
-		{ visits: number; exits: number; nextPages: Set<string> }
-	>();
+	const pageStats = new Map<string, { visits: number; exits: number; nextPages: Set<string> }>();
 
 	// Sort by user and timestamp
 	const sortedEvents = pageViews.results.sort((a, b) => {
@@ -282,7 +281,7 @@ export async function analyzeFeatureDiscovery(): Promise<
  * Identifies different paths users take to achieve the same goal
  */
 export async function analyzeJourneyVariations(
-	goal: string,
+	goal: string
 ): Promise<Array<{ variation: string; count: number }>> {
 	// Get all sessions that resulted in the goal
 	const goalEvents = await posthog.api.query({

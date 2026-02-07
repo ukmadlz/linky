@@ -13,6 +13,10 @@
 		"test": "vitest",
 		"test:unit": "vitest run --coverage",
 		"test:watch": "vitest watch",
+		"test:integration": "vitest run --config vitest.config.integration.ts",
+		"test:e2e": "playwright test",
+		"test:a11y": "playwright test __tests__/a11y",
+		"test:perf": "playwright test __tests__/performance",
 		"db:generate": "drizzle-kit generate",
 		"db:push": "drizzle-kit push",
 		"db:studio": "drizzle-kit studio"

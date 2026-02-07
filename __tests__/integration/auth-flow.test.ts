@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { clearDatabase, createTestUser, getTestUserByEmail } from "../helpers/test-db";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { POST as registerPOST } from "@/app/api/register/route";
+import { clearDatabase, createTestUser, getTestUserByEmail } from "../helpers/test-db";
 
 describe("Authentication Flow Integration", () => {
 	beforeEach(async () => {

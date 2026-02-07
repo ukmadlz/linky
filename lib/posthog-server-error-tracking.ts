@@ -1,5 +1,5 @@
-import { posthogServer } from "./posthog";
 import { headers } from "next/headers";
+import { posthogServer } from "./posthog";
 
 interface ErrorContext {
 	user_id?: string;

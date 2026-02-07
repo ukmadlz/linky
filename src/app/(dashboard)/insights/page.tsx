@@ -1,9 +1,9 @@
-import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { calculateExperimentResults } from "@/lib/analytics/ab-testing";
 import { getRetentionMetrics } from "@/lib/analytics/retention";
 import { getPathAnalysis } from "@/lib/analytics/user-paths";
-import { calculateExperimentResults } from "@/lib/analytics/ab-testing";
+import { auth } from "@/lib/auth";
 
 /**
  * Product Insights Dashboard (Admin/Internal Only)
@@ -149,9 +149,7 @@ export default async function InsightsDashboardPage() {
 							<div key={feature} className="border rounded-lg p-4">
 								<div className="font-medium capitalize">{feature.replace(/_/g, " ")}</div>
 								<div className="mt-2 space-y-1">
-									<div className="text-sm text-gray-600">
-										{stats.discovered} users discovered
-									</div>
+									<div className="text-sm text-gray-600">{stats.discovered} users discovered</div>
 									<div className="text-sm text-gray-600">
 										Avg. {stats.time_to_discover.toFixed(1)} days to discover
 									</div>

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { exportUserData } from "@/lib/privacy";
 import { trackAPIError } from "@/lib/posthog-server-error-tracking";
+import { exportUserData } from "@/lib/privacy";
 
 /**
  * GDPR Data Export endpoint

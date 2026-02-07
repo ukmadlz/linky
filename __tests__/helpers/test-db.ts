@@ -1,7 +1,7 @@
-import { db } from "@/lib/db";
-import { users, links, subscriptions, linkClicks } from "@/lib/db/schema";
-import { sql } from "drizzle-orm";
 import crypto from "node:crypto";
+import { sql } from "drizzle-orm";
+import { db } from "@/lib/db";
+import { linkClicks, links, subscriptions, users } from "@/lib/db/schema";
 
 /**
  * Test database utilities for integration tests

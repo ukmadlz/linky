@@ -119,7 +119,7 @@ export function trackConversion(
 	userId: string,
 	variant: string,
 	metricName: string,
-	value?: number,
+	value?: number
 ) {
 	posthog.capture({
 		distinctId: userId,
@@ -138,7 +138,7 @@ export function trackConversion(
  * Calculate experiment results and statistical significance
  */
 export async function calculateExperimentResults(
-	experimentKey: string,
+	experimentKey: string
 ): Promise<ExperimentResults> {
 	// Get all exposures
 	const exposures = await posthog.api.query({
@@ -245,7 +245,7 @@ export async function calculateExperimentResults(
 function calculateConfidenceInterval(
 	conversions: number,
 	trials: number,
-	confidenceLevel: number,
+	confidenceLevel: number
 ): [number, number] {
 	if (trials === 0) return [0, 0];
 
@@ -299,9 +299,7 @@ function determineWinner(variants: VariantResult[]): {
 	const n2 = second.exposures;
 
 	const pooledProportion = (best.conversions + second.conversions) / (n1 + n2);
-	const standardError = Math.sqrt(
-		pooledProportion * (1 - pooledProportion) * (1 / n1 + 1 / n2),
-	);
+	const standardError = Math.sqrt(pooledProportion * (1 - pooledProportion) * (1 / n1 + 1 / n2));
 
 	const zScore = (p1 - p2) / standardError;
 	const pValue = 2 * (1 - normalCDF(Math.abs(zScore))); // Two-tailed test
@@ -327,10 +325,7 @@ function normalCDF(x: number): number {
 	const t = 1 / (1 + 0.2316419 * Math.abs(x));
 	const d = 0.3989423 * Math.exp((-x * x) / 2);
 	const probability =
-		d *
-		t *
-		(0.3193815 +
-			t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+		d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
 
 	return x > 0 ? 1 - probability : probability;
 }

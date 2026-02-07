@@ -1,6 +1,6 @@
-import { test, expect } from "@playwright/test";
-import lighthouse from "lighthouse";
+import { expect, test } from "@playwright/test";
 import * as chromeLauncher from "chrome-launcher";
+import lighthouse from "lighthouse";
 
 /**
  * Local Lighthouse performance tests
@@ -147,7 +147,7 @@ test.describe("Lighthouse Performance Tests", () => {
 			if (unusedJS.details?.items) {
 				const totalWaste = unusedJS.details.items.reduce(
 					(sum: number, item: { wastedBytes: number }) => sum + item.wastedBytes,
-					0,
+					0
 				);
 
 				// Less than 100KB of unused JS
@@ -380,7 +380,7 @@ test.describe("Lighthouse Performance Tests", () => {
 			if (thirdParty.details?.items) {
 				const totalThirdPartySize = thirdParty.details.items.reduce(
 					(sum: number, item: { transferSize: number }) => sum + item.transferSize,
-					0,
+					0
 				);
 
 				// Less than 500KB of third-party code

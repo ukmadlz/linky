@@ -1,5 +1,5 @@
-import { http, HttpResponse } from "msw";
 import crypto from "node:crypto";
+import { HttpResponse, http } from "msw";
 
 /**
  * Mock BetterAuth API handlers for testing

@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { canAddLink, createLink } from "@/lib/db/queries";
-import { trackAPIError } from "@/lib/posthog-server-error-tracking";
-import { trackExternalAPIError } from "@/lib/posthog-server-error-tracking";
+import { trackAPIError, trackExternalAPIError } from "@/lib/posthog-server-error-tracking";
 
 export async function POST(request: Request) {
 	try {

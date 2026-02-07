@@ -1,9 +1,9 @@
 import "@testing-library/jest-dom";
 import { cleanup } from "@testing-library/react";
-import { afterEach, beforeAll, afterAll } from "vitest";
-import { setupMockServer, resetMockServer, closeMockServer } from "./mocks/server";
-import { clearCapturedEvents } from "./mocks/handlers/posthog";
+import { afterAll, afterEach, beforeAll } from "vitest";
 import { clearMockAuth } from "./mocks/handlers/betterauth";
+import { clearCapturedEvents } from "./mocks/handlers/posthog";
+import { closeMockServer, resetMockServer, setupMockServer } from "./mocks/server";
 
 // Setup MSW server
 beforeAll(() => {

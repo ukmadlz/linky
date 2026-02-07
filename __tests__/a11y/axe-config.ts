@@ -30,7 +30,7 @@ export const axeConfig: RunOptions = {
 		"image-alt": { enabled: true },
 
 		// Ensure form inputs have labels
-		"label": { enabled: true },
+		label: { enabled: true },
 
 		// Ensure valid ARIA attributes
 		"aria-valid-attr": { enabled: true },
@@ -55,11 +55,11 @@ export const axeConfig: RunOptions = {
 		"landmark-unique": { enabled: true },
 
 		// Ensure regions have landmarks
-		"region": { enabled: true },
+		region: { enabled: true },
 
 		// Disable rules that might be too strict for our use case
 		"landmark-one-main": { enabled: false }, // We might have pages without main landmark
-		"bypass": { enabled: false }, // Skip to main content link might not be needed for simple layouts
+		bypass: { enabled: false }, // Skip to main content link might not be needed for simple layouts
 	},
 
 	// Set result types to include
@@ -81,7 +81,7 @@ export const strictAxeConfig: RunOptions = {
 	rules: {
 		...axeConfig.rules,
 		"landmark-one-main": { enabled: true },
-		"bypass": { enabled: true },
+		bypass: { enabled: true },
 		"focus-order-semantics": { enabled: true },
 	},
 };
@@ -213,12 +213,14 @@ export function getAxeConfigForPage(url: string): RunOptions {
 /**
  * Format violation results for readable output
  */
-export function formatViolations(violations: Array<{
-	id: string;
-	impact: string;
-	description: string;
-	nodes: Array<{ html: string; target: string[] }>;
-}>) {
+export function formatViolations(
+	violations: Array<{
+		id: string;
+		impact: string;
+		description: string;
+		nodes: Array<{ html: string; target: string[] }>;
+	}>
+) {
 	return violations.map((violation) => ({
 		rule: violation.id,
 		impact: violation.impact,

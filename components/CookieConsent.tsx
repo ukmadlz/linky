@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { usePostHog } from "posthog-js/react";
+import { useEffect, useState } from "react";
 
 /**
  * Cookie consent banner for GDPR compliance

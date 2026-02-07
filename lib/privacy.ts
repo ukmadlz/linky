@@ -1,6 +1,6 @@
-import { db } from "./db";
-import { users, links, linkClicks, subscriptions } from "./db/schema";
 import { eq } from "drizzle-orm";
+import { db } from "./db";
+import { linkClicks, links, subscriptions, users } from "./db/schema";
 
 /**
  * Privacy and GDPR compliance utilities

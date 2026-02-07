@@ -237,7 +237,7 @@ export async function createGrafanaDashboard(dashboardConfig: {
  */
 export async function exportToS3(
 	bucketName: string,
-	prefix: string,
+	prefix: string
 ): Promise<{ exported: number; bytes: number }> {
 	// This would require AWS SDK and proper configuration
 	// Placeholder for implementation

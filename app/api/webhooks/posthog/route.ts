@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { trackAPIError } from "@/lib/posthog-server-error-tracking";
 import {
 	sendCriticalErrorAlert,
 	sendErrorSpikeAlert,
 	sendNewErrorAlert,
 } from "@/lib/notifications";
+import { trackAPIError } from "@/lib/posthog-server-error-tracking";
 
 /**
  * PostHog webhook endpoint for receiving alerts

@@ -6,8 +6,8 @@ import {
 	getUserByStripeCustomerId,
 	updateUser,
 } from "@/lib/db/queries";
-import { stripe } from "@/lib/stripe";
 import { trackAPIError, trackExternalAPIError } from "@/lib/posthog-server-error-tracking";
+import { stripe } from "@/lib/stripe";
 
 // Extended type for Stripe Subscription with period fields
 type SubscriptionWithPeriod = Stripe.Subscription & {

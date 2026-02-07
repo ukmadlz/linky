@@ -1,7 +1,7 @@
 import { setupServer } from "msw/node";
-import { stripeHandlers } from "./handlers/stripe";
-import { posthogHandlers } from "./handlers/posthog";
 import { betterAuthHandlers } from "./handlers/betterauth";
+import { posthogHandlers } from "./handlers/posthog";
+import { stripeHandlers } from "./handlers/stripe";
 
 /**
  * Mock Service Worker server for testing

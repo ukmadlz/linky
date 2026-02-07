@@ -1,14 +1,14 @@
-import { describe, it, expect, beforeEach } from "vitest";
-import { POST } from "@/app/api/webhooks/stripe/route";
+import { eq } from "drizzle-orm";
+import { beforeEach, describe, expect, it } from "vitest";
 import {
 	checkoutSessionCompleted,
-	subscriptionDeleted,
 	signStripeWebhook,
+	subscriptionDeleted,
 } from "@/__tests__/mocks/factories/stripe-events";
 import { createMockUser } from "@/__tests__/mocks/handlers/betterauth";
+import { POST } from "@/app/api/webhooks/stripe/route";
 import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
 
 describe("Stripe Webhook Handler", () => {
 	const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || "whsec_mock";

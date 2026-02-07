@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { deleteUserData } from "@/lib/privacy";
 import { trackAPIError } from "@/lib/posthog-server-error-tracking";
+import { deleteUserData } from "@/lib/privacy";
 
 /**
  * GDPR Data Deletion endpoint

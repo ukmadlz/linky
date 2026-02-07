@@ -68,10 +68,7 @@ async function setupFunnels() {
 	}
 
 	// Load funnel configuration
-	const configPath = path.join(
-		process.cwd(),
-		"docker/posthog/funnels/user-journeys.json",
-	);
+	const configPath = path.join(process.cwd(), "docker/posthog/funnels/user-journeys.json");
 	const config: FunnelsConfig = JSON.parse(fs.readFileSync(configPath, "utf-8"));
 
 	console.log(`Setting up ${config.funnels.length} funnels in PostHog...`);

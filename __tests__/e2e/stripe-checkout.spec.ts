@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test.describe("Stripe Checkout E2E", () => {
 	test.beforeEach(async ({ page }) => {
@@ -82,7 +82,7 @@ test.describe("Stripe Checkout E2E", () => {
 
 			// Should show success message
 			await expect(
-				page.locator("text=/successfully upgraded|welcome to pro|upgrade complete/i"),
+				page.locator("text=/successfully upgraded|welcome to pro|upgrade complete/i")
 			).toBeVisible();
 		});
 
@@ -115,7 +115,7 @@ test.describe("Stripe Checkout E2E", () => {
 
 			// Should show cancellation message
 			await expect(
-				page.locator("text=/cancelled|upgrade cancelled|no changes made/i"),
+				page.locator("text=/cancelled|upgrade cancelled|no changes made/i")
 			).toBeVisible();
 		});
 
