@@ -5,6 +5,7 @@ import { PostHogProvider as PHProvider } from "posthog-js/react";
 import { useEffect } from "react";
 import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import { SessionTracker } from "@/components/analytics/SessionTracker";
+import { setupGlobalErrorHandlers } from "@/lib/posthog-error-tracking";
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
 	useEffect(() => {
@@ -44,6 +45,9 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
 				app_version: process.env.NEXT_PUBLIC_APP_VERSION || "1.0.0",
 				environment: process.env.NODE_ENV,
 			});
+
+			// Set up global error handlers
+			setupGlobalErrorHandlers();
 		}
 	}, []);
 
