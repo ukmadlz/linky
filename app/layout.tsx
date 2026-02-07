@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import { PostHogProvider } from "@/components/providers/PostHogProvider";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 export const metadata: Metadata = {
 	title: "Linky - Self-Hosted Link in Bio",
@@ -16,9 +17,11 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body>
-				<PostHogProvider>
-					<AuthProvider>{children}</AuthProvider>
-				</PostHogProvider>
+				<ErrorBoundary>
+					<PostHogProvider>
+						<AuthProvider>{children}</AuthProvider>
+					</PostHogProvider>
+				</ErrorBoundary>
 			</body>
 		</html>
 	);
