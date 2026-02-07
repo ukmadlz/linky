@@ -3,6 +3,7 @@ import "./globals.css";
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import { PostHogProvider } from "@/components/providers/PostHogProvider";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { CookieConsent } from "@/components/CookieConsent";
 
 export const metadata: Metadata = {
 	title: "Linky - Self-Hosted Link in Bio",
@@ -20,6 +21,7 @@ export default function RootLayout({
 				<ErrorBoundary>
 					<PostHogProvider>
 						<AuthProvider>{children}</AuthProvider>
+						<CookieConsent />
 					</PostHogProvider>
 				</ErrorBoundary>
 			</body>
