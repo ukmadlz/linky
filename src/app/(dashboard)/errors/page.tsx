@@ -1,7 +1,6 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
-import { posthog } from "@/lib/posthog-server";
 
 /**
  * Error Monitoring Dashboard (Admin/Internal Only)
@@ -125,7 +124,8 @@ export default async function ErrorMonitoringPage() {
 			<div className="bg-white rounded-lg shadow p-6">
 				<h2 className="text-xl font-semibold mb-4">Recent Errors</h2>
 				<div className="space-y-4">
-					{errorData?.recentErrors.slice(0, 20).map((error, index) => (
+					{/* biome-ignore lint/suspicious/noExplicitAny: Error type from PostHog API is complex */}
+					{errorData?.recentErrors.slice(0, 20).map((error: any, index: number) => (
 						<div key={index} className="border-l-4 border-red-500 pl-4 py-2">
 							<div className="flex justify-between items-start">
 								<div className="flex-1">
@@ -147,21 +147,61 @@ export default async function ErrorMonitoringPage() {
 }
 
 async function getErrorMetrics() {
-	// Query PostHog for error events from last 24 hours
-	const errors = await posthog.api.query({
-		kind: "EventsQuery",
-		select: [
-			"distinct_id",
-			"properties.error_message",
-			"properties.error_type",
-			"properties.error_stack",
-			"properties.$current_url",
-			"timestamp",
+	// TODO: Implement real PostHog API queries when PostHog is deployed
+	// For now, return mock data for dashboard UI
+	return getMockErrorMetrics();
+}
+
+function getMockErrorMetrics() {
+	return {
+		totalErrors: 42,
+		errorRate: 0.0023,
+		affectedUsers: 8,
+		uniqueErrors: 12,
+		topErrors: [
+			{ message: "TypeError: Cannot read property 'id' of undefined", count: 15, percentage: 35.7 },
+			{ message: "Network request failed", count: 10, percentage: 23.8 },
+			{ message: "Invalid form submission", count: 8, percentage: 19.0 },
+			{ message: "Authentication token expired", count: 5, percentage: 11.9 },
+			{ message: "Database connection timeout", count: 4, percentage: 9.5 },
 		],
-		event: "error_captured",
-		after: "-24h",
-		limit: 1000,
-	});
+		errorsByType: [
+			{ type: "TypeError", count: 18, percentage: 42.9 },
+			{ type: "NetworkError", count: 12, percentage: 28.6 },
+			{ type: "ValidationError", count: 8, percentage: 19.0 },
+			{ type: "AuthError", count: 4, percentage: 9.5 },
+		],
+		errorsByPage: [
+			{ page: "/dashboard", count: 15, percentage: 35.7 },
+			{ page: "/login", count: 12, percentage: 28.6 },
+			{ page: "/settings", count: 8, percentage: 19.0 },
+			{ page: "/links", count: 7, percentage: 16.7 },
+		],
+		recentErrors: [
+			{
+				message: "TypeError: Cannot read property 'id' of undefined",
+				stack: "at handleSubmit (dashboard.tsx:45:23)",
+				page: "/dashboard",
+				userId: "user_123",
+				timestamp: new Date().toISOString(),
+			},
+			{
+				message: "Network request failed",
+				stack: "at fetch (api-client.ts:12:15)",
+				page: "/links",
+				userId: "user_456",
+				timestamp: new Date(Date.now() - 3600000).toISOString(),
+			},
+		],
+	};
+}
+
+async function _getErrorMetricsFromPostHog() {
+	// REFERENCE IMPLEMENTATION - Not currently used
+	// This shows how to query PostHog when it's deployed
+	const errors = {
+		results: [] as any[],
+	};
 
 	// Calculate metrics
 	const totalErrors = errors.results.length;
@@ -183,13 +223,8 @@ async function getErrorMetrics() {
 	}
 
 	// Get total page views for error rate
-	const pageViews = await posthog.api.query({
-		kind: "EventsQuery",
-		select: ["distinct_id"],
-		event: "$pageview",
-		after: "-24h",
-		limit: 10000,
-	});
+	// const pageViews = await posthog.api.query({ ... });
+	const pageViews = { results: [] as any[] };
 
 	const errorRate = pageViews.results.length > 0 ? totalErrors / pageViews.results.length : 0;
 

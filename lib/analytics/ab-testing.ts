@@ -54,27 +54,9 @@ export interface VariantResult {
  * Create a new A/B test experiment
  */
 export async function createExperiment(experiment: Experiment): Promise<void> {
-	// Create feature flag in PostHog
-	await posthog.api.createFeatureFlag({
-		key: experiment.key,
-		name: experiment.name,
-		filters: {
-			groups: [
-				{
-					properties: [],
-					rollout_percentage: 100,
-				},
-			],
-			multivariate: {
-				variants: experiment.variants.map((v) => ({
-					key: v.key,
-					name: v.name,
-					rollout_percentage: v.rolloutPercentage,
-				})),
-			},
-		},
-		active: experiment.status === "running",
-	});
+	// TODO: Implement PostHog API calls when deployed
+	// Create feature flag in PostHog via HTTP API
+	// await fetch(`${posthogHost}/api/feature_flags`, {...});
 
 	// Track experiment creation
 	posthog.capture({
@@ -140,25 +122,10 @@ export function trackConversion(
 export async function calculateExperimentResults(
 	experimentKey: string
 ): Promise<ExperimentResults> {
-	// Get all exposures
-	const exposures = await posthog.api.query({
-		kind: "EventsQuery",
-		select: ["distinct_id", "properties.$feature_flag_response"],
-		event: "$feature_flag_called",
-		where: [`properties.$feature_flag = '${experimentKey}'`],
-		after: "-30d",
-		limit: 10000,
-	});
-
-	// Get all conversions
-	const conversions = await posthog.api.query({
-		kind: "EventsQuery",
-		select: ["distinct_id", "properties.variant", "properties.metric_value"],
-		event: "experiment_conversion",
-		where: [`properties.experiment_key = '${experimentKey}'`],
-		after: "-30d",
-		limit: 10000,
-	});
+	// TODO: Implement PostHog API queries when deployed
+	// For now, return mock data
+	const exposures = { results: [] as any[] };
+	const conversions = { results: [] as any[] };
 
 	// Group by variant
 	const variantStats = new Map<
@@ -334,10 +301,9 @@ function normalCDF(x: number): number {
  * Stop an experiment
  */
 export async function stopExperiment(experimentKey: string): Promise<void> {
+	// TODO: Implement PostHog API call to deactivate feature flag
 	// Deactivate feature flag
-	await posthog.api.updateFeatureFlag(experimentKey, {
-		active: false,
-	});
+	// await fetch(`${posthogHost}/api/feature_flags/${experimentKey}`, {...});
 
 	posthog.capture({
 		distinctId: "system",
@@ -353,18 +319,9 @@ export async function stopExperiment(experimentKey: string): Promise<void> {
  * Roll out winning variant to 100%
  */
 export async function rolloutWinner(experimentKey: string, winnerKey: string): Promise<void> {
+	// TODO: Implement PostHog API call to update feature flag
 	// Update feature flag to return winner for all users
-	await posthog.api.updateFeatureFlag(experimentKey, {
-		filters: {
-			groups: [
-				{
-					properties: [],
-					rollout_percentage: 100,
-					variant: winnerKey,
-				},
-			],
-		},
-	});
+	// await fetch(`${posthogHost}/api/feature_flags/${experimentKey}`, {...});
 
 	posthog.capture({
 		distinctId: "system",

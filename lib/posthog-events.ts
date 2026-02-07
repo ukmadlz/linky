@@ -65,7 +65,7 @@ export function trackLinkUpdated(data: {
 
 	posthog.capture("link_updated", {
 		link_id: data.linkId,
-		changed_fields: changedFields,
+		changed_fields: data.changedFields,
 		has_icon: data.hasIcon,
 	});
 }
@@ -78,7 +78,7 @@ export function trackLinkDeleted(data: { linkId: string; linkAge: number; clickC
 
 	posthog.capture("link_deleted", {
 		link_id: data.linkId,
-		link_age_days: linkAge,
+		link_age_days: data.linkAge,
 		total_clicks: data.clickCount,
 	});
 }
