@@ -1,5 +1,5 @@
-import { exportPrometheusMetrics } from "@/lib/integrations/monitoring";
 import { NextResponse } from "next/server";
+import { exportPrometheusMetrics } from "@/lib/integrations/monitoring";
 
 /**
  * Prometheus metrics endpoint

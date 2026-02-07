@@ -137,7 +137,7 @@ async function deleteCohort(cohortId: string) {
 			headers: {
 				Authorization: `Bearer ${POSTHOG_API_KEY}`,
 			},
-		},
+		}
 	);
 
 	if (!response.ok) {

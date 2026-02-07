@@ -3,10 +3,10 @@
  * Tracks WAU, MAU, retention curves, and stickiness metrics
  */
 
-import { posthog } from "@/lib/posthog-server";
+import { eq, gte, lte, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
-import { sql, gte, lte, eq } from "drizzle-orm";
+import { posthog } from "@/lib/posthog-server";
 
 export interface RetentionMetrics {
 	wau: number; // Weekly Active Users
@@ -167,7 +167,7 @@ export async function calculateRetentionCurve(): Promise<RetentionCurveData> {
 
 	for (const user of registeredUsers) {
 		const daysSinceRegistration = Math.floor(
-			(Date.now() - new Date(user.createdAt).getTime()) / (1000 * 60 * 60 * 24),
+			(Date.now() - new Date(user.createdAt).getTime()) / (1000 * 60 * 60 * 24)
 		);
 
 		// Check if user was active on each retention day
@@ -219,7 +219,7 @@ export async function calculateRetentionCurve(): Promise<RetentionCurveData> {
 async function checkUserActiveOnDay(
 	userId: string,
 	registrationDate: Date,
-	dayOffset: number,
+	dayOffset: number
 ): Promise<boolean> {
 	const targetDate = new Date(registrationDate);
 	targetDate.setDate(targetDate.getDate() + dayOffset);
@@ -245,7 +245,7 @@ async function checkUserActiveOnDay(
  * Groups users by registration week/month and tracks retention
  */
 export async function calculateCohortRetention(
-	cohortType: "weekly" | "monthly" = "weekly",
+	cohortType: "weekly" | "monthly" = "weekly"
 ): Promise<CohortRetention[]> {
 	const cohorts: CohortRetention[] = [];
 

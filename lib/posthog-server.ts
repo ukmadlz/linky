@@ -1,5 +1,8 @@
 import { posthogServer } from "./posthog";
 
+// Re-export as posthog for convenience
+export const posthog = posthogServer;
+
 export async function trackDashboardAction(
 	userId: string,
 	action: string,

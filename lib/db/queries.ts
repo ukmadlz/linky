@@ -1,4 +1,5 @@
 import { and, desc, eq, sql } from "drizzle-orm";
+import { withDatabaseErrorTracking } from "./db-error-handler";
 import { db } from "./index";
 import {
 	type Link,
@@ -11,7 +12,6 @@ import {
 	type User,
 	users,
 } from "./schema";
-import { withDatabaseErrorTracking } from "./db-error-handler";
 
 // User queries
 export async function getUserByEmail(email: string) {

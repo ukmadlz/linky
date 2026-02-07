@@ -1,5 +1,5 @@
-import { posthogServer } from "./posthog";
 import { sendErrorSpikeAlert } from "./notifications";
+import { posthogServer } from "./posthog";
 
 interface ErrorRateConfig {
 	timeWindowMinutes: number;

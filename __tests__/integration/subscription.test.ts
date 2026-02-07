@@ -1,19 +1,19 @@
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { eq } from "drizzle-orm";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { POST as stripeWebhookPOST } from "@/app/api/webhooks/stripe/route";
+import { db } from "@/lib/db";
+import { subscriptions, users } from "@/lib/db/schema";
 import {
 	clearDatabase,
-	createTestUser,
-	createTestSubscription,
 	countSubscriptions,
+	createTestSubscription,
+	createTestUser,
 } from "../helpers/test-db";
-import { POST as stripeWebhookPOST } from "@/app/api/webhooks/stripe/route";
 import {
 	checkoutSessionCompleted,
-	subscriptionDeleted,
 	signStripeWebhook,
+	subscriptionDeleted,
 } from "../mocks/factories/stripe-events";
-import { db } from "@/lib/db";
-import { users, subscriptions } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
 
 describe("Subscription Integration", () => {
 	const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || "whsec_mock";

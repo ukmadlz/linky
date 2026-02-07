@@ -1,5 +1,5 @@
-import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { expect, test } from "@playwright/test";
 
 test.describe("Accessibility Tests - WCAG 2.1 AA", () => {
 	test.describe("Public Pages", () => {
@@ -182,9 +182,7 @@ test.describe("Accessibility Tests - WCAG 2.1 AA", () => {
 			const outline = await focusedElement.evaluate((el) => {
 				const styles = window.getComputedStyle(el);
 				return (
-					styles.outline !== "none" ||
-					styles.outlineWidth !== "0px" ||
-					styles.boxShadow !== "none"
+					styles.outline !== "none" || styles.outlineWidth !== "0px" || styles.boxShadow !== "none"
 				);
 			});
 
@@ -248,7 +246,7 @@ test.describe("Accessibility Tests - WCAG 2.1 AA", () => {
 
 			// Filter for color contrast violations
 			const contrastViolations = accessibilityScanResults.violations.filter((v) =>
-				v.id.includes("color-contrast"),
+				v.id.includes("color-contrast")
 			);
 
 			expect(contrastViolations).toEqual([]);
@@ -265,7 +263,7 @@ test.describe("Accessibility Tests - WCAG 2.1 AA", () => {
 				.analyze();
 
 			const contrastViolations = accessibilityScanResults.violations.filter((v) =>
-				v.id.includes("color-contrast"),
+				v.id.includes("color-contrast")
 			);
 
 			expect(contrastViolations).toEqual([]);
@@ -308,7 +306,7 @@ test.describe("Accessibility Tests - WCAG 2.1 AA", () => {
 			// Check headings are in logical order
 			const headings = await page.locator("h1, h2, h3, h4, h5, h6").all();
 			const levels = await Promise.all(
-				headings.map((h) => h.evaluate((el) => Number.parseInt(el.tagName[1]))),
+				headings.map((h) => h.evaluate((el) => Number.parseInt(el.tagName[1])))
 			);
 
 			// First heading should be h1

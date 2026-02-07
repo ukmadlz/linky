@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSession } from "@/lib/auth-client";
 import { usePostHogIdentify } from "@/hooks/usePostHogIdentify";
+import { useSession } from "@/lib/auth-client";
 import type { User } from "@/lib/db/schema";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {

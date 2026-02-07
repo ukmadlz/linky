@@ -1,5 +1,5 @@
-import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { expect, test } from "@playwright/test";
 
 /**
  * Integrated accessibility testing for E2E flows
@@ -45,9 +45,7 @@ test.describe("Accessibility Integration Tests", () => {
 
 			// Verify accessibility after form submission
 			await page.waitForTimeout(1000);
-			const afterResults = await new AxeBuilder({ page })
-				.withTags(["wcag2a", "wcag2aa"])
-				.analyze();
+			const afterResults = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
 			expect(afterResults.violations).toEqual([]);
 		});
 
@@ -104,7 +102,9 @@ test.describe("Accessibility Integration Tests", () => {
 
 			// Check if action triggered (e.g., quick add modal)
 			await page.waitForTimeout(500);
-			const modalOrAction = await page.locator('[role="dialog"], .modal, [data-testid="quick-add"]').isVisible();
+			const modalOrAction = await page
+				.locator('[role="dialog"], .modal, [data-testid="quick-add"]')
+				.isVisible();
 
 			// If shortcuts are implemented, they should work
 			if (modalOrAction) {
@@ -137,9 +137,7 @@ test.describe("Accessibility Integration Tests", () => {
 		test("should have proper ARIA labels on login form", async ({ page }) => {
 			await page.goto("/login");
 
-			const results = await new AxeBuilder({ page })
-				.withTags(["wcag2a", "wcag2aa"])
-				.analyze();
+			const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
 			expect(results.violations).toEqual([]);
 
 			// Check form has proper role
@@ -172,15 +170,15 @@ test.describe("Accessibility Integration Tests", () => {
 			await page.waitForTimeout(500);
 
 			// Check for ARIA live region or role="alert"
-			const errorRegion = page.locator('[role="alert"], [aria-live="polite"], [aria-live="assertive"]');
+			const errorRegion = page.locator(
+				'[role="alert"], [aria-live="polite"], [aria-live="assertive"]'
+			);
 			if ((await errorRegion.count()) > 0) {
 				await expect(errorRegion.first()).toBeVisible();
 			}
 
 			// Check accessibility after error display
-			const results = await new AxeBuilder({ page })
-				.withTags(["wcag2a", "wcag2aa"])
-				.analyze();
+			const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
 			expect(results.violations).toEqual([]);
 		});
 
@@ -191,9 +189,7 @@ test.describe("Accessibility Integration Tests", () => {
 			await page.click('button[type="submit"]');
 
 			// Check dashboard accessibility
-			const results = await new AxeBuilder({ page })
-				.withTags(["wcag2a", "wcag2aa"])
-				.analyze();
+			const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
 			expect(results.violations).toEqual([]);
 
 			// Check links have descriptive text
@@ -253,9 +249,7 @@ test.describe("Accessibility Integration Tests", () => {
 			await page.waitForTimeout(500);
 
 			// Check accessibility with error messages
-			const errorResults = await new AxeBuilder({ page })
-				.withTags(["wcag2a", "wcag2aa"])
-				.analyze();
+			const errorResults = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
 			expect(errorResults.violations).toEqual([]);
 
 			// Errors should be associated with inputs via aria-describedby
@@ -285,9 +279,7 @@ test.describe("Accessibility Integration Tests", () => {
 			expect(count).toBeGreaterThan(0);
 
 			// Check accessibility
-			const results = await new AxeBuilder({ page })
-				.withTags(["wcag2a", "wcag2aa"])
-				.analyze();
+			const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
 			expect(results.violations).toEqual([]);
 		});
 	});
@@ -371,9 +363,7 @@ test.describe("Accessibility Integration Tests", () => {
 				}
 
 				// Check accessibility after dynamic update
-				const results = await new AxeBuilder({ page })
-					.withTags(["wcag2a", "wcag2aa"])
-					.analyze();
+				const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
 				expect(results.violations).toEqual([]);
 			}
 		});
@@ -386,9 +376,7 @@ test.describe("Accessibility Integration Tests", () => {
 			await page.goto("/");
 
 			// Check mobile accessibility
-			const results = await new AxeBuilder({ page })
-				.withTags(["wcag2a", "wcag2aa"])
-				.analyze();
+			const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
 			expect(results.violations).toEqual([]);
 		});
 
@@ -396,9 +384,7 @@ test.describe("Accessibility Integration Tests", () => {
 			await page.goto("/testuser");
 
 			// Check accessibility
-			const results = await new AxeBuilder({ page })
-				.withTags(["wcag2a", "wcag2aa"])
-				.analyze();
+			const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
 			expect(results.violations).toEqual([]);
 
 			// Check touch target sizes
@@ -424,14 +410,10 @@ test.describe("Accessibility Integration Tests", () => {
 		test("should have sufficient contrast on public page", async ({ page }) => {
 			await page.goto("/testuser");
 
-			const results = await new AxeBuilder({ page })
-				.withTags(["wcag2aa"])
-				.analyze();
+			const results = await new AxeBuilder({ page }).withTags(["wcag2aa"]).analyze();
 
 			// Filter for color contrast violations
-			const contrastViolations = results.violations.filter((v) =>
-				v.id.includes("color-contrast"),
-			);
+			const contrastViolations = results.violations.filter((v) => v.id.includes("color-contrast"));
 
 			expect(contrastViolations).toEqual([]);
 		});
@@ -448,13 +430,9 @@ test.describe("Accessibility Integration Tests", () => {
 
 			await page.reload();
 
-			const results = await new AxeBuilder({ page })
-				.withTags(["wcag2aa"])
-				.analyze();
+			const results = await new AxeBuilder({ page }).withTags(["wcag2aa"]).analyze();
 
-			const contrastViolations = results.violations.filter((v) =>
-				v.id.includes("color-contrast"),
-			);
+			const contrastViolations = results.violations.filter((v) => v.id.includes("color-contrast"));
 
 			expect(contrastViolations).toEqual([]);
 		});
