@@ -12,7 +12,7 @@ All core infrastructure components are open source and self-hosted.
 | Auth | BetterAuth (MIT) |
 | Database | PostgreSQL 16 + Drizzle ORM |
 | Cache | ValKey 8 (BSD-3, Redis fork) |
-| Analytics | PostHog (self-hosted, MIT) |
+| Analytics | PostHog (self-hosted, MIT) - Web Analytics, Product Analytics, Error Tracking |
 | Payments | Stripe (Free + Pro tiers) |
 | Infrastructure | Docker + Docker Compose |
 | Static Generation | ISR with webhook-triggered rebuilds |
@@ -309,6 +309,122 @@ The Ralph Loop completes when:
   - Geographic distribution
 - [x] **6.13** Configure feature flags in PostHog for Pro features
 
+#### Web Analytics (PostHog)
+- [ ] **6.14** Implement comprehensive page view tracking
+  - Track all page navigations with Next.js router events
+  - Capture page metadata (title, path, referrer)
+  - Track UTM parameters for marketing attribution
+  - Monitor page load times and navigation timing
+- [ ] **6.15** Implement session tracking
+  - Track session duration and engagement
+  - Monitor active session count
+  - Track session sources (organic, direct, referral, social)
+  - Identify returning vs new users
+- [ ] **6.16** Set up user identification and properties
+  - Identify users on login/registration
+  - Track user properties (isPro, createdAt, linkCount, theme)
+  - Set super properties for all events (environment, version)
+  - Track anonymous users and merge on authentication
+- [ ] **6.17** Implement custom event tracking
+  - `user_registered` - track registration source and method
+  - `user_logged_in` - track login method
+  - `link_created` - track link details (hasIcon, url domain)
+  - `link_updated` - track what changed
+  - `link_deleted` - track link age and click count
+  - `link_reordered` - track drag and drop usage
+  - `theme_customized` - track theme changes
+  - `profile_updated` - track profile field changes
+  - `upgrade_initiated` - track upgrade button clicks
+  - `upgrade_completed` - track successful upgrades
+  - `subscription_cancelled` - track cancellation reasons
+- [ ] **6.18** Configure PostHog autocapture
+  - Enable autocapture for all button clicks
+  - Enable autocapture for form submissions
+  - Configure element selectors for key interactions
+  - Set up custom data attributes for tracking
+
+#### Product Analytics (PostHog)
+- [ ] **6.19** Create user journey funnels
+  - Registration funnel: landing → register → verify → first link
+  - Activation funnel: first login → create link → customize theme → share
+  - Upgrade funnel: view pricing → click upgrade → checkout → payment
+  - Retention funnel: day 0 → day 1 → day 7 → day 30
+- [ ] **6.20** Set up cohort analysis
+  - New users cohort (registered in last 7/30/90 days)
+  - Active users cohort (logged in in last 7 days)
+  - Power users cohort (5+ links, customized theme)
+  - Pro users cohort (isPro = true)
+  - Churned users cohort (no activity in 30 days)
+- [ ] **6.21** Implement retention analysis
+  - Track weekly active users (WAU)
+  - Track monthly active users (MAU)
+  - Calculate WAU/MAU ratio for stickiness
+  - Monitor retention curves (day 1, 7, 30)
+- [ ] **6.22** Create user path analysis
+  - Track common navigation patterns
+  - Identify drop-off points in key flows
+  - Monitor feature discovery paths
+  - Analyze user journey variations
+- [ ] **6.23** Set up A/B testing infrastructure
+  - Configure feature flags for experiments
+  - Create experiment groups
+  - Track experiment exposure and conversions
+  - Set up statistical significance calculations
+- [ ] **6.24** Implement product insights dashboards
+  - Create dashboard for daily active metrics
+  - Create dashboard for feature adoption
+  - Create dashboard for conversion rates
+  - Create dashboard for user engagement
+
+#### Error Tracking (PostHog)
+- [ ] **6.25** Set up client-side error tracking
+  - Capture unhandled errors with window.onerror
+  - Capture unhandled promise rejections
+  - Track error stack traces and context
+  - Group errors by type and location
+- [ ] **6.26** Implement React error boundaries
+  - Create error boundary components
+  - Capture component errors with PostHog
+  - Include component stack in error reports
+  - Provide user-friendly error fallbacks
+- [ ] **6.27** Set up server-side error tracking
+  - Capture API route errors
+  - Track database query errors
+  - Monitor external API failures (Stripe, better-auth)
+  - Log error context (user, request, environment)
+- [ ] **6.28** Configure error alerts and notifications
+  - Set up PostHog webhooks for critical errors
+  - Create Slack/email alerts for error spikes
+  - Monitor error rate trends
+  - Alert on new error types
+- [ ] **6.29** Implement performance monitoring
+  - Track Core Web Vitals (FCP, LCP, CLS, TTI)
+  - Monitor API response times
+  - Track database query performance
+  - Identify slow pages and routes
+- [ ] **6.30** Create error monitoring dashboard
+  - Error rate over time
+  - Top errors by frequency
+  - Error distribution by page/route
+  - Error resolution tracking
+  - User impact analysis (% of users affected)
+
+#### Analytics & Error Tracking Integration
+- [ ] **6.31** Connect PostHog to monitoring tools
+  - Integrate with Grafana for unified dashboards
+  - Connect to Sentry for enhanced error tracking (optional)
+  - Set up data export to BigQuery/S3 for long-term storage
+- [ ] **6.32** Implement privacy controls
+  - Configure data retention policies
+  - Set up GDPR-compliant user data deletion
+  - Implement cookie consent for analytics
+  - Create privacy-friendly tracking (IP masking, data anonymization)
+- [ ] **6.33** Create analytics documentation
+  - Document all tracked events and properties
+  - Create event taxonomy and naming conventions
+  - Document data retention and privacy policies
+  - Create runbook for common analytics queries
+
 ### Environment Variables
 ```env
 # PostHog (Self-Hosted)
@@ -328,6 +444,16 @@ POSTHOG_PERSONAL_API_KEY=phx_your_personal_api_key  # for server-side
 - [x] Free users see upgrade prompt on analytics page
 - [x] Feature flags work correctly
 - [x] ClickHouse ingesting events properly
+- [ ] All custom events tracked with correct properties
+- [ ] User identification works on login/registration
+- [ ] Session tracking captures duration and engagement
+- [ ] Funnels show conversion rates for key flows
+- [ ] Cohorts properly segment users
+- [ ] Retention curves show user activity over time
+- [ ] Error tracking captures and groups errors correctly
+- [ ] Core Web Vitals monitored in PostHog
+- [ ] Privacy controls implemented (GDPR compliance)
+- [ ] Analytics dashboards show real-time data
 
 ---
 
@@ -659,6 +785,23 @@ POSTHOG_PERSONAL_API_KEY=phx_your_personal_api_key  # for server-side
 - [x] Database queries traced
 - [x] External API calls traced
 
+### Analytics & Error Tracking Tests
+- [ ] PostHog tracking all custom events with correct properties
+- [ ] User identification working on login/registration
+- [ ] Session tracking capturing engagement metrics
+- [ ] Page views tracked with UTM parameters
+- [ ] Funnels show accurate conversion rates
+- [ ] Cohorts properly segment users by behavior
+- [ ] Retention analysis shows user stickiness
+- [ ] User paths tracked and visualized
+- [ ] Error tracking captures client-side errors
+- [ ] Error tracking captures server-side errors
+- [ ] Error boundaries catch React component errors
+- [ ] Core Web Vitals monitored in PostHog
+- [ ] Performance monitoring alerts on regressions
+- [ ] Privacy controls implemented (GDPR compliant)
+- [ ] Analytics dashboards show real-time metrics
+
 ### Test Suite
 - [ ] Unit tests: 80%+ coverage
 - [ ] Integration tests: all passing
@@ -682,8 +825,11 @@ POSTHOG_PERSONAL_API_KEY=phx_your_personal_api_key  # for server-side
 | `src/lib/auth.ts` | BetterAuth config |
 | `src/lib/stripe.ts` | Stripe client |
 | `src/lib/posthog.ts` | PostHog client (self-hosted) |
+| `src/lib/posthog-server.ts` | PostHog server-side tracking |
+| `src/components/providers/PostHogProvider.tsx` | PostHog provider with error tracking |
 | `docker/posthog/` | PostHog configuration |
 | `src/lib/telemetry.ts` | OpenTelemetry setup |
+| `src/lib/error-boundary.tsx` | React error boundary with PostHog |
 | `src/app/[username]/page.tsx` | Static link page |
 | `src/app/api/webhooks/stripe/route.ts` | Stripe webhooks |
 | `src/app/api/revalidate/route.ts` | ISR trigger |
