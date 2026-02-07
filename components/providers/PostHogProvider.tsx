@@ -2,7 +2,7 @@
 
 import posthog from "posthog-js";
 import { PostHogProvider as PHProvider } from "posthog-js/react";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import { SessionTracker } from "@/components/analytics/SessionTracker";
 import { WebVitalsTracker } from "@/components/analytics/WebVitalsTracker";
@@ -57,7 +57,9 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
 
 	return (
 		<PHProvider client={posthog}>
-			<PageViewTracker />
+			<Suspense fallback={null}>
+				<PageViewTracker />
+			</Suspense>
 			<SessionTracker />
 			<WebVitalsTracker />
 			{children}
