@@ -5,7 +5,6 @@ import {
 	pgTable,
 	text,
 	timestamp,
-	uuid,
 	varchar,
 } from "drizzle-orm/pg-core";
 
@@ -13,11 +12,12 @@ import {
 export const users = pgTable(
 	"users",
 	{
-		id: uuid("id").primaryKey().defaultRandom(),
+		id: text("id").primaryKey(),
 		email: varchar("email", { length: 255 }).notNull().unique(),
-		username: varchar("username", { length: 50 }).notNull().unique(),
+		username: varchar("username", { length: 50 }),
 		password: text("password").notNull(),
 		name: varchar("name", { length: 100 }),
+		emailVerified: boolean("email_verified").default(false),
 		bio: text("bio"),
 		avatarUrl: text("avatar_url"),
 		theme: text("theme").default("{}"),
@@ -36,8 +36,8 @@ export const users = pgTable(
 export const links = pgTable(
 	"links",
 	{
-		id: uuid("id").primaryKey().defaultRandom(),
-		userId: uuid("user_id")
+		id: text("id").primaryKey(),
+		userId: text("user_id")
 			.notNull()
 			.references(() => users.id, { onDelete: "cascade" }),
 		title: varchar("title", { length: 100 }).notNull(),
@@ -59,8 +59,8 @@ export const links = pgTable(
 export const linkClicks = pgTable(
 	"link_clicks",
 	{
-		id: uuid("id").primaryKey().defaultRandom(),
-		linkId: uuid("link_id")
+		id: text("id").primaryKey(),
+		linkId: text("link_id")
 			.notNull()
 			.references(() => links.id, { onDelete: "cascade" }),
 		referrer: text("referrer"),
@@ -79,8 +79,8 @@ export const linkClicks = pgTable(
 export const subscriptions = pgTable(
 	"subscriptions",
 	{
-		id: uuid("id").primaryKey().defaultRandom(),
-		userId: uuid("user_id")
+		id: text("id").primaryKey(),
+		userId: text("user_id")
 			.notNull()
 			.unique()
 			.references(() => users.id, { onDelete: "cascade" }),
@@ -103,7 +103,7 @@ export const sessions = pgTable(
 	"sessions",
 	{
 		id: text("id").primaryKey(),
-		userId: uuid("user_id")
+		userId: text("user_id")
 			.notNull()
 			.references(() => users.id, { onDelete: "cascade" }),
 		expiresAt: timestamp("expires_at").notNull(),
@@ -122,8 +122,8 @@ export const sessions = pgTable(
 export const accounts = pgTable(
 	"accounts",
 	{
-		id: uuid("id").primaryKey().defaultRandom(),
-		userId: uuid("user_id")
+		id: text("id").primaryKey(),
+		userId: text("user_id")
 			.notNull()
 			.references(() => users.id, { onDelete: "cascade" }),
 		provider: varchar("provider", { length: 50 }).notNull(),
@@ -146,7 +146,7 @@ export const accounts = pgTable(
 export const verifications = pgTable(
 	"verifications",
 	{
-		id: uuid("id").primaryKey().defaultRandom(),
+		id: text("id").primaryKey(),
 		identifier: varchar("identifier", { length: 255 }).notNull(),
 		value: text("value").notNull(),
 		expiresAt: timestamp("expires_at").notNull(),
