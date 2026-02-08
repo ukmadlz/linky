@@ -8,6 +8,7 @@ export default defineConfig({
 		environment: "happy-dom",
 		globals: true,
 		setupFiles: ["./__tests__/setup.ts"],
+		fileParallelism: false, // Run test files sequentially to avoid database conflicts
 		exclude: [
 			"node_modules",
 			"__tests__/e2e/**",
