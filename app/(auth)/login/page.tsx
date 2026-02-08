@@ -3,8 +3,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { OAuthButtons } from "@/components/auth/OAuthButtons";
-import { signIn } from "@/lib/auth-client";
 
 export default function LoginPage() {
 	const router = useRouter();
@@ -19,15 +17,26 @@ export default function LoginPage() {
 		setLoading(true);
 
 		try {
-			await signIn.email({
-				email,
-				password,
+			const response = await fetch("/api/auth/login", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ email, password }),
 			});
+
+			const data = await response.json();
+
+			if (!response.ok) {
+				setError(data.error || "Invalid email or password");
+				setLoading(false);
+				return;
+			}
+
+			// Redirect on success - refresh to get new session
 			router.push("/dashboard");
+			router.refresh();
 		} catch (err) {
-			setError("Invalid email or password");
+			setError("Login failed. Please try again.");
 			console.error(err);
-		} finally {
 			setLoading(false);
 		}
 	};
@@ -42,17 +51,6 @@ export default function LoginPage() {
 				</div>
 			)}
 
-			<OAuthButtons />
-
-			<div className="relative my-6">
-				<div className="absolute inset-0 flex items-center">
-					<div className="w-full border-t border-gray-300" />
-				</div>
-				<div className="relative flex justify-center text-sm">
-					<span className="px-2 bg-white text-gray-500">Or continue with email</span>
-				</div>
-			</div>
-
 			<form onSubmit={handleSubmit} className="space-y-4">
 				<div>
 					<label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
@@ -60,7 +58,8 @@ export default function LoginPage() {
 					</label>
 					<input
 						type="email"
-						id="email" name="email"
+						id="email"
+						name="email"
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
 						required
@@ -74,7 +73,8 @@ export default function LoginPage() {
 					</label>
 					<input
 						type="password"
-						id="password" name="password"
+						id="password"
+						name="password"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
 						required

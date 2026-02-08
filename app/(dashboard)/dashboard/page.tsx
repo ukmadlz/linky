@@ -1,18 +1,17 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth";
+import { getSessionFromCookie } from "@/lib/session-jwt";
 import { getLinksByUserId, getUserById } from "@/lib/db/queries";
 
 export default async function DashboardPage() {
-	const session = await auth.api.getSession({
-		headers: await import("next/headers").then((m) => m.headers()),
-	});
+	const session = await getSessionFromCookie();
 
 	if (!session) {
 		redirect("/login");
 	}
 
-	const user = await getUserById(session.user.id);
+	const user = await getUserById(session.userId);
+
 	if (!user) {
 		redirect("/login");
 	}

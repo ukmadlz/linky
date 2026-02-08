@@ -24,9 +24,8 @@ afterAll(() => {
 });
 
 // Mock environment variables
-process.env.DATABASE_URL = "postgresql://test:test@localhost:5432/test";
-process.env.BETTER_AUTH_SECRET = "test-secret-key-min-32-chars-long";
-process.env.BETTER_AUTH_URL = "http://localhost:3000";
+process.env.DATABASE_URL = "postgresql://linky:linky@localhost:5432/linky";
+process.env.SESSION_SECRET = "test-secret-key-min-32-chars-long-for-sessions";
 process.env.STRIPE_SECRET_KEY = "sk_test_mock";
 process.env.STRIPE_WEBHOOK_SECRET = "whsec_mock";
 process.env.NEXT_PUBLIC_POSTHOG_KEY = "phc_mock";

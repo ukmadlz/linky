@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getSessionFromRequest } from "@/lib/session-jwt";
 
 /**
  * API endpoint to get performance metrics
@@ -7,7 +7,7 @@ import { auth } from "@/lib/auth";
  */
 export async function GET(request: Request) {
 	try {
-		const session = await auth.api.getSession({ headers: request.headers });
+		const session = await getSessionFromRequest(request);
 
 		if (!session) {
 			return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

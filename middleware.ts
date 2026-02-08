@@ -1,12 +1,12 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 
 export async function middleware(request: NextRequest) {
 	const pathname = request.nextUrl.pathname;
 
-	// Get session
-	const session = await auth.api.getSession({ headers: request.headers });
+	// Check if user has session cookie
+	const sessionCookie = request.cookies.get("session");
+	const hasSession = !!sessionCookie;
 
 	// Protected routes - require authentication
 	if (
@@ -14,14 +14,14 @@ export async function middleware(request: NextRequest) {
 		pathname.startsWith("/settings") ||
 		pathname.startsWith("/analytics")
 	) {
-		if (!session) {
+		if (!hasSession) {
 			return NextResponse.redirect(new URL("/login", request.url));
 		}
 	}
 
 	// Auth routes - redirect if already authenticated
 	if (pathname === "/login" || pathname === "/register") {
-		if (session) {
+		if (hasSession) {
 			return NextResponse.redirect(new URL("/dashboard", request.url));
 		}
 	}

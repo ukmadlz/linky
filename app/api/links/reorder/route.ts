@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getSessionFromRequest } from "@/lib/session-jwt";
 import { getLinkById, updateLink } from "@/lib/db/queries";
 
 export async function POST(request: Request) {
 	try {
-		const session = await auth.api.getSession({ headers: request.headers });
+		const session = await getSessionFromRequest(request);
 		if (!session) {
 			return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 		}
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
 		await Promise.all(
 			links.map(async ({ id, position }: { id: string; position: number }) => {
 				const link = await getLinkById(id);
-				if (link && link.userId === session.user.id) {
+				if (link && link.userId === session.userId) {
 					await updateLink(id, { position });
 				}
 			})
@@ -23,9 +23,10 @@ export async function POST(request: Request) {
 
 		// Trigger revalidation
 		const { getUserById } = await import("@/lib/db/queries");
-		const user = await getUserById(session.user.id);
+		const user = await getUserById(session.userId);
 		if (user) {
-			await fetch(`${process.env.BETTER_AUTH_URL}/api/revalidate`, {
+			const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+			await fetch(`${baseURL}/api/revalidate`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({

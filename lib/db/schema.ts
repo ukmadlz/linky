@@ -7,6 +7,7 @@ import {
 	timestamp,
 	varchar,
 } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 
 // Users table
 export const users = pgTable(
@@ -108,9 +109,10 @@ export const sessions = pgTable(
 			.references(() => users.id, { onDelete: "cascade" }),
 		expiresAt: timestamp("expires_at").notNull(),
 		token: text("token").notNull().unique(),
-		ipAddress: varchar("ip_address", { length: 45 }),
+		ipAddress: text("ip_address"),
 		userAgent: text("user_agent"),
 		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at").defaultNow().notNull(),
 	},
 	(table) => ({
 		userIdIdx: index("sessions_user_id_idx").on(table.userId),
@@ -118,7 +120,7 @@ export const sessions = pgTable(
 	})
 );
 
-// BetterAuth accounts table (for OAuth providers)
+// BetterAuth accounts table (for OAuth providers and email/password)
 export const accounts = pgTable(
 	"accounts",
 	{
@@ -126,19 +128,20 @@ export const accounts = pgTable(
 		userId: text("user_id")
 			.notNull()
 			.references(() => users.id, { onDelete: "cascade" }),
-		provider: varchar("provider", { length: 50 }).notNull(),
-		providerAccountId: varchar("provider_account_id", { length: 255 }).notNull(),
-		refreshToken: text("refresh_token"),
+		accountId: text("account_id").notNull(),
+		providerId: text("provider_id").notNull(),
 		accessToken: text("access_token"),
-		expiresAt: timestamp("expires_at"),
-		tokenType: varchar("token_type", { length: 50 }),
-		scope: text("scope"),
+		refreshToken: text("refresh_token"),
 		idToken: text("id_token"),
+		accessTokenExpiresAt: timestamp("access_token_expires_at"),
+		refreshTokenExpiresAt: timestamp("refresh_token_expires_at"),
+		scope: text("scope"),
+		password: text("password"),
 		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at").defaultNow().notNull(),
 	},
 	(table) => ({
 		userIdIdx: index("accounts_user_id_idx").on(table.userId),
-		providerIdx: index("accounts_provider_idx").on(table.provider, table.providerAccountId),
 	})
 );
 
@@ -147,15 +150,36 @@ export const verifications = pgTable(
 	"verifications",
 	{
 		id: text("id").primaryKey(),
-		identifier: varchar("identifier", { length: 255 }).notNull(),
+		identifier: text("identifier").notNull(),
 		value: text("value").notNull(),
 		expiresAt: timestamp("expires_at").notNull(),
 		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at").defaultNow().notNull(),
 	},
 	(table) => ({
 		identifierIdx: index("verifications_identifier_idx").on(table.identifier),
 	})
 );
+
+// Relations for better-auth
+export const usersRelations = relations(users, ({ many }) => ({
+	sessions: many(sessions),
+	accounts: many(accounts),
+}));
+
+export const sessionsRelations = relations(sessions, ({ one }) => ({
+	user: one(users, {
+		fields: [sessions.userId],
+		references: [users.id],
+	}),
+}));
+
+export const accountsRelations = relations(accounts, ({ one }) => ({
+	user: one(users, {
+		fields: [accounts.userId],
+		references: [users.id],
+	}),
+}));
 
 // Type exports
 export type User = typeof users.$inferSelect;
