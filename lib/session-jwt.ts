@@ -1,11 +1,11 @@
-import { jwtVerify, SignJWT } from "jose";
+import { type JWTPayload, jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
 
 const secret = new TextEncoder().encode(
 	process.env.SESSION_SECRET || "complex_password_at_least_32_characters_long"
 );
 
-export interface SessionPayload {
+export interface SessionPayload extends JWTPayload {
 	userId: string;
 	email: string;
 	name?: string;

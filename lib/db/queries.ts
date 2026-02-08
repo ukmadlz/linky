@@ -1,4 +1,5 @@
 import { and, desc, eq, sql } from "drizzle-orm";
+import { nanoid } from "nanoid";
 import { withDatabaseErrorTracking } from "./db-error-handler";
 import { db } from "./index";
 import {
@@ -177,7 +178,13 @@ export async function createSubscription(
 ) {
 	return withDatabaseErrorTracking(
 		async () => {
-			const [subscription] = await db.insert(subscriptions).values(data).returning();
+			const [subscription] = await db
+				.insert(subscriptions)
+				.values({
+					id: nanoid(),
+					...data,
+				})
+				.returning();
 			return subscription;
 		},
 		{

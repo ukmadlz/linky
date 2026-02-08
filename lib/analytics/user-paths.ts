@@ -94,7 +94,9 @@ export async function getCommonUserPaths(limit = 10): Promise<UserPath[]> {
 		}
 
 		const pathData = pathMap.get(pathKey);
-		pathData.count++;
+		if (pathData) {
+			pathData.count++;
+		}
 	}
 
 	// Convert to sorted array
@@ -161,7 +163,9 @@ export async function identifyDropOffPoints(): Promise<
 			if (userId === lastUserId && lastPage) {
 				// Add transition from last page to this page
 				const lastStats = pageStats.get(lastPage);
-				lastStats.nextPages.add(page);
+				if (lastStats) {
+					lastStats.nextPages.add(page);
+				}
 			}
 
 			// Check if this is the last page in the session

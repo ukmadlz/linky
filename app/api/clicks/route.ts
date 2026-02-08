@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { NextResponse } from "next/server";
 import { createLinkClick, getLinkById, getUserById, incrementLinkClicks } from "@/lib/db/queries";
 import { posthogServer } from "@/lib/posthog";
@@ -29,6 +30,7 @@ export async function POST(request: Request) {
 
 			// Store in database
 			await createLinkClick({
+				id: nanoid(),
 				linkId,
 				userAgent,
 				referrer,

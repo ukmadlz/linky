@@ -17,8 +17,8 @@ export async function createCheckoutSession(userId: string, userEmail: string) {
 			},
 		],
 		mode: "subscription",
-		success_url: `${process.env.BETTER_AUTH_URL}/dashboard/settings?success=true`,
-		cancel_url: `${process.env.BETTER_AUTH_URL}/dashboard/settings?canceled=true`,
+		success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings?success=true`,
+		cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings?canceled=true`,
 		metadata: {
 			userId,
 		},
@@ -30,7 +30,7 @@ export async function createCheckoutSession(userId: string, userEmail: string) {
 export async function createPortalSession(customerId: string) {
 	const session = await stripe.billingPortal.sessions.create({
 		customer: customerId,
-		return_url: `${process.env.BETTER_AUTH_URL}/dashboard/settings`,
+		return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings`,
 	});
 
 	return session;

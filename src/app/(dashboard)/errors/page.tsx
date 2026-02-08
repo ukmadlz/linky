@@ -1,6 +1,5 @@
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth";
+import { getSessionFromCookie } from "@/lib/session-jwt";
 import type { PostHogErrorEvent, PostHogQueryResult } from "@/lib/types/posthog";
 
 /**
@@ -9,9 +8,7 @@ import type { PostHogErrorEvent, PostHogQueryResult } from "@/lib/types/posthog"
  */
 
 export default async function ErrorMonitoringPage() {
-	const session = await auth.api.getSession({
-		headers: await headers(),
-	});
+	const session = await getSessionFromCookie();
 
 	if (!session) {
 		redirect("/login");

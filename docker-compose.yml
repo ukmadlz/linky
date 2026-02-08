@@ -8,8 +8,6 @@ services:
       - NODE_ENV=production
       - DATABASE_URL=postgresql://linky:${DB_PASSWORD}@db:5432/linky
       - VALKEY_URL=redis://valkey:6379
-      - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
-      - BETTER_AUTH_URL=${BETTER_AUTH_URL}
       - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
       - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
       - STRIPE_PRO_PRICE_ID=${STRIPE_PRO_PRICE_ID}

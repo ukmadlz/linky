@@ -45,10 +45,11 @@ export async function createTestUser(
 		email: overrides.email || `${userId}@test.com`,
 		username: overrides.username || userId,
 		name: overrides.name || `Test User ${userId}`,
+		password: "hashed_test_password",
 		isPro: overrides.isPro ?? false,
 		stripeCustomerId: overrides.stripeCustomerId ?? null,
 		emailVerified: false,
-		image: null,
+		theme: "{}",
 		createdAt: timestamp,
 		updatedAt: timestamp,
 	};

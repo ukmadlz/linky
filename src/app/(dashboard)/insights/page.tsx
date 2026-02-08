@@ -1,8 +1,7 @@
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getRetentionMetrics } from "@/lib/analytics/retention";
 import { getPathAnalysis } from "@/lib/analytics/user-paths";
-import { auth } from "@/lib/auth";
+import { getSessionFromCookie } from "@/lib/session-jwt";
 
 /**
  * Product Insights Dashboard (Admin/Internal Only)
@@ -10,9 +9,7 @@ import { auth } from "@/lib/auth";
  */
 
 export default async function InsightsDashboardPage() {
-	const session = await auth.api.getSession({
-		headers: await headers(),
-	});
+	const session = await getSessionFromCookie();
 
 	if (!session) {
 		redirect("/login");

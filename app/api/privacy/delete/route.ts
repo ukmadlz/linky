@@ -31,10 +31,6 @@ export async function POST(request: Request) {
 		// Delete all user data
 		await deleteUserData(userId);
 
-		// Log out the user (delete session)
-		// Note: This depends on your auth setup
-		// For better-auth, you might need to call session.delete()
-
 		return NextResponse.json({
 			success: true,
 			message: "All your data has been permanently deleted",

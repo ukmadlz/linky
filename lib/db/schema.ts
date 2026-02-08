@@ -91,84 +91,30 @@ export const subscriptions = pgTable(
 	})
 );
 
-// BetterAuth sessions table
-export const sessions = pgTable(
-	"sessions",
-	{
-		id: text("id").primaryKey(),
-		userId: text("user_id")
-			.notNull()
-			.references(() => users.id, { onDelete: "cascade" }),
-		expiresAt: timestamp("expires_at").notNull(),
-		token: text("token").notNull().unique(),
-		ipAddress: text("ip_address"),
-		userAgent: text("user_agent"),
-		createdAt: timestamp("created_at").defaultNow().notNull(),
-		updatedAt: timestamp("updated_at").defaultNow().notNull(),
-	},
-	(table) => ({
-		userIdIdx: index("sessions_user_id_idx").on(table.userId),
-		tokenIdx: index("sessions_token_idx").on(table.token),
-	})
-);
-
-// BetterAuth accounts table (for OAuth providers and email/password)
-export const accounts = pgTable(
-	"accounts",
-	{
-		id: text("id").primaryKey(),
-		userId: text("user_id")
-			.notNull()
-			.references(() => users.id, { onDelete: "cascade" }),
-		accountId: text("account_id").notNull(),
-		providerId: text("provider_id").notNull(),
-		accessToken: text("access_token"),
-		refreshToken: text("refresh_token"),
-		idToken: text("id_token"),
-		accessTokenExpiresAt: timestamp("access_token_expires_at"),
-		refreshTokenExpiresAt: timestamp("refresh_token_expires_at"),
-		scope: text("scope"),
-		password: text("password"),
-		createdAt: timestamp("created_at").defaultNow().notNull(),
-		updatedAt: timestamp("updated_at").defaultNow().notNull(),
-	},
-	(table) => ({
-		userIdIdx: index("accounts_user_id_idx").on(table.userId),
-	})
-);
-
-// BetterAuth verifications table (for email verification, password reset)
-export const verifications = pgTable(
-	"verifications",
-	{
-		id: text("id").primaryKey(),
-		identifier: text("identifier").notNull(),
-		value: text("value").notNull(),
-		expiresAt: timestamp("expires_at").notNull(),
-		createdAt: timestamp("created_at").defaultNow().notNull(),
-		updatedAt: timestamp("updated_at").defaultNow().notNull(),
-	},
-	(table) => ({
-		identifierIdx: index("verifications_identifier_idx").on(table.identifier),
-	})
-);
-
-// Relations for better-auth
+// Relations
 export const usersRelations = relations(users, ({ many }) => ({
-	sessions: many(sessions),
-	accounts: many(accounts),
+	links: many(links),
+	subscriptions: many(subscriptions),
 }));
 
-export const sessionsRelations = relations(sessions, ({ one }) => ({
+export const linksRelations = relations(links, ({ one, many }) => ({
 	user: one(users, {
-		fields: [sessions.userId],
+		fields: [links.userId],
 		references: [users.id],
+	}),
+	clicks: many(linkClicks),
+}));
+
+export const linkClicksRelations = relations(linkClicks, ({ one }) => ({
+	link: one(links, {
+		fields: [linkClicks.linkId],
+		references: [links.id],
 	}),
 }));
 
-export const accountsRelations = relations(accounts, ({ one }) => ({
+export const subscriptionsRelations = relations(subscriptions, ({ one }) => ({
 	user: one(users, {
-		fields: [accounts.userId],
+		fields: [subscriptions.userId],
 		references: [users.id],
 	}),
 }));
@@ -182,9 +128,3 @@ export type LinkClick = typeof linkClicks.$inferSelect;
 export type NewLinkClick = typeof linkClicks.$inferInsert;
 export type Subscription = typeof subscriptions.$inferSelect;
 export type NewSubscription = typeof subscriptions.$inferInsert;
-export type Session = typeof sessions.$inferSelect;
-export type NewSession = typeof sessions.$inferInsert;
-export type Account = typeof accounts.$inferSelect;
-export type NewAccount = typeof accounts.$inferInsert;
-export type Verification = typeof verifications.$inferSelect;
-export type NewVerification = typeof verifications.$inferInsert;
