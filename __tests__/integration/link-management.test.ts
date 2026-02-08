@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import { eq } from "drizzle-orm";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { db } from "@/lib/db";
@@ -52,9 +53,11 @@ describe("Link Management Integration", () => {
 
 			// This would normally come from auth middleware
 			// For now, we'll test the database operation directly
+			const linkId = `test_link_${crypto.randomBytes(8).toString("hex")}`;
 			const [link] = await db
 				.insert(links)
 				.values({
+					id: linkId,
 					userId: linkData.userId,
 					title: linkData.title,
 					url: linkData.url,

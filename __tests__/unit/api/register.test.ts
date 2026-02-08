@@ -120,7 +120,7 @@ describe("POST /api/register", () => {
 		const data = await response.json();
 
 		expect(response.status).toBe(400);
-		expect(data.error).toBe("Username already taken");
+		expect(data.error).toBe("Username already exists");
 	});
 
 	it("should reject registration with short password", async () => {

@@ -1,8 +1,9 @@
 import { eq } from "drizzle-orm";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { POST as stripeWebhookPOST } from "@/app/api/webhooks/stripe/route";
 import { db } from "@/lib/db";
 import { subscriptions, users } from "@/lib/db/schema";
+import { stripe } from "@/lib/stripe";
 import {
 	clearDatabase,
 	countSubscriptions,
@@ -15,11 +16,24 @@ import {
 	subscriptionDeleted,
 } from "../mocks/factories/stripe-events";
 
+// Mock Stripe
+vi.mock("@/lib/stripe", () => ({
+	stripe: {
+		webhooks: {
+			constructEvent: vi.fn(),
+		},
+		subscriptions: {
+			retrieve: vi.fn(),
+		},
+	},
+}));
+
 describe("Subscription Integration", () => {
 	const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || "whsec_mock";
 
 	beforeEach(async () => {
 		await clearDatabase();
+		vi.clearAllMocks();
 	});
 
 	afterEach(async () => {
@@ -40,6 +54,31 @@ describe("Subscription Integration", () => {
 			const event = checkoutSessionCompleted(user.id);
 			const payload = JSON.stringify(event);
 			const signature = signStripeWebhook(payload, webhookSecret);
+
+			// Mock Stripe webhook constructEvent to return the event
+			vi.mocked(stripe.webhooks.constructEvent).mockReturnValue(event);
+
+			// Mock Stripe subscriptions.retrieve to return subscription data
+			vi.mocked(stripe.subscriptions.retrieve).mockResolvedValue({
+				id: "sub_test_123",
+				object: "subscription",
+				status: "active",
+				items: {
+					object: "list",
+					data: [
+						{
+							id: "si_test_123",
+							object: "subscription_item",
+							price: {
+								id: "price_test_123",
+								object: "price",
+							} as any,
+						} as any,
+					],
+				},
+				current_period_start: Math.floor(Date.now() / 1000),
+				current_period_end: Math.floor(Date.now() / 1000) + 2592000,
+			} as any);
 
 			const request = new Request("http://localhost:3000/api/webhooks/stripe", {
 				method: "POST",
@@ -69,6 +108,31 @@ describe("Subscription Integration", () => {
 			const event = checkoutSessionCompleted(user.id);
 			const payload = JSON.stringify(event);
 			const signature = signStripeWebhook(payload, webhookSecret);
+
+			// Mock Stripe webhook constructEvent to return the event
+			vi.mocked(stripe.webhooks.constructEvent).mockReturnValue(event);
+
+			// Mock Stripe subscriptions.retrieve to return subscription data
+			vi.mocked(stripe.subscriptions.retrieve).mockResolvedValue({
+				id: "sub_test_123",
+				object: "subscription",
+				status: "active",
+				items: {
+					object: "list",
+					data: [
+						{
+							id: "si_test_123",
+							object: "subscription_item",
+							price: {
+								id: "price_test_123",
+								object: "price",
+							} as any,
+						} as any,
+					],
+				},
+				current_period_start: Math.floor(Date.now() / 1000),
+				current_period_end: Math.floor(Date.now() / 1000) + 2592000,
+			} as any);
 
 			const request = new Request("http://localhost:3000/api/webhooks/stripe", {
 				method: "POST",
@@ -115,6 +179,9 @@ describe("Subscription Integration", () => {
 			const payload = JSON.stringify(event);
 			const signature = signStripeWebhook(payload, webhookSecret);
 
+			// Mock Stripe webhook constructEvent to return the event
+			vi.mocked(stripe.webhooks.constructEvent).mockReturnValue(event);
+
 			const request = new Request("http://localhost:3000/api/webhooks/stripe", {
 				method: "POST",
 				headers: {
@@ -152,6 +219,9 @@ describe("Subscription Integration", () => {
 			const payload = JSON.stringify(event);
 			const signature = signStripeWebhook(payload, webhookSecret);
 
+			// Mock Stripe webhook constructEvent to return the event
+			vi.mocked(stripe.webhooks.constructEvent).mockReturnValue(event);
+
 			const request = new Request("http://localhost:3000/api/webhooks/stripe", {
 				method: "POST",
 				headers: {
@@ -181,6 +251,31 @@ describe("Subscription Integration", () => {
 			const event = checkoutSessionCompleted(user.id);
 			const payload = JSON.stringify(event);
 			const signature = signStripeWebhook(payload, webhookSecret);
+
+			// Mock Stripe webhook constructEvent to return the event
+			vi.mocked(stripe.webhooks.constructEvent).mockReturnValue(event);
+
+			// Mock Stripe subscriptions.retrieve to return subscription data
+			vi.mocked(stripe.subscriptions.retrieve).mockResolvedValue({
+				id: "sub_test_123",
+				object: "subscription",
+				status: "active",
+				items: {
+					object: "list",
+					data: [
+						{
+							id: "si_test_123",
+							object: "subscription_item",
+							price: {
+								id: "price_test_123",
+								object: "price",
+							} as any,
+						} as any,
+					],
+				},
+				current_period_start: Math.floor(Date.now() / 1000),
+				current_period_end: Math.floor(Date.now() / 1000) + 2592000,
+			} as any);
 
 			const request = new Request("http://localhost:3000/api/webhooks/stripe", {
 				method: "POST",
@@ -219,6 +314,9 @@ describe("Subscription Integration", () => {
 			const payload = JSON.stringify(event);
 			const signature = signStripeWebhook(payload, webhookSecret);
 
+			// Mock Stripe webhook constructEvent to return the event
+			vi.mocked(stripe.webhooks.constructEvent).mockReturnValue(event);
+
 			const request = new Request("http://localhost:3000/api/webhooks/stripe", {
 				method: "POST",
 				headers: {
@@ -243,6 +341,13 @@ describe("Subscription Integration", () => {
 			const user = await createTestUser();
 			const event = checkoutSessionCompleted(user.id);
 			const payload = JSON.stringify(event);
+
+			// Mock Stripe webhook constructEvent to throw error for invalid signature
+			vi.mocked(stripe.webhooks.constructEvent).mockImplementation(() => {
+				const error = new Error("Unable to extract timestamp and signatures from header");
+				(error as any).type = "StripeSignatureVerificationError";
+				throw error;
+			});
 
 			const request = new Request("http://localhost:3000/api/webhooks/stripe", {
 				method: "POST",
