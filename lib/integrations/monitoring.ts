@@ -3,8 +3,6 @@
  * Supports Grafana, Prometheus, and data export
  */
 
-import { posthog } from "@/lib/posthog-server";
-
 export interface MonitoringIntegration {
 	name: string;
 	enabled: boolean;
@@ -87,7 +85,7 @@ export async function exportPrometheusMetrics(): Promise<string> {
 /**
  * Get a single metric value from PostHog
  */
-async function getMetricValue(metricName: string): Promise<number> {
+async function getMetricValue(_metricName: string): Promise<number> {
 	// TODO: Implement PostHog API query when deployed
 	try {
 		return 0;
@@ -131,7 +129,7 @@ async function getBusinessMetrics(): Promise<{
 /**
  * Calculate percentile from sorted array
  */
-function percentile(values: number[], p: number): number {
+function _percentile(values: number[], p: number): number {
 	if (values.length === 0) return 0;
 	const index = Math.ceil(values.length * p) - 1;
 	return values[Math.max(0, Math.min(index, values.length - 1))];
@@ -198,7 +196,7 @@ export async function exportToS3(
 /**
  * Configure webhook for PostHog alerts to Slack
  */
-export async function setupSlackWebhook(webhookUrl: string): Promise<void> {
+export async function setupSlackWebhook(_webhookUrl: string): Promise<void> {
 	// TODO: Implement PostHog API call when deployed
 	// Store webhook configuration
 	// await fetch(`${posthogHost}/api/webhooks`, {...});

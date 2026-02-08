@@ -3,7 +3,7 @@
  * Tracks WAU, MAU, retention curves, and stickiness metrics
  */
 
-import { eq, gte, lte, sql } from "drizzle-orm";
+import { gte, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
 import { posthog } from "@/lib/posthog-server";
@@ -198,7 +198,7 @@ export async function calculateRetentionCurve(): Promise<RetentionCurveData> {
  * Check if user was active on a specific day after registration
  */
 async function checkUserActiveOnDay(
-	userId: string,
+	_userId: string,
 	registrationDate: Date,
 	dayOffset: number
 ): Promise<boolean> {
