@@ -42,3 +42,20 @@ export interface PostHogFeatureFlagEvent extends PostHogEvent {
 		[key: string]: unknown;
 	};
 }
+
+export interface PostHogConversionEvent extends PostHogEvent {
+	properties: {
+		variant: string;
+		metric_value?: number;
+		[key: string]: unknown;
+	};
+}
+
+export interface PostHogNavigationEvent extends PostHogEvent {
+	properties: {
+		from_page: string;
+		to_page: string;
+		duration_ms: number;
+		[key: string]: unknown;
+	};
+}

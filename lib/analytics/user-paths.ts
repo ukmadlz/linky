@@ -4,7 +4,11 @@
  */
 
 import { posthog } from "@/lib/posthog-server";
-import type { PostHogPageViewEvent, PostHogQueryResult } from "@/lib/types/posthog";
+import type {
+	PostHogNavigationEvent,
+	PostHogPageViewEvent,
+	PostHogQueryResult,
+} from "@/lib/types/posthog";
 
 export interface UserPath {
 	path: string[];
@@ -63,9 +67,10 @@ export async function getCommonUserPaths(limit = 10): Promise<UserPath[]> {
 	const userSessions = new Map<string, string[]>();
 
 	for (const event of events.results) {
-		const userId = event.distinct_id;
-		const fromPage = event.properties.from_page;
-		const toPage = event.properties.to_page;
+		const navEvent = event as PostHogNavigationEvent;
+		const userId = navEvent.distinct_id;
+		const fromPage = navEvent.properties.from_page;
+		const toPage = navEvent.properties.to_page;
 
 		if (!userSessions.has(userId)) {
 			userSessions.set(userId, []);
