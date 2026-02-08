@@ -119,6 +119,7 @@ describe("Authentication Flow Integration", () => {
 			const registrationData = {
 				email: "user@test.com",
 				username: "invalid username!", // Contains spaces and special chars
+				name: "Test User",
 				password: "SecurePass123!",
 			};
 

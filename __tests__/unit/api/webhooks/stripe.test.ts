@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
 	checkoutSessionCompleted,
 	signStripeWebhook,
@@ -9,6 +9,19 @@ import { createMockUser } from "@/__tests__/mocks/handlers/auth";
 import { POST } from "@/app/api/webhooks/stripe/route";
 import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
+import { stripe } from "@/lib/stripe";
+
+// Mock Stripe
+vi.mock("@/lib/stripe", () => ({
+	stripe: {
+		webhooks: {
+			constructEvent: vi.fn(),
+		},
+		subscriptions: {
+			retrieve: vi.fn(),
+		},
+	},
+}));
 
 describe("Stripe Webhook Handler", () => {
 	const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || "whsec_mock";
@@ -16,6 +29,7 @@ describe("Stripe Webhook Handler", () => {
 	beforeEach(async () => {
 		// Clean up database before each test
 		await db.delete(users);
+		vi.clearAllMocks();
 	});
 
 	describe("checkout.session.completed", () => {
@@ -41,6 +55,31 @@ describe("Stripe Webhook Handler", () => {
 			const event = checkoutSessionCompleted(mockUser.id);
 			const payload = JSON.stringify(event);
 			const signature = signStripeWebhook(payload, webhookSecret);
+
+			// Mock Stripe webhook constructEvent to return the event
+			vi.mocked(stripe.webhooks.constructEvent).mockReturnValue(event);
+
+			// Mock Stripe subscriptions.retrieve to return subscription data
+			vi.mocked(stripe.subscriptions.retrieve).mockResolvedValue({
+				id: "sub_test_123",
+				object: "subscription",
+				status: "active",
+				items: {
+					object: "list",
+					data: [
+						{
+							id: "si_test_123",
+							object: "subscription_item",
+							price: {
+								id: "price_test_123",
+								object: "price",
+							} as any,
+						} as any,
+					],
+				},
+				current_period_start: Math.floor(Date.now() / 1000),
+				current_period_end: Math.floor(Date.now() / 1000) + 2592000,
+			} as any);
 
 			// Create request
 			const request = new Request("http://localhost:3000/api/webhooks/stripe", {
@@ -70,6 +109,13 @@ describe("Stripe Webhook Handler", () => {
 			const mockUser = createMockUser();
 			const event = checkoutSessionCompleted(mockUser.id);
 			const payload = JSON.stringify(event);
+
+			// Mock Stripe webhook constructEvent to throw error for invalid signature
+			vi.mocked(stripe.webhooks.constructEvent).mockImplementation(() => {
+				const error = new Error("Unable to extract timestamp and signatures from header");
+				(error as any).type = "StripeSignatureVerificationError";
+				throw error;
+			});
 
 			const request = new Request("http://localhost:3000/api/webhooks/stripe", {
 				method: "POST",
@@ -112,6 +158,9 @@ describe("Stripe Webhook Handler", () => {
 			const event = subscriptionDeleted("cus_test_123");
 			const payload = JSON.stringify(event);
 			const signature = signStripeWebhook(payload, webhookSecret);
+
+			// Mock Stripe webhook constructEvent to return the event
+			vi.mocked(stripe.webhooks.constructEvent).mockReturnValue(event);
 
 			// Create request
 			const request = new Request("http://localhost:3000/api/webhooks/stripe", {

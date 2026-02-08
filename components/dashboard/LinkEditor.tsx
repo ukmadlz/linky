@@ -53,7 +53,12 @@ export default function LinkEditor({ link, onSave, onCancel }: LinkEditorProps) 
 
 		// Validate URL
 		try {
-			new URL(url);
+			const urlObj = new URL(url);
+			// Additional validation: must have a valid hostname with at least one dot
+			if (!urlObj.hostname.includes(".")) {
+				setError("Invalid URL");
+				return;
+			}
 		} catch {
 			setError("Invalid URL");
 			return;
@@ -85,7 +90,7 @@ export default function LinkEditor({ link, onSave, onCancel }: LinkEditorProps) 
 				</div>
 			)}
 
-			<form onSubmit={handleSubmit} className="space-y-4">
+			<form onSubmit={handleSubmit} className="space-y-4" noValidate>
 				<div>
 					<label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
 						Title *

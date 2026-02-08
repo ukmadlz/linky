@@ -12,6 +12,12 @@ export async function POST(request: Request) {
 			return NextResponse.json({ error: "All fields are required" }, { status: 400 });
 		}
 
+		// Validate email format
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (!emailRegex.test(email)) {
+			return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
+		}
+
 		if (password.length < 8) {
 			return NextResponse.json(
 				{ error: "Password must be at least 8 characters" },
@@ -34,7 +40,7 @@ export async function POST(request: Request) {
 
 		const existingUsername = await getUserByUsername(username);
 		if (existingUsername) {
-			return NextResponse.json({ error: "Username already taken" }, { status: 400 });
+			return NextResponse.json({ error: "Username already exists" }, { status: 400 });
 		}
 
 		// Hash password
