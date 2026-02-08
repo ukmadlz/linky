@@ -1,4 +1,5 @@
 import { hash } from "bcryptjs";
+import { nanoid } from "nanoid";
 import { NextResponse } from "next/server";
 import { createUser, getUserByEmail, getUserByUsername } from "@/lib/db/queries";
 
@@ -39,8 +40,10 @@ export async function POST(request: Request) {
 		// Hash password
 		const hashedPassword = await hash(password, 10);
 
-		// Create user
+		// Create user with generated ID
+		const userId = nanoid();
 		const user = await createUser({
+			id: userId,
 			email,
 			username,
 			name,
