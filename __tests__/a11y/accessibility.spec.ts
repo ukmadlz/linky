@@ -306,7 +306,7 @@ test.describe("Accessibility Tests - WCAG 2.1 AA", () => {
 			// Check headings are in logical order
 			const headings = await page.locator("h1, h2, h3, h4, h5, h6").all();
 			const levels = await Promise.all(
-				headings.map((h) => h.evaluate((el) => Number.parseInt(el.tagName[1])))
+				headings.map((h) => h.evaluate((el) => Number.parseInt(el.tagName[1], 10)))
 			);
 
 			// First heading should be h1

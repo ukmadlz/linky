@@ -263,8 +263,8 @@ export async function analyzeJourneyVariations(
 	const journeyVariations = new Map<string, number>();
 
 	for (const goalEvent of goalEvents.results) {
-		const userId = goalEvent.distinct_id;
-		const goalTime = new Date(goalEvent.timestamp);
+		const _userId = goalEvent.distinct_id;
+		const _goalTime = new Date(goalEvent.timestamp);
 
 		// TODO: Implement PostHog API query when deployed
 		const leadingEvents = { results: [] as any[] };

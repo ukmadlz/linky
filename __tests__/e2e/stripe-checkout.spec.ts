@@ -28,7 +28,7 @@ test.describe("Stripe Checkout E2E", () => {
 			await expect(page.locator("text=/analytics/i")).toBeVisible();
 		});
 
-		test("should redirect to Stripe checkout when upgrade clicked", async ({ page, context }) => {
+		test("should redirect to Stripe checkout when upgrade clicked", async ({ page }) => {
 			await page.goto("/pricing");
 
 			// Mock Stripe checkout session creation

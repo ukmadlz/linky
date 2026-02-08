@@ -71,30 +71,30 @@ test.describe("Lighthouse Performance Tests", () => {
 			expect(results).toBeDefined();
 			if (!results) return;
 
-			// Performance score should be at least 85
+			// biome-ignore lint/style/noNonNullAssertion: Lighthouse results are checked above
 			const performanceScore = results.categories.performance.score! * 100;
 			expect(performanceScore).toBeGreaterThanOrEqual(85);
 
 			// Check Core Web Vitals
 			const audits = results.audits;
 
-			// First Contentful Paint (FCP) < 1.5s
+			// biome-ignore lint/style/noNonNullAssertion: Audit values are guaranteed to exist in Lighthouse results
 			const fcp = audits["first-contentful-paint"].numericValue!;
 			expect(fcp).toBeLessThan(1500);
 
-			// Largest Contentful Paint (LCP) < 2.5s
+			// biome-ignore lint/style/noNonNullAssertion: Audit values are guaranteed to exist in Lighthouse results
 			const lcp = audits["largest-contentful-paint"].numericValue!;
 			expect(lcp).toBeLessThan(2500);
 
-			// Cumulative Layout Shift (CLS) < 0.1
+			// biome-ignore lint/style/noNonNullAssertion: Audit values are guaranteed to exist in Lighthouse results
 			const cls = audits["cumulative-layout-shift"].numericValue!;
 			expect(cls).toBeLessThan(0.1);
 
-			// Total Blocking Time (TBT) < 300ms
+			// biome-ignore lint/style/noNonNullAssertion: Audit values are guaranteed to exist in Lighthouse results
 			const tbt = audits["total-blocking-time"].numericValue!;
 			expect(tbt).toBeLessThan(300);
 
-			// Speed Index < 3s
+			// biome-ignore lint/style/noNonNullAssertion: Audit values are guaranteed to exist in Lighthouse results
 			const speedIndex = audits["speed-index"].numericValue!;
 			expect(speedIndex).toBeLessThan(3000);
 		});
@@ -105,18 +105,22 @@ test.describe("Lighthouse Performance Tests", () => {
 			expect(results).toBeDefined();
 			if (!results) return;
 
+			// biome-ignore lint/style/noNonNullAssertion: Lighthouse results are checked above
 			const performanceScore = results.categories.performance.score! * 100;
 			expect(performanceScore).toBeGreaterThanOrEqual(85);
 
 			// Check key metrics
 			const audits = results.audits;
 
+			// biome-ignore lint/style/noNonNullAssertion: Audit values are guaranteed to exist in Lighthouse results
 			const fcp = audits["first-contentful-paint"].numericValue!;
 			expect(fcp).toBeLessThan(1500);
 
+			// biome-ignore lint/style/noNonNullAssertion: Audit values are guaranteed to exist in Lighthouse results
 			const lcp = audits["largest-contentful-paint"].numericValue!;
 			expect(lcp).toBeLessThan(2500);
 
+			// biome-ignore lint/style/noNonNullAssertion: Audit values are guaranteed to exist in Lighthouse results
 			const cls = audits["cumulative-layout-shift"].numericValue!;
 			expect(cls).toBeLessThan(0.1);
 		});
@@ -129,7 +133,7 @@ test.describe("Lighthouse Performance Tests", () => {
 
 			const audits = results.audits;
 
-			// Time to Interactive (TTI) < 3.5s
+			// biome-ignore lint/style/noNonNullAssertion: Audit values are guaranteed to exist in Lighthouse results
 			const tti = audits.interactive.numericValue!;
 			expect(tti).toBeLessThan(3500);
 		});
@@ -199,22 +203,22 @@ test.describe("Lighthouse Performance Tests", () => {
 			expect(results).toBeDefined();
 			if (!results) return;
 
-			// Mobile performance should be at least 75 (mobile is generally slower)
+			// biome-ignore lint/style/noNonNullAssertion: Lighthouse results are checked above
 			const performanceScore = results.categories.performance.score! * 100;
 			expect(performanceScore).toBeGreaterThanOrEqual(75);
 
 			// Check mobile Core Web Vitals (slightly relaxed for mobile)
 			const audits = results.audits;
 
-			// FCP < 2s on mobile
+			// biome-ignore lint/style/noNonNullAssertion: Audit values are guaranteed to exist in Lighthouse results
 			const fcp = audits["first-contentful-paint"].numericValue!;
 			expect(fcp).toBeLessThan(2000);
 
-			// LCP < 3s on mobile
+			// biome-ignore lint/style/noNonNullAssertion: Audit values are guaranteed to exist in Lighthouse results
 			const lcp = audits["largest-contentful-paint"].numericValue!;
 			expect(lcp).toBeLessThan(3000);
 
-			// CLS < 0.1
+			// biome-ignore lint/style/noNonNullAssertion: Audit values are guaranteed to exist in Lighthouse results
 			const cls = audits["cumulative-layout-shift"].numericValue!;
 			expect(cls).toBeLessThan(0.1);
 		});
@@ -242,7 +246,7 @@ test.describe("Lighthouse Performance Tests", () => {
 			expect(results).toBeDefined();
 			if (!results) return;
 
-			// Accessibility score should be at least 90
+			// biome-ignore lint/style/noNonNullAssertion: Lighthouse results are checked above
 			const accessibilityScore = results.categories.accessibility.score! * 100;
 			expect(accessibilityScore).toBeGreaterThanOrEqual(90);
 		});
@@ -253,6 +257,7 @@ test.describe("Lighthouse Performance Tests", () => {
 			expect(results).toBeDefined();
 			if (!results) return;
 
+			// biome-ignore lint/style/noNonNullAssertion: Lighthouse results are checked above
 			const accessibilityScore = results.categories.accessibility.score! * 100;
 			expect(accessibilityScore).toBeGreaterThanOrEqual(90);
 
@@ -281,7 +286,7 @@ test.describe("Lighthouse Performance Tests", () => {
 			expect(results).toBeDefined();
 			if (!results) return;
 
-			// Best practices score should be at least 90
+			// biome-ignore lint/style/noNonNullAssertion: Lighthouse results are checked above
 			const bestPracticesScore = results.categories["best-practices"].score! * 100;
 			expect(bestPracticesScore).toBeGreaterThanOrEqual(90);
 		});
@@ -324,7 +329,7 @@ test.describe("Lighthouse Performance Tests", () => {
 			expect(results).toBeDefined();
 			if (!results) return;
 
-			// SEO score should be at least 90
+			// biome-ignore lint/style/noNonNullAssertion: Lighthouse results are checked above
 			const seoScore = results.categories.seo.score! * 100;
 			expect(seoScore).toBeGreaterThanOrEqual(90);
 		});

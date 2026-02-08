@@ -139,7 +139,7 @@ export async function calculateExperimentResults(
 		if (!variantStats.has(variant)) {
 			variantStats.set(variant, { exposures: new Set(), conversions: 0, values: [] });
 		}
-		variantStats.get(variant)!.exposures.add(exposure.distinct_id);
+		variantStats.get(variant)?.exposures.add(exposure.distinct_id);
 	}
 
 	// Count conversions
