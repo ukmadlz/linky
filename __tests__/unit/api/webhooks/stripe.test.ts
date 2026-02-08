@@ -95,6 +95,10 @@ describe("Stripe Webhook Handler", () => {
 			const response = await POST(request);
 
 			// Verify response
+			if (response.status !== 200) {
+				const errorBody = await response.json();
+				console.error("Webhook failed:", errorBody);
+			}
 			expect(response.status).toBe(200);
 			const body = await response.json();
 			expect(body).toEqual({ received: true });

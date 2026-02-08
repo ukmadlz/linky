@@ -1,3 +1,4 @@
+import type Stripe from "stripe";
 import { eq } from "drizzle-orm";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { POST as stripeWebhookPOST } from "@/app/api/webhooks/stripe/route";

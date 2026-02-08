@@ -8,6 +8,20 @@
 			"when": 1770369154650,
 			"tag": "0000_skinny_ego",
 			"breakpoints": true
+		},
+		{
+			"idx": 1,
+			"version": "7",
+			"when": 1739048400000,
+			"tag": "0001_fix_subscriptions_table",
+			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "7",
+			"when": 1739048460000,
+			"tag": "0002_add_updated_at_columns",
+			"breakpoints": true
 		}
 	]
 }

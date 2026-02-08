@@ -184,13 +184,13 @@ describe("Link Management Integration", () => {
 
 	describe("Reorder Links", () => {
 		it("should update link positions", async () => {
-			const links = await createTestLinks(testUser.id, 3);
+			const testLinks = await createTestLinks(testUser.id, 3);
 
 			// Reorder: move first link to last position
 			const reorderedData = [
-				{ id: links[1].id, position: 0 },
-				{ id: links[2].id, position: 1 },
-				{ id: links[0].id, position: 2 },
+				{ id: testLinks[1].id, position: 0 },
+				{ id: testLinks[2].id, position: 1 },
+				{ id: testLinks[0].id, position: 2 },
 			];
 
 			for (const item of reorderedData) {
@@ -207,9 +207,9 @@ describe("Link Management Integration", () => {
 				.where(eq(links.userId, testUser.id))
 				.orderBy(links.position);
 
-			expect(updatedLinks[0].id).toBe(links[1].id);
-			expect(updatedLinks[1].id).toBe(links[2].id);
-			expect(updatedLinks[2].id).toBe(links[0].id);
+			expect(updatedLinks[0].id).toBe(testLinks[1].id);
+			expect(updatedLinks[1].id).toBe(testLinks[2].id);
+			expect(updatedLinks[2].id).toBe(testLinks[0].id);
 		});
 
 		it("should maintain correct positions after reorder", async () => {
