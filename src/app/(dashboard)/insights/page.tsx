@@ -103,8 +103,8 @@ export default async function InsightsDashboardPage() {
 			<div className="bg-white rounded-lg shadow p-6 mb-8">
 				<h2 className="text-xl font-semibold mb-4">Most Common User Paths</h2>
 				<div className="space-y-4">
-					{pathAnalysis?.commonPaths.slice(0, 5).map((path, index) => (
-						<div key={index} className="border-l-4 border-blue-500 pl-4 py-2">
+					{pathAnalysis?.commonPaths.slice(0, 5).map((path) => (
+						<div key={path.path.join(" → ")} className="border-l-4 border-blue-500 pl-4 py-2">
 							<div className="flex justify-between items-center">
 								<div className="text-sm font-medium">{path.path.join(" → ")}</div>
 								<div className="text-sm text-gray-600">{path.frequency} users</div>
@@ -118,8 +118,8 @@ export default async function InsightsDashboardPage() {
 			<div className="bg-white rounded-lg shadow p-6 mb-8">
 				<h2 className="text-xl font-semibold mb-4">Top Drop-off Points</h2>
 				<div className="space-y-3">
-					{pathAnalysis?.dropOffPoints.slice(0, 5).map((point, index) => (
-						<div key={index} className="flex justify-between items-center">
+					{pathAnalysis?.dropOffPoints.slice(0, 5).map((point) => (
+						<div key={point.page} className="flex justify-between items-center">
 							<div>
 								<div className="font-medium">{point.page}</div>
 								<div className="text-sm text-gray-600">{point.visits} visits</div>
