@@ -154,10 +154,12 @@ export async function calculateExperimentResults(
 		const value = conversionEvent.properties.metric_value;
 
 		if (variantStats.has(variant)) {
-			const stats = variantStats.get(variant)!;
-			stats.conversions++;
-			if (value !== undefined) {
-				stats.values.push(value);
+			const stats = variantStats.get(variant);
+			if (stats) {
+				stats.conversions++;
+				if (value !== undefined) {
+					stats.values.push(value);
+				}
 			}
 		}
 	}

@@ -4,9 +4,9 @@
  */
 
 import { hash } from "bcryptjs";
+import { eq } from "drizzle-orm";
 import { db } from "../lib/db";
 import { users } from "../lib/db/schema";
-import { eq } from "drizzle-orm";
 
 const TEST_USERS = [
 	{

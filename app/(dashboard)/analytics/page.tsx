@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
-import { getSessionFromCookie } from "@/lib/session-jwt";
 import { getLinksByUserId, getUserById } from "@/lib/db/queries";
+import { getSessionFromCookie } from "@/lib/session-jwt";
 
 export default async function AnalyticsPage() {
 	const session = await getSessionFromCookie();

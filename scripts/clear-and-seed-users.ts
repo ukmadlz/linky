@@ -1,5 +1,5 @@
 import { db } from "../lib/db";
-import { users, accounts, sessions } from "../lib/db/schema";
+import { accounts, sessions, users } from "../lib/db/schema";
 
 async function clearAndSeed() {
 	try {

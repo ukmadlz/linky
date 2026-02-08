@@ -1,13 +1,5 @@
-import {
-	boolean,
-	index,
-	integer,
-	pgTable,
-	text,
-	timestamp,
-	varchar,
-} from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
+import { boolean, index, integer, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
 
 // Users table
 export const users = pgTable(

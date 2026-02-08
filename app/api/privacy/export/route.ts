@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { getSessionFromRequest } from "@/lib/session-jwt";
 import { trackAPIError } from "@/lib/posthog-server-error-tracking";
 import { exportUserData } from "@/lib/privacy";
+import { getSessionFromRequest } from "@/lib/session-jwt";
 
 /**
  * GDPR Data Export endpoint

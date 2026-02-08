@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import SettingsForm from "@/components/dashboard/SettingsForm";
-import { getSessionFromCookie } from "@/lib/session-jwt";
 import { getUserById } from "@/lib/db/queries";
+import { getSessionFromCookie } from "@/lib/session-jwt";
 
 export default async function SettingsPage() {
 	const session = await getSessionFromCookie();

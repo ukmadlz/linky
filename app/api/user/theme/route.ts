@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { getSessionFromRequest } from "@/lib/session-jwt";
 import { updateUser } from "@/lib/db/queries";
+import { getSessionFromRequest } from "@/lib/session-jwt";
 
 export async function PATCH(request: Request) {
 	try {

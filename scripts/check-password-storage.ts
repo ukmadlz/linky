@@ -1,6 +1,6 @@
-import { db } from "../lib/db";
-import { users, accounts } from "../lib/db/schema";
 import { eq } from "drizzle-orm";
+import { db } from "../lib/db";
+import { accounts, users } from "../lib/db/schema";
 
 async function checkPassword() {
 	const email = "finaltest@example.com";
