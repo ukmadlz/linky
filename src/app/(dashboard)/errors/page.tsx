@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import type { PostHogErrorEvent, PostHogQueryResult } from "@/lib/types/posthog";
 
 /**
  * Error Monitoring Dashboard (Admin/Internal Only)
@@ -199,9 +200,7 @@ function getMockErrorMetrics() {
 async function _getErrorMetricsFromPostHog() {
 	// REFERENCE IMPLEMENTATION - Not currently used
 	// This shows how to query PostHog when it's deployed
-	const errors = {
-		results: [] as any[],
-	};
+	const errors: PostHogQueryResult = { results: [] };
 
 	// Calculate metrics
 	const totalErrors = errors.results.length;
@@ -213,9 +212,10 @@ async function _getErrorMetricsFromPostHog() {
 	const errorPages = new Map<string, number>();
 
 	for (const error of errors.results) {
-		const message = error.properties.error_message || "Unknown error";
-		const type = error.properties.error_type || "UnknownError";
-		const page = error.properties.$current_url || "Unknown page";
+		const errorEvent = error as PostHogErrorEvent;
+		const message = errorEvent.properties.error_message || "Unknown error";
+		const type = errorEvent.properties.error_type || "UnknownError";
+		const page = errorEvent.properties.$current_url || "Unknown page";
 
 		errorGroups.set(message, (errorGroups.get(message) || 0) + 1);
 		errorTypes.set(type, (errorTypes.get(type) || 0) + 1);
@@ -224,7 +224,7 @@ async function _getErrorMetricsFromPostHog() {
 
 	// Get total page views for error rate
 	// const pageViews = await posthog.api.query({ ... });
-	const pageViews = { results: [] as any[] };
+	const pageViews: PostHogQueryResult = { results: [] };
 
 	const errorRate = pageViews.results.length > 0 ? totalErrors / pageViews.results.length : 0;
 
