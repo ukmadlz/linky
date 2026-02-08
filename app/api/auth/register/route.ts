@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
 import { hash } from "bcryptjs";
+import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
+import { type NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
 import { createSessionToken } from "@/lib/session-jwt";
 
 export async function POST(request: NextRequest) {
@@ -17,7 +17,10 @@ export async function POST(request: NextRequest) {
 		}
 
 		if (password.length < 8) {
-			return NextResponse.json({ error: "Password must be at least 8 characters" }, { status: 400 });
+			return NextResponse.json(
+				{ error: "Password must be at least 8 characters" },
+				{ status: 400 }
+			);
 		}
 
 		// Check if user already exists
@@ -34,7 +37,11 @@ export async function POST(request: NextRequest) {
 
 		// Create user with auto-generated username from email
 		const userId = nanoid();
-		const username = email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g, '') + nanoid(4);
+		const username =
+			email
+				.split("@")[0]
+				.toLowerCase()
+				.replace(/[^a-z0-9]/g, "") + nanoid(4);
 
 		await db.insert(users).values({
 			id: userId,

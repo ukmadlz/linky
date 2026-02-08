@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { getSessionFromRequest } from "@/lib/session-jwt";
 import { canAddLink, createLink } from "@/lib/db/queries";
 import { trackAPIError, trackExternalAPIError } from "@/lib/posthog-server-error-tracking";
+import { getSessionFromRequest } from "@/lib/session-jwt";
 
 export async function POST(request: Request) {
 	try {

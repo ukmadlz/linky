@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import LinkList from "@/components/dashboard/LinkList";
-import { getSessionFromCookie } from "@/lib/session-jwt";
 import { getLinksByUserId, getUserById } from "@/lib/db/queries";
+import { getSessionFromCookie } from "@/lib/session-jwt";
 
 export default async function LinksPage() {
 	const session = await getSessionFromCookie();

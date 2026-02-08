@@ -1,7 +1,7 @@
-import { sql } from "drizzle-orm";
-import { db } from "../lib/db";
 import { hash } from "bcryptjs";
+import { sql } from "drizzle-orm";
 import { nanoid } from "nanoid";
+import { db } from "../lib/db";
 import { users } from "../lib/db/schema";
 
 async function cleanupAndSeed() {
@@ -28,7 +28,7 @@ async function cleanupAndSeed() {
 		for (const userData of testUsers) {
 			const hashedPassword = await hash(userData.password, 10);
 			const userId = nanoid();
-			const username = userData.email.split('@')[0] + nanoid(4);
+			const username = userData.email.split("@")[0] + nanoid(4);
 
 			await db.insert(users).values({
 				id: userId,

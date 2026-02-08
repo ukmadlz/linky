@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
 import { compare } from "bcryptjs";
+import { eq } from "drizzle-orm";
+import { type NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
 import { createSessionToken } from "@/lib/session-jwt";
 
 export async function POST(request: NextRequest) {

@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import AppearanceEditor from "@/components/dashboard/AppearanceEditor";
-import { getSessionFromCookie } from "@/lib/session-jwt";
 import { getUserById } from "@/lib/db/queries";
+import { getSessionFromCookie } from "@/lib/session-jwt";
 
 export default async function AppearancePage() {
 	const session = await getSessionFromCookie();

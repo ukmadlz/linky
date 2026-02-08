@@ -76,11 +76,13 @@ export async function getCommonUserPaths(limit = 10): Promise<UserPath[]> {
 			userSessions.set(userId, []);
 		}
 
-		const session = userSessions.get(userId)!;
-		if (session.length === 0 || session[session.length - 1] !== fromPage) {
-			session.push(fromPage);
+		const session = userSessions.get(userId);
+		if (session) {
+			if (session.length === 0 || session[session.length - 1] !== fromPage) {
+				session.push(fromPage);
+			}
+			session.push(toPage);
 		}
-		session.push(toPage);
 	}
 
 	// Analyze paths
@@ -91,7 +93,7 @@ export async function getCommonUserPaths(limit = 10): Promise<UserPath[]> {
 			pathMap.set(pathKey, { count: 0, durations: [] });
 		}
 
-		const pathData = pathMap.get(pathKey)!;
+		const pathData = pathMap.get(pathKey);
 		pathData.count++;
 	}
 
@@ -151,25 +153,27 @@ export async function identifyDropOffPoints(): Promise<
 			pageStats.set(page, { visits: 0, exits: 0, nextPages: new Set() });
 		}
 
-		const stats = pageStats.get(page)!;
-		stats.visits++;
+		const stats = pageStats.get(page);
+		if (stats) {
+			stats.visits++;
 
-		// Check if this is a new user session or continuation
-		if (userId === lastUserId && lastPage) {
-			// Add transition from last page to this page
-			const lastStats = pageStats.get(lastPage)!;
-			lastStats.nextPages.add(page);
+			// Check if this is a new user session or continuation
+			if (userId === lastUserId && lastPage) {
+				// Add transition from last page to this page
+				const lastStats = pageStats.get(lastPage);
+				lastStats.nextPages.add(page);
+			}
+
+			// Check if this is the last page in the session
+			const nextEvent = sortedEvents[i + 1];
+			if (!nextEvent || nextEvent.distinct_id !== userId) {
+				// User exited from this page
+				stats.exits++;
+			}
+
+			lastUserId = userId;
+			lastPage = page;
 		}
-
-		// Check if this is the last page in the session
-		const nextEvent = sortedEvents[i + 1];
-		if (!nextEvent || nextEvent.distinct_id !== userId) {
-			// User exited from this page
-			stats.exits++;
-		}
-
-		lastUserId = userId;
-		lastPage = page;
 	}
 
 	// Calculate drop-off rates
