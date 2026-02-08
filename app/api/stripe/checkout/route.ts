@@ -1,16 +1,16 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getSessionFromRequest } from "@/lib/session-jwt";
 import { getUserById } from "@/lib/db/queries";
 import { createCheckoutSession } from "@/lib/stripe";
 
 export async function POST(request: Request) {
 	try {
-		const session = await auth.api.getSession({ headers: request.headers });
+		const session = await getSessionFromRequest(request);
 		if (!session) {
 			return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 		}
 
-		const user = await getUserById(session.user.id);
+		const user = await getUserById(session.userId);
 		if (!user) {
 			return NextResponse.json({ error: "User not found" }, { status: 404 });
 		}

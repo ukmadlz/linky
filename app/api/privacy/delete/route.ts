@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getSessionFromRequest } from "@/lib/session-jwt";
 import { trackAPIError } from "@/lib/posthog-server-error-tracking";
 import { deleteUserData } from "@/lib/privacy";
 
@@ -9,13 +9,13 @@ import { deleteUserData } from "@/lib/privacy";
  */
 export async function POST(request: Request) {
 	try {
-		const session = await auth.api.getSession({ headers: request.headers });
+		const session = await getSessionFromRequest(request);
 
 		if (!session) {
 			return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 		}
 
-		const userId = session.user.id;
+		const userId = session.userId;
 
 		// Get confirmation from request body
 		const body = await request.json();

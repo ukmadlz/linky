@@ -2,20 +2,31 @@
 
 import { useEffect, useState } from "react";
 import { usePostHogIdentify } from "@/hooks/usePostHogIdentify";
-import { useSession } from "@/lib/auth-client";
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-	const { data: session } = useSession();
+// Simple client-side hook to fetch session
+function useSession() {
 	// biome-ignore lint/suspicious/noExplicitAny: Session user type is complex
 	const [user, setUser] = useState<any>(null);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		if (session?.user) {
-			setUser(session.user);
-		} else {
-			setUser(null);
-		}
-	}, [session]);
+		fetch("/api/auth/session")
+			.then((res) => res.json())
+			.then((data) => {
+				setUser(data.user);
+				setLoading(false);
+			})
+			.catch(() => {
+				setUser(null);
+				setLoading(false);
+			});
+	}, []);
+
+	return { user, loading };
+}
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+	const { user } = useSession();
 
 	// Identify user in PostHog
 	usePostHogIdentify(user);

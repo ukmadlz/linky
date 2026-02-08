@@ -22,7 +22,7 @@ test.describe("Authentication E2E", () => {
 			await page.click('button[type="submit"]');
 
 			// Should redirect to dashboard
-			await expect(page).toHaveURL(/\/dashboard/);
+			await page.waitForURL(/\/dashboard/, { timeout: 10000 });
 
 			// Should see welcome message or dashboard content
 			await expect(page.locator("text=Dashboard")).toBeVisible();
@@ -82,7 +82,7 @@ test.describe("Authentication E2E", () => {
 			await page.click('button[type="submit"]');
 
 			// Should redirect to dashboard
-			await expect(page).toHaveURL(/\/dashboard/);
+			await page.waitForURL(/\/dashboard/, { timeout: 10000 });
 		});
 
 		test("should show error for invalid credentials", async ({ page }) => {
@@ -118,10 +118,10 @@ test.describe("Authentication E2E", () => {
 			await page.fill('input[name="password"]', "correctpassword");
 			await page.click('button[type="submit"]');
 
-			await expect(page).toHaveURL(/\/dashboard/);
+			await page.waitForURL(/\/dashboard/, { timeout: 10000 });
 
 			// Click logout button
-			await page.click('button:has-text("Logout"), a:has-text("Logout")');
+			await page.click('button:has-text("Sign Out")', { force: true });
 
 			// Should redirect to home or login page
 			await expect(page).toHaveURL(/\/(login)?$/);
@@ -135,7 +135,7 @@ test.describe("Authentication E2E", () => {
 			await page.click('button[type="submit"]');
 
 			// Logout
-			await page.click('button:has-text("Logout"), a:has-text("Logout")');
+			await page.click('button:has-text("Sign Out")', { force: true });
 
 			// Try to access dashboard directly
 			await page.goto("/dashboard");

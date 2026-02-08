@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getSessionFromRequest } from "@/lib/session-jwt";
 import { canAddLink, createLink } from "@/lib/db/queries";
 import { trackAPIError, trackExternalAPIError } from "@/lib/posthog-server-error-tracking";
 
 export async function POST(request: Request) {
 	try {
-		const session = await auth.api.getSession({ headers: request.headers });
+		const session = await getSessionFromRequest(request);
 
 		if (!session) {
 			return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -34,10 +34,11 @@ export async function POST(request: Request) {
 
 		// Trigger revalidation
 		const { getUserById } = await import("@/lib/db/queries");
-		const user = await getUserById(session.user.id);
+		const user = await getUserById(session.userId);
 		if (user) {
 			try {
-				await fetch(`${process.env.BETTER_AUTH_URL}/api/revalidate`, {
+				const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+				await fetch(`${baseURL}/api/revalidate`, {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({
@@ -49,7 +50,7 @@ export async function POST(request: Request) {
 				// Track revalidation API failure but don't fail the request
 				await trackExternalAPIError("revalidate-api", revalidateError, {
 					endpoint: "/api/revalidate",
-					user_id: session.user.id,
+					user_id: session.userId,
 					username: user.username,
 				});
 			}
@@ -59,7 +60,7 @@ export async function POST(request: Request) {
 	} catch (error) {
 		// Track the error in PostHog
 		await trackAPIError(error, request, {
-			user_id: (await auth.api.getSession({ headers: request.headers }))?.user?.id,
+			user_id: (await getSessionFromRequest(request))?.userId,
 			operation: "create_link",
 		});
 

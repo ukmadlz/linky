@@ -1,19 +1,17 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import SignOutButton from "@/components/SignOutButton";
-import { auth } from "@/lib/auth";
+import { getSessionFromCookie } from "@/lib/session-jwt";
 import { getUserById } from "@/lib/db/queries";
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-	const session = await auth.api.getSession({
-		headers: await import("next/headers").then((m) => m.headers()),
-	});
+	const session = await getSessionFromCookie();
 
 	if (!session) {
 		redirect("/login");
 	}
 
-	const user = await getUserById(session.user.id);
+	const user = await getUserById(session.userId);
 
 	if (!user) {
 		redirect("/login");
@@ -54,7 +52,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 					</nav>
 
 					<div className="mt-8 p-4 bg-gray-50 rounded-md">
-						<p className="text-sm font-medium mb-1">@{user.username}</p>
+						<p className="text-sm font-medium mb-1">@{user.username || user.email.split('@')[0]}</p>
 						<p className="text-xs text-gray-500 mb-3">{user.email}</p>
 						<SignOutButton />
 					</div>
@@ -65,7 +63,10 @@ export default async function DashboardLayout({ children }: { children: React.Re
 			<header className="lg:hidden bg-white shadow-md p-4">
 				<div className="flex items-center justify-between">
 					<h1 className="text-xl font-bold">Linky</h1>
-					<div className="text-sm">@{user.username}</div>
+				<div className="flex items-center gap-3">
+										<div className="text-sm">@{user.username || user.email.split('@')[0]}</div>
+					<SignOutButton />
+				</div>
 				</div>
 			</header>
 
