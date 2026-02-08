@@ -16,7 +16,6 @@ describe("Authentication Flow Integration", () => {
 			const registrationData = {
 				email: "newuser@test.com",
 				username: "newuser",
-				name: "Test User",
 				password: "SecurePass123!",
 				name: "New User",
 			};
