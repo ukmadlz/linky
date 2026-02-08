@@ -125,9 +125,11 @@ export default async function ErrorMonitoringPage() {
 			<div className="bg-white rounded-lg shadow p-6">
 				<h2 className="text-xl font-semibold mb-4">Recent Errors</h2>
 				<div className="space-y-4">
-					{/* biome-ignore lint/suspicious/noExplicitAny: Error type from PostHog API is complex */}
-					{errorData?.recentErrors.slice(0, 20).map((error: any) => (
-						<div key={`${error.timestamp}-${error.userId}`} className="border-l-4 border-red-500 pl-4 py-2">
+					{errorData?.recentErrors.slice(0, 20).map((error) => (
+						<div
+							key={`${error.timestamp}-${error.userId}`}
+							className="border-l-4 border-red-500 pl-4 py-2"
+						>
 							<div className="flex justify-between items-start">
 								<div className="flex-1">
 									<div className="font-medium text-red-600">{error.message}</div>
