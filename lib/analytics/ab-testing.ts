@@ -4,7 +4,11 @@
  */
 
 import { posthog } from "@/lib/posthog-server";
-import type { PostHogFeatureFlagEvent, PostHogQueryResult } from "@/lib/types/posthog";
+import type {
+	PostHogConversionEvent,
+	PostHogFeatureFlagEvent,
+	PostHogQueryResult,
+} from "@/lib/types/posthog";
 
 export interface Experiment {
 	key: string;
@@ -145,8 +149,9 @@ export async function calculateExperimentResults(
 
 	// Count conversions
 	for (const conversion of conversions.results) {
-		const variant = conversion.properties.variant;
-		const value = conversion.properties.metric_value;
+		const conversionEvent = conversion as PostHogConversionEvent;
+		const variant = conversionEvent.properties.variant;
+		const value = conversionEvent.properties.metric_value;
 
 		if (variantStats.has(variant)) {
 			const stats = variantStats.get(variant)!;
