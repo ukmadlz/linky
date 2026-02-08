@@ -49,7 +49,7 @@ describe("LinkList", () => {
 
 	beforeEach(() => {
 		vi.clearAllMocks();
-		(global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
+		global.fetch = vi.fn().mockResolvedValue({
 			ok: true,
 			json: async () => ({}),
 		} as Response);
