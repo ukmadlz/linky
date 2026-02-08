@@ -3,6 +3,8 @@
  * Supports Grafana, Prometheus, and data export
  */
 
+import type { PostHogQueryResult } from "@/lib/types/posthog";
+
 export interface MonitoringIntegration {
 	name: string;
 	enabled: boolean;
@@ -179,7 +181,7 @@ export async function exportToS3(
 	console.log(`Exporting PostHog data to s3://${bucketName}/${prefix}`);
 
 	// TODO: Implement PostHog API query when deployed
-	const events = { results: [] as any[] };
+	const events: PostHogQueryResult = { results: [] };
 
 	// In a real implementation:
 	// 1. Batch events into files

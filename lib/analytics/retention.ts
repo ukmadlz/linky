@@ -7,6 +7,7 @@ import { gte, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
 import { posthog } from "@/lib/posthog-server";
+import type { PostHogQueryResult } from "@/lib/types/posthog";
 
 export interface RetentionMetrics {
 	wau: number; // Weekly Active Users
@@ -213,7 +214,7 @@ async function checkUserActiveOnDay(
 
 	// TODO: Implement PostHog API query when deployed
 	// Check PostHog for any activity on that day
-	const events = { results: [] as any[] };
+	const events: PostHogQueryResult = { results: [] };
 
 	return events.results.length > 0;
 }

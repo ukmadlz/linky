@@ -4,6 +4,7 @@
  */
 
 import { posthog } from "@/lib/posthog-server";
+import type { PostHogFeatureFlagEvent, PostHogQueryResult } from "@/lib/types/posthog";
 
 export interface Experiment {
 	key: string;
@@ -124,8 +125,8 @@ export async function calculateExperimentResults(
 ): Promise<ExperimentResults> {
 	// TODO: Implement PostHog API queries when deployed
 	// For now, return mock data
-	const exposures = { results: [] as any[] };
-	const conversions = { results: [] as any[] };
+	const exposures: PostHogQueryResult = { results: [] };
+	const conversions: PostHogQueryResult = { results: [] };
 
 	// Group by variant
 	const variantStats = new Map<
@@ -135,7 +136,7 @@ export async function calculateExperimentResults(
 
 	// Count exposures
 	for (const exposure of exposures.results) {
-		const variant = exposure.properties.$feature_flag_response;
+		const variant = (exposure as PostHogFeatureFlagEvent).properties.$feature_flag_response;
 		if (!variantStats.has(variant)) {
 			variantStats.set(variant, { exposures: new Set(), conversions: 0, values: [] });
 		}
