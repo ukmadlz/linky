@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { cleanup } from "@testing-library/react";
 import { afterAll, afterEach, beforeAll, vi } from "vitest";
-import { clearMockAuth } from "./mocks/handlers/betterauth";
+import { clearMockAuth } from "./mocks/handlers/auth";
 import { clearCapturedEvents } from "./mocks/handlers/posthog";
 import { closeMockServer, resetMockServer, setupMockServer } from "./mocks/server";
 
@@ -10,6 +10,9 @@ global.fetch = vi.fn();
 
 // Mock window.confirm
 global.confirm = vi.fn();
+
+// Mock window.alert
+global.alert = vi.fn();
 
 // Setup MSW server
 beforeAll(() => {

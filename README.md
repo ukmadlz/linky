@@ -149,7 +149,7 @@ See `.env.example` for all required environment variables.
 
 Key variables:
 - `DATABASE_URL` - PostgreSQL connection string
-- `BETTER_AUTH_SECRET` - Auth encryption key
+- `SESSION_SECRET` - JWT session encryption key (min 32 characters)
 - `STRIPE_SECRET_KEY` - Stripe API key
 - `NEXT_PUBLIC_POSTHOG_KEY` - PostHog project key
 
@@ -185,8 +185,8 @@ MIT License - see LICENSE file for details
 
 Built with these amazing open-source projects:
 - [Next.js](https://nextjs.org)
-- [BetterAuth](https://better-auth.com)
 - [Drizzle ORM](https://orm.drizzle.team)
 - [PostHog](https://posthog.com)
 - [Stripe](https://stripe.com)
+- [jose](https://github.com/panva/jose) - JWT authentication
 - [ValKey](https://valkey.io)

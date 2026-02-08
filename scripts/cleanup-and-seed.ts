@@ -8,10 +8,7 @@ async function cleanupAndSeed() {
 	try {
 		console.log("Cleaning up old auth tables...\n");
 
-		// Delete all sessions, accounts, verifications (from better-auth)
-		await db.execute(sql`TRUNCATE TABLE sessions CASCADE;`);
-		await db.execute(sql`TRUNCATE TABLE accounts CASCADE;`);
-		await db.execute(sql`TRUNCATE TABLE verifications CASCADE;`);
+		// Clear all users and related data
 		await db.execute(sql`TRUNCATE TABLE users CASCADE;`);
 
 		console.log("✅ Old data cleared\n");

@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { NextResponse } from "next/server";
 import { canAddLink, createLink } from "@/lib/db/queries";
 import { trackAPIError, trackExternalAPIError } from "@/lib/posthog-server-error-tracking";
@@ -24,6 +25,7 @@ export async function POST(request: Request) {
 
 		const link = await createLink({
 			userId,
+			id: nanoid(),
 			title,
 			url,
 			icon,

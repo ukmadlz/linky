@@ -39,7 +39,7 @@ export default function LinkPage({ user, links }: LinkPageProps) {
 						<div className="relative w-24 h-24 rounded-full overflow-hidden">
 							<Image
 								src={user.avatarUrl}
-								alt={user.name || user.username}
+								alt={user.name || user.username || "User avatar"}
 								fill
 								className="object-cover"
 							/>

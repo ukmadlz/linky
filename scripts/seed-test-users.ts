@@ -5,6 +5,7 @@
 
 import { hash } from "bcryptjs";
 import { eq } from "drizzle-orm";
+import { nanoid } from "nanoid";
 import { db } from "../lib/db";
 import { users } from "../lib/db/schema";
 
@@ -55,6 +56,7 @@ async function seedTestUsers() {
 			// Create user
 			await db.insert(users).values({
 				email: testUser.email,
+				id: nanoid(),
 				username: testUser.username,
 				name: testUser.name,
 				emailVerified: true,

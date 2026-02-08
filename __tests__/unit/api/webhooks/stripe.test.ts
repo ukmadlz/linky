@@ -5,7 +5,7 @@ import {
 	signStripeWebhook,
 	subscriptionDeleted,
 } from "@/__tests__/mocks/factories/stripe-events";
-import { createMockUser } from "@/__tests__/mocks/handlers/betterauth";
+import { createMockUser } from "@/__tests__/mocks/handlers/auth";
 import { POST } from "@/app/api/webhooks/stripe/route";
 import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";

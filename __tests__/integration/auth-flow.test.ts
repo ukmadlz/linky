@@ -16,6 +16,7 @@ describe("Authentication Flow Integration", () => {
 			const registrationData = {
 				email: "newuser@test.com",
 				username: "newuser",
+				name: "Test User",
 				password: "SecurePass123!",
 				name: "New User",
 			};
@@ -50,6 +51,7 @@ describe("Authentication Flow Integration", () => {
 			const registrationData = {
 				email: "existing@test.com",
 				username: "newusername",
+				name: "Test User",
 				password: "SecurePass123!",
 			};
 
@@ -76,6 +78,7 @@ describe("Authentication Flow Integration", () => {
 			const registrationData = {
 				email: "user2@test.com",
 				username: "takenusername",
+				name: "Test User",
 				password: "SecurePass123!",
 			};
 
@@ -96,6 +99,7 @@ describe("Authentication Flow Integration", () => {
 			const registrationData = {
 				email: "invalid-email",
 				username: "newuser",
+				name: "Test User",
 				password: "SecurePass123!",
 			};
 
@@ -136,6 +140,7 @@ describe("Authentication Flow Integration", () => {
 			const registrationData = {
 				email: "user@test.com",
 				username: "newuser",
+				name: "Test User",
 				password: "short",
 			};
 
@@ -156,6 +161,7 @@ describe("Authentication Flow Integration", () => {
 			const registrationData = {
 				email: "newuser@test.com",
 				username: "newuser",
+				name: "Test User",
 				password: "SecurePass123!",
 			};
 

@@ -1,5 +1,5 @@
 import { setupServer } from "msw/node";
-import { betterAuthHandlers } from "./handlers/betterauth";
+import { authHandlers } from "./handlers/auth";
 import { posthogHandlers } from "./handlers/posthog";
 import { stripeHandlers } from "./handlers/stripe";
 
@@ -8,7 +8,7 @@ import { stripeHandlers } from "./handlers/stripe";
  * Intercepts HTTP requests and returns mock responses
  */
 
-export const server = setupServer(...stripeHandlers, ...posthogHandlers, ...betterAuthHandlers);
+export const server = setupServer(...stripeHandlers, ...posthogHandlers, ...authHandlers);
 
 // Start server before all tests
 export function setupMockServer() {
