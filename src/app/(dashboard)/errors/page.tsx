@@ -80,7 +80,7 @@ export default async function ErrorMonitoringPage() {
 				<h2 className="text-xl font-semibold mb-4">Top Errors by Frequency</h2>
 				<div className="space-y-4">
 					{errorData?.topErrors.slice(0, 10).map((error, index) => (
-						<ErrorRow key={index} error={error} rank={index + 1} />
+						<ErrorRow key={error.message} error={error} rank={index + 1} />
 					))}
 				</div>
 			</div>
@@ -90,8 +90,8 @@ export default async function ErrorMonitoringPage() {
 				<div className="bg-white rounded-lg shadow p-6">
 					<h2 className="text-xl font-semibold mb-4">Errors by Type</h2>
 					<div className="space-y-3">
-						{errorData?.errorsByType.map((type, index) => (
-							<div key={index} className="flex justify-between items-center">
+						{errorData?.errorsByType.map((type) => (
+							<div key={type.type} className="flex justify-between items-center">
 								<div>
 									<div className="font-medium">{type.type}</div>
 									<div className="text-sm text-gray-600">{type.count} occurrences</div>
@@ -107,8 +107,8 @@ export default async function ErrorMonitoringPage() {
 				<div className="bg-white rounded-lg shadow p-6">
 					<h2 className="text-xl font-semibold mb-4">Errors by Page</h2>
 					<div className="space-y-3">
-						{errorData?.errorsByPage.map((page, index) => (
-							<div key={index} className="flex justify-between items-center">
+						{errorData?.errorsByPage.map((page) => (
+							<div key={page.page} className="flex justify-between items-center">
 								<div>
 									<div className="font-medium truncate max-w-xs">{page.page}</div>
 									<div className="text-sm text-gray-600">{page.count} errors</div>
@@ -125,8 +125,8 @@ export default async function ErrorMonitoringPage() {
 				<h2 className="text-xl font-semibold mb-4">Recent Errors</h2>
 				<div className="space-y-4">
 					{/* biome-ignore lint/suspicious/noExplicitAny: Error type from PostHog API is complex */}
-					{errorData?.recentErrors.slice(0, 20).map((error: any, index: number) => (
-						<div key={index} className="border-l-4 border-red-500 pl-4 py-2">
+					{errorData?.recentErrors.slice(0, 20).map((error: any) => (
+						<div key={`${error.timestamp}-${error.userId}`} className="border-l-4 border-red-500 pl-4 py-2">
 							<div className="flex justify-between items-start">
 								<div className="flex-1">
 									<div className="font-medium text-red-600">{error.message}</div>
