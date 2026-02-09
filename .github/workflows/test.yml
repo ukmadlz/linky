@@ -57,6 +57,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Configure DB
+        run: npm run db:migrate
+
       - name: Run unit tests
         run: npm run test:unit
         env:
