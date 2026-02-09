@@ -31,6 +31,20 @@ jobs:
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
     steps:
       - uses: actions/checkout@v4
 
@@ -45,6 +59,12 @@ jobs:
 
       - name: Run unit tests
         run: npm run test:unit
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/test
+          STRIPE_SECRET_KEY: sk_test_mock
+          STRIPE_WEBHOOK_SECRET: whsec_mock
+          NEXT_PUBLIC_POSTHOG_KEY: phc_mock
+          NEXT_PUBLIC_POSTHOG_HOST: http://localhost:8000
 
       - name: Upload coverage reports
         uses: codecov/codecov-action@v4
