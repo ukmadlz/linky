@@ -22,6 +22,13 @@
 			"when": 1739048460000,
 			"tag": "0002_add_updated_at_columns",
 			"breakpoints": true
+		},
+		{
+			"idx": 3,
+			"version": "7",
+			"when": 1770575685791,
+			"tag": "0003_melted_sunspot",
+			"breakpoints": true
 		}
 	]
 }

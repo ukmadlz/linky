@@ -1,9 +1,8 @@
 /**
- * Seed test users for E2E testing
+ * Seed test users for E2E testing (OAuth version)
  * Run with: tsx scripts/seed-test-users.ts
  */
 
-import { hash } from "bcryptjs";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { db } from "../lib/db";
@@ -14,27 +13,24 @@ const TEST_USERS = [
 		email: "testuser@example.com",
 		username: "testuser",
 		name: "Test User",
-		password: "correctpassword",
 		isPro: false,
 	},
 	{
 		email: "freeuser@test.com",
 		username: "freeuser",
 		name: "Free User",
-		password: "FreeUser123!",
 		isPro: false,
 	},
 	{
 		email: "prouser@test.com",
 		username: "prouser",
 		name: "Pro User",
-		password: "ProUser123!",
 		isPro: true,
 	},
 ];
 
 async function seedTestUsers() {
-	console.log("🌱 Seeding test users...");
+	console.log("🌱 Seeding test users (OAuth version)...");
 
 	for (const testUser of TEST_USERS) {
 		try {
@@ -50,22 +46,21 @@ async function seedTestUsers() {
 				continue;
 			}
 
-			// Hash password
-			const hashedPassword = await hash(testUser.password, 10);
-
-			// Create user
+			// Create OAuth user (no password)
 			await db.insert(users).values({
 				email: testUser.email,
 				id: nanoid(),
 				username: testUser.username,
 				name: testUser.name,
 				emailVerified: true,
-				password: hashedPassword,
+				password: null, // OAuth users don't have passwords
 				isPro: testUser.isPro,
 				theme: JSON.stringify({}),
+				workosUserId: `workos_test_${nanoid()}`,
+				oauthProvider: "google", // Simulate Google OAuth
 			});
 
-			console.log(`✓ Created user: ${testUser.email}`);
+			console.log(`✓ Created OAuth user: ${testUser.email}`);
 		} catch (error) {
 			console.error(`✗ Failed to create ${testUser.email}:`, error);
 		}

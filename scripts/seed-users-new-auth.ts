@@ -1,16 +1,15 @@
-import { hash } from "bcryptjs";
 import { nanoid } from "nanoid";
 import { db } from "../lib/db";
 import { users } from "../lib/db/schema";
 
 async function seedUsers() {
 	try {
-		console.log("Creating test users...\n");
+		console.log("Creating test users (OAuth version)...\n");
 
 		const testUsers = [
-			{ email: "testuser@example.com", password: "correctpassword", name: "Test User" },
-			{ email: "freeuser@test.com", password: "password123", name: "Free User" },
-			{ email: "prouser@test.com", password: "password123", name: "Pro User" },
+			{ email: "testuser@example.com", name: "Test User", isPro: false },
+			{ email: "freeuser@test.com", name: "Free User", isPro: false },
+			{ email: "prouser@test.com", name: "Pro User", isPro: true },
 		];
 
 		for (const userData of testUsers) {
@@ -24,23 +23,22 @@ async function seedUsers() {
 				continue;
 			}
 
-			// Hash password
-			const hashedPassword = await hash(userData.password, 10);
-
-			// Create user
+			// Create OAuth user (no password)
 			const userId = nanoid();
 			await db.insert(users).values({
 				id: userId,
 				email: userData.email,
-				password: hashedPassword,
+				password: null, // OAuth users don't have passwords
 				name: userData.name,
 				username: null,
-				emailVerified: false,
-				isPro: userData.email.includes("prouser"),
+				emailVerified: true, // OAuth users are auto-verified
+				isPro: userData.isPro,
 				theme: "{}",
+				workosUserId: `workos_test_${nanoid()}`,
+				oauthProvider: "google", // Simulate Google OAuth
 			});
 
-			console.log(`✅ Created user: ${userData.email} (ID: ${userId})`);
+			console.log(`✅ Created OAuth user: ${userData.email} (ID: ${userId})`);
 		}
 
 		console.log("\n✅ Test users seeded successfully!");

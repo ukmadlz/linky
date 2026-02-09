@@ -39,6 +39,23 @@ export async function getUserByStripeCustomerId(customerId: string) {
 	return user;
 }
 
+export async function getUserByWorkosId(workosUserId: string) {
+	const [user] = await db.select().from(users).where(eq(users.workosUserId, workosUserId)).limit(1);
+	return user;
+}
+
+export async function updateUserOAuthInfo(
+	userId: string,
+	data: {
+		workosUserId: string;
+		oauthProvider: string;
+		profilePictureUrl?: string;
+		lastLoginAt?: Date;
+	}
+) {
+	return updateUser(userId, data);
+}
+
 export async function createUser(data: NewUser) {
 	return withDatabaseErrorTracking(
 		async () => {

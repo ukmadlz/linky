@@ -1,3 +1,4 @@
+import type Stripe from "stripe";
 import { eq } from "drizzle-orm";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
@@ -73,13 +74,13 @@ describe("Stripe Webhook Handler", () => {
 							price: {
 								id: "price_test_123",
 								object: "price",
-							} as any,
-						} as any,
+							} as Partial<Stripe.Price>,
+						} as Partial<Stripe.SubscriptionItem>,
 					],
 				},
 				current_period_start: Math.floor(Date.now() / 1000),
 				current_period_end: Math.floor(Date.now() / 1000) + 2592000,
-			} as any);
+			} as Partial<Stripe.Subscription> as Stripe.Subscription);
 
 			// Create request
 			const request = new Request("http://localhost:3000/api/webhooks/stripe", {
@@ -116,8 +117,12 @@ describe("Stripe Webhook Handler", () => {
 
 			// Mock Stripe webhook constructEvent to throw error for invalid signature
 			vi.mocked(stripe.webhooks.constructEvent).mockImplementation(() => {
-				const error = new Error("Unable to extract timestamp and signatures from header");
-				(error as any).type = "StripeSignatureVerificationError";
+				const error = new Error(
+					"Unable to extract timestamp and signatures from header"
+				) as Error & {
+					type: string;
+				};
+				error.type = "StripeSignatureVerificationError";
 				throw error;
 			});
 
