@@ -12,8 +12,8 @@ async function migrateSubscriptions() {
 				RENAME COLUMN current_period_start TO period_start
 			`);
 			console.log("✓ Renamed current_period_start to period_start");
-		} catch (e: any) {
-			if (e.code !== "42703") {
+		} catch (e) {
+			if ((e as { code?: string }).code !== "42703") {
 				// Column doesn't exist
 				console.log("  period_start already exists or migration done");
 			}
@@ -26,8 +26,8 @@ async function migrateSubscriptions() {
 				RENAME COLUMN current_period_end TO period_end
 			`);
 			console.log("✓ Renamed current_period_end to period_end");
-		} catch (e: any) {
-			if (e.code !== "42703") {
+		} catch (e) {
+			if ((e as { code?: string }).code !== "42703") {
 				console.log("  period_end already exists or migration done");
 			}
 		}
