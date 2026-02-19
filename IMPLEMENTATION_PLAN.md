@@ -631,28 +631,28 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ## Phase 10 — Polish & Launch Readiness
 
 ### Task 10.1: Landing page
-- [ ] Create `app/page.tsx`:
-  - [ ] Hero section: large serif headline with gradient text accent, sans-serif subline, prominent CTA button — layered background with warm radial glows (Status AI-inspired, lighter)
-  - [ ] Phone mockup showing an example Linky page (screenshot or live render)
-  - [ ] Feature sections: 3 columns with icons, alternating text/image rows for key features (blocks, integrations, themes)
-  - [ ] Scroll-triggered fade-in animations on sections
-  - [ ] Footer with links, minimal branding
+- [x] Create `app/page.tsx`:
+  - [x] Hero section: large serif headline with gradient text accent, sans-serif subline, prominent CTA button — layered background with warm radial glows (Status AI-inspired, lighter)
+  - [x] Phone mockup showing an example Linky page (screenshot or live render)
+  - [x] Feature sections: 3 columns with icons, alternating text/image rows for key features (blocks, integrations, themes)
+  - [x] Scroll-triggered fade-in animations on sections
+  - [x] Footer with links, minimal branding
 
 ### Task 10.2: Loading states and error handling
-- [ ] Add loading skeletons to dashboard pages (`loading.tsx` files)
-- [ ] Add `error.tsx` boundary to dashboard and public page routes
+- [x] Add loading skeletons to dashboard pages (`loading.tsx` files)
+- [x] Add `error.tsx` boundary to dashboard and public page routes
 - [ ] Add toast notifications for save success/failure in editor
 - [ ] Add optimistic updates to block reorder
 
 ### Task 10.3: Responsive design pass
-- [ ] Dashboard: sidebar → bottom nav on mobile
-- [ ] Page editor: stack preview below editor on mobile
-- [ ] Public page: already mobile-first (single column, max-width constrained)
-- [ ] Theme editor: stack controls above preview on mobile
+- [x] Dashboard: sidebar → bottom nav on mobile
+- [x] Page editor: stack preview below editor on mobile
+- [x] Public page: already mobile-first (single column, max-width constrained)
+- [x] Theme editor: stack controls above preview on mobile
 
 ### Task 10.4: SEO and metadata
-- [ ] `app/layout.tsx`: default metadata (title, description, OG image for the marketing site)
-- [ ] Public pages: dynamic metadata from page fields via `generateMetadata`
+- [x] `app/layout.tsx`: default metadata (title, description, OG image for the marketing site)
+- [x] Public pages: dynamic metadata from page fields via `generateMetadata`
 - [ ] Add `robots.txt` and `sitemap.xml` (Phase 2)
 
 ---
