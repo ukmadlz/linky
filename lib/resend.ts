@@ -17,7 +17,7 @@ interface SendEmailOptions {
 
 export async function sendEmail({ to, subject, react }: SendEmailOptions) {
   const resend = getResendClient();
-  const from = process.env.RESEND_FROM_EMAIL ?? "Linky <noreply@linky.app>";
+  const from = process.env.RESEND_FROM_EMAIL ?? "biohasl.ink <noreply@biohasl.ink>";
 
   // Fire-and-forget: errors are caught and logged without blocking the request
   try {

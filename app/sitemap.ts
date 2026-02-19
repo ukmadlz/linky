@@ -4,7 +4,7 @@ import { pages } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://linky.page";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://biohasl.ink";
 
   // Static routes
   const staticRoutes: MetadataRoute.Sitemap = [

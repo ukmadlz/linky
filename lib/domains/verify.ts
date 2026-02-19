@@ -1,7 +1,7 @@
 import dns from "dns/promises";
 
 const APP_HOSTNAME = new URL(
-  process.env.NEXT_PUBLIC_APP_URL ?? "https://linky.page"
+  process.env.NEXT_PUBLIC_APP_URL ?? "https://biohasl.ink"
 ).hostname;
 
 /**

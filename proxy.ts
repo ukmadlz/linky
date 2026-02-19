@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { unsealData } from "iron-session";
 import type { SessionData } from "./lib/session";
 
-const SESSION_COOKIE_NAME = "linky_session";
+const SESSION_COOKIE_NAME = "bio_session";
 
 const APP_HOSTNAME = new URL(
-  process.env.NEXT_PUBLIC_APP_URL ?? "https://linky.page"
+  process.env.NEXT_PUBLIC_APP_URL ?? "https://biohasl.ink"
 ).hostname;
 
 // Protected route prefixes — proxy runs on these

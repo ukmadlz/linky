@@ -8,7 +8,7 @@ export interface SessionData {
 }
 
 const SESSION_OPTIONS = {
-  cookieName: "linky_session",
+  cookieName: "bio_session",
   password: process.env.SESSION_SECRET ?? "fallback-dev-secret-change-in-production",
   cookieOptions: {
     secure: process.env.NODE_ENV === "production",
