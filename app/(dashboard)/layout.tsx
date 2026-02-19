@@ -2,6 +2,7 @@ import { PostHogProvider } from "@/components/providers/PostHogProvider";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { TopBar } from "@/components/dashboard/TopBar";
 import { requireAuth } from "@/lib/auth";
+import { Toaster } from "@/components/ui/toaster";
 
 export default async function DashboardLayout({
   children,
@@ -27,6 +28,7 @@ export default async function DashboardLayout({
           </main>
         </div>
       </div>
+      <Toaster />
     </PostHogProvider>
   );
 }

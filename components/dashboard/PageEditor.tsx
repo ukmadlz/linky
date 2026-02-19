@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import { useToast } from "@/hooks/use-toast";
 import {
   DndContext,
   closestCenter,
@@ -32,6 +33,7 @@ export function PageEditor({ page, initialBlocks }: PageEditorProps) {
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { toast } = useToast();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -48,13 +50,18 @@ export function PageEditor({ page, initialBlocks }: PageEditorProps) {
         setSaving(true);
         setSaveError(null);
         try {
-          await fetch(`/api/pages/${page.id}/blocks/reorder`, {
+          const res = await fetch(`/api/pages/${page.id}/blocks/reorder`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ orderedIds }),
           });
+          if (!res.ok) {
+            setSaveError("Failed to save order");
+            toast({ title: "Error", description: "Failed to save block order.", variant: "destructive" });
+          }
         } catch {
           setSaveError("Failed to save order");
+          toast({ title: "Error", description: "Network error saving block order.", variant: "destructive" });
         } finally {
           setSaving(false);
         }
@@ -136,8 +143,10 @@ export function PageEditor({ page, initialBlocks }: PageEditorProps) {
         prev.map((b) => (b.id === blockId ? updated : b))
       );
       setEditingBlockId(null);
+      toast({ title: "Saved", description: "Block updated successfully." });
     } catch {
       setSaveError("Network error");
+      toast({ title: "Error", description: "Failed to save block.", variant: "destructive" });
     } finally {
       setSaving(false);
     }

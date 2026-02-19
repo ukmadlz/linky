@@ -641,8 +641,8 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ### Task 10.2: Loading states and error handling
 - [x] Add loading skeletons to dashboard pages (`loading.tsx` files)
 - [x] Add `error.tsx` boundary to dashboard and public page routes
-- [ ] Add toast notifications for save success/failure in editor
-- [ ] Add optimistic updates to block reorder
+- [x] Add toast notifications for save success/failure in editor
+- [x] Add optimistic updates to block reorder
 
 ### Task 10.3: Responsive design pass
 - [x] Dashboard: sidebar → bottom nav on mobile
