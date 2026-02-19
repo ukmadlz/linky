@@ -138,6 +138,15 @@ export async function deletePage(id: string): Promise<void> {
 // Block queries
 // ─────────────────────────────────────────────────────────────
 
+export async function getBlockById(id: string): Promise<Block | null> {
+  const [block] = await db
+    .select()
+    .from(blocks)
+    .where(eq(blocks.id, id))
+    .limit(1);
+  return block ?? null;
+}
+
 /** Visible blocks only, ordered by position — for public page rendering */
 export async function getBlocksByPageId(pageId: string): Promise<Block[]> {
   return db

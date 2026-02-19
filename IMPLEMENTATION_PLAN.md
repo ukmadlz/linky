@@ -460,19 +460,19 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
   - [x] Links to marketing site
 
 ### Task 6.4: Click redirect route
-- [ ] `app/r/[blockId]/route.ts` — GET: the core click-tracking mechanism
-  1. [ ] Look up block by ID → get destination URL, pageId, and `verificationEnabled`/`verificationMode`
-  2. [ ] If `verificationEnabled` is true, check for a valid `linky_verified_{blockId}` session cookie — if absent, **redirect to `/verify/[blockId]`** instead of proceeding
-  3. [ ] Extract from request headers (no cookies, no IP storage):
-     - [ ] `Referer` → referrer
-     - [ ] `User-Agent` → raw UA + parse into browser, OS, device (use `ua-parser-js`)
-     - [ ] `Accept-Language` → primary language code
-     - [ ] IP → resolve to country/region/city via geo lookup (e.g., Vercel's `req.geo` or a lightweight IP-to-geo service), then **discard the IP**
-     - [ ] Detect bots from UA string
-  4. [ ] Write `click_events` row (async, non-blocking — use `waitUntil` if on Vercel)
-  5. [ ] Check and send milestone email if click count crosses a threshold (async, non-blocking)
-  6. [ ] Return **302 redirect** to the destination URL
-  - [ ] If block not found or not visible → redirect to page or return 404
+- [x] `app/r/[blockId]/route.ts` — GET: the core click-tracking mechanism
+  1. [x] Look up block by ID → get destination URL, pageId, and `verificationEnabled`/`verificationMode`
+  2. [x] If `verificationEnabled` is true, check for a valid `linky_verified_{blockId}` session cookie — if absent, **redirect to `/verify/[blockId]`** instead of proceeding
+  3. [x] Extract from request headers (no cookies, no IP storage):
+     - [x] `Referer` → referrer
+     - [x] `User-Agent` → raw UA + parse into browser, OS, device (use `ua-parser-js`)
+     - [x] `Accept-Language` → primary language code
+     - [x] IP → resolve to country/region/city via geo lookup (e.g., Vercel's `req.geo` or a lightweight IP-to-geo service), then **discard the IP**
+     - [x] Detect bots from UA string
+  4. [x] Write `click_events` row (async, non-blocking — use `waitUntil` if on Vercel)
+  5. [x] Check and send milestone email if click count crosses a threshold (async, non-blocking)
+  6. [x] Return **302 redirect** to the destination URL
+  - [x] If block not found or not visible → redirect to page or return 404
 
 ### Task 6.7: Age/content verification interstitial
 - [ ] `app/verify/[blockId]/page.tsx` — Server component that renders the verification gate:
@@ -502,11 +502,11 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 - [ ] Called from a lightweight client component on the public page (`navigator.sendBeacon` on mount)
 
 ### Task 6.6: Request parsing helpers
-- [ ] Create `lib/tracking/parse-request.ts`:
-  - [ ] `parseRequest(request: Request): TrackingData` — extracts referrer, UA, browser, OS, device, language, country/region/city, isBot from request headers
-  - [ ] Centralizes header parsing logic shared between click redirect and page view routes
-  - [ ] Install `ua-parser-js` for reliable UA parsing
-  - [ ] **No IP address in the returned data** — geo is resolved and IP discarded within this function
+- [x] Create `lib/tracking/parse-request.ts`:
+  - [x] `parseRequest(request: Request): TrackingData` — extracts referrer, UA, browser, OS, device, language, country/region/city, isBot from request headers
+  - [x] Centralizes header parsing logic shared between click redirect and page view routes
+  - [x] Install `ua-parser-js` for reliable UA parsing
+  - [x] **No IP address in the returned data** — geo is resolved and IP discarded within this function
 
 ---
 
