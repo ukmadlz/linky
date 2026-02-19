@@ -898,11 +898,11 @@ After each phase, verify:
   - [x] PATCH `/api/user/profile` with taken username returns 409
 
 ### Task 16.6: API route unit tests — pages
-- [ ] Create `tests/unit/api/pages.test.ts`:
-  - [ ] GET `/api/pages` returns 401 without session; returns user's pages array with valid session
-  - [ ] POST `/api/pages` creates a page and returns 201 with the new page; returns 400 if slug is taken
-  - [ ] PATCH `/api/pages/[pageId]` updates `isPublished` and returns 200; returns 403 for a page owned by another user
-  - [ ] DELETE `/api/pages/[pageId]` deletes page and returns 204; returns 403 for wrong user
+- [x] Create `tests/unit/api/pages.test.ts`:
+  - [x] GET `/api/pages` returns 401 without session; returns user's pages array with valid session
+  - [x] POST `/api/pages` creates a page and returns 201 with the new page; returns 400 if slug is taken
+  - [x] PATCH `/api/pages/[pageId]` updates `isPublished` and returns 200; returns 403 for a page owned by another user
+  - [x] DELETE `/api/pages/[pageId]` deletes page and returns 204; returns 403 for wrong user
 
 ### Task 16.7: API route unit tests — blocks
 - [ ] Create `tests/unit/api/blocks.test.ts`:
