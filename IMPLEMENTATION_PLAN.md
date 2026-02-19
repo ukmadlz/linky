@@ -520,9 +520,9 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
   - [x] Uses theme CSS variables
 
 ### Task 6.3: Linky branding footer
-- [ ] Create `components/public/LinkyBranding.tsx`:
-  - [ ] Small "Made with Linky" badge at bottom of free pages
-  - [ ] Links to marketing site
+- [x] Create `components/public/LinkyBranding.tsx`:
+  - [x] Small "Made with Linky" badge at bottom of free pages
+  - [x] Links to marketing site
 
 ### Task 6.4: Click redirect route
 - [ ] `app/r/[blockId]/route.ts` — GET: the core click-tracking mechanism
