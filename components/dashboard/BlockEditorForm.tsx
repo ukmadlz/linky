@@ -7,6 +7,9 @@ import { EmbedEditor } from "./block-editors/EmbedEditor";
 import { SocialIconsEditor } from "./block-editors/SocialIconsEditor";
 import { DividerEditor } from "./block-editors/DividerEditor";
 import { CustomCodeEditor } from "./block-editors/CustomCodeEditor";
+import { ImageEditor } from "./block-editors/ImageEditor";
+import { EmailCollectEditor } from "./block-editors/EmailCollectEditor";
+import { GroupEditor } from "./block-editors/GroupEditor";
 
 interface BlockEditorFormProps {
   block: Block;
@@ -28,6 +31,12 @@ export function BlockEditorForm({ block, onSave, onCancel }: BlockEditorFormProp
       return <DividerEditor block={block} onSave={onSave} onCancel={onCancel} />;
     case "custom_code":
       return <CustomCodeEditor block={block} onSave={onSave} onCancel={onCancel} />;
+    case "image":
+      return <ImageEditor block={block} onSave={onSave} onCancel={onCancel} />;
+    case "email_collect":
+      return <EmailCollectEditor block={block} onSave={onSave} onCancel={onCancel} />;
+    case "group":
+      return <GroupEditor block={block} onSave={onSave} onCancel={onCancel} />;
     default:
       return <p className="text-sm text-slate-500">Unknown block type</p>;
   }

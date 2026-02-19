@@ -83,6 +83,40 @@ export const customCodeBlockSchema = z.object({
 export type CustomCodeBlockData = z.infer<typeof customCodeBlockSchema>;
 
 // ─────────────────────────────────────────────────────────────
+// Image Block
+// ─────────────────────────────────────────────────────────────
+
+export const imageBlockSchema = z.object({
+  url: z.string().url("Must be a valid image URL"),
+  alt: z.string().max(300).default(""),
+  linkUrl: z.string().url().optional().or(z.literal("")),
+});
+
+export type ImageBlockData = z.infer<typeof imageBlockSchema>;
+
+// ─────────────────────────────────────────────────────────────
+// Email Collect Block
+// ─────────────────────────────────────────────────────────────
+
+export const emailCollectBlockSchema = z.object({
+  provider: z.enum(["mailchimp", "kit", "beehiiv", "substack", "custom"]).default("custom"),
+  embedCode: z.string().min(1, "Embed code is required"),
+});
+
+export type EmailCollectBlockData = z.infer<typeof emailCollectBlockSchema>;
+
+// ─────────────────────────────────────────────────────────────
+// Group Block
+// ─────────────────────────────────────────────────────────────
+
+export const groupBlockSchema = z.object({
+  title: z.string().max(200).default("Group"),
+  isCollapsed: z.boolean().default(false),
+});
+
+export type GroupBlockData = z.infer<typeof groupBlockSchema>;
+
+// ─────────────────────────────────────────────────────────────
 // Block type union
 // ─────────────────────────────────────────────────────────────
 
@@ -92,7 +126,10 @@ export type BlockType =
   | "embed"
   | "social_icons"
   | "divider"
-  | "custom_code";
+  | "custom_code"
+  | "image"
+  | "email_collect"
+  | "group";
 
 export const blockDataSchemas: Record<BlockType, z.ZodTypeAny> = {
   link: linkBlockSchema,
@@ -101,6 +138,9 @@ export const blockDataSchemas: Record<BlockType, z.ZodTypeAny> = {
   social_icons: socialIconsBlockSchema,
   divider: dividerBlockSchema,
   custom_code: customCodeBlockSchema,
+  image: imageBlockSchema,
+  email_collect: emailCollectBlockSchema,
+  group: groupBlockSchema,
 };
 
 export type BlockData =
@@ -109,7 +149,10 @@ export type BlockData =
   | { type: "embed"; data: EmbedBlockData }
   | { type: "social_icons"; data: SocialIconsBlockData }
   | { type: "divider"; data: DividerBlockData }
-  | { type: "custom_code"; data: CustomCodeBlockData };
+  | { type: "custom_code"; data: CustomCodeBlockData }
+  | { type: "image"; data: ImageBlockData }
+  | { type: "email_collect"; data: EmailCollectBlockData }
+  | { type: "group"; data: GroupBlockData };
 
 /**
  * Validate block data against the correct schema for its type.

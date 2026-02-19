@@ -697,9 +697,9 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ## Phase 13 — Extended Features (Phase 2)
 
 ### Task 13.1: Additional block types
-- [ ] `image` block: `{ url, alt, linkUrl? }` — standalone image with optional click-through
-- [ ] `email_collect` block: `{ provider: "mailchimp" | "kit" | ..., embedCode }` — embedded signup form
-- [ ] `group` block: `{ title, isCollapsed }` — collapsible section containing child blocks (uses `parentId`)
+- [x] `image` block: `{ url, alt, linkUrl? }` — standalone image with optional click-through
+- [x] `email_collect` block: `{ provider: "mailchimp" | "kit" | ..., embedCode }` — embedded signup form
+- [x] `group` block: `{ title, isCollapsed }` — collapsible section containing child blocks (uses `parentId`)
 
 ### Task 13.2: Block scheduling
 - [ ] Add scheduling UI to block editor: start date/time, end date/time

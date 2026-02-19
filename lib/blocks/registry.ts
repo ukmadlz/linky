@@ -6,6 +6,9 @@ import {
   socialIconsBlockSchema,
   dividerBlockSchema,
   customCodeBlockSchema,
+  imageBlockSchema,
+  emailCollectBlockSchema,
+  groupBlockSchema,
   type BlockType,
 } from "./schemas";
 
@@ -87,6 +90,40 @@ export const blockRegistry: Record<BlockType, BlockTypeDefinition> = {
       html: "",
       css: "",
       sanitized: false,
+    },
+  },
+  image: {
+    type: "image",
+    label: "Image",
+    icon: "Image",
+    description: "A standalone image with optional click-through link",
+    dataSchema: imageBlockSchema,
+    defaultData: {
+      url: "",
+      alt: "",
+      linkUrl: "",
+    },
+  },
+  email_collect: {
+    type: "email_collect",
+    label: "Email Signup",
+    icon: "Mail",
+    description: "Embed a newsletter signup form",
+    dataSchema: emailCollectBlockSchema,
+    defaultData: {
+      provider: "custom",
+      embedCode: "",
+    },
+  },
+  group: {
+    type: "group",
+    label: "Group",
+    icon: "FolderOpen",
+    description: "A collapsible section containing other blocks",
+    dataSchema: groupBlockSchema,
+    defaultData: {
+      title: "Group",
+      isCollapsed: false,
     },
   },
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { Link, Type, Play, Share2, Minus, Code2, X } from "lucide-react";
+import { Link, Type, Play, Share2, Minus, Code2, X, Image, Mail, FolderOpen } from "lucide-react";
 import { blockRegistry, blockTypes } from "@/lib/blocks/registry";
 import type { Block } from "@/lib/db/schema";
 
@@ -11,6 +11,9 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   Share2,
   Minus,
   Code2,
+  Image,
+  Mail,
+  FolderOpen,
 };
 
 interface BlockPaletteProps {
