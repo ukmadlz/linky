@@ -498,8 +498,8 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 > **GDPR / Privacy**: The date of birth entered is used only to compute age in memory and is never written to any database or log. The verification cookie contains only a boolean flag (`verified=1`) and the blockId — no personal data. The 1-hour expiry means re-verification is required if the user returns later.
 
 ### Task 6.5: Page view tracking
-- [ ] `app/api/track/view/route.ts` — POST: accepts `{ pageId }`, extracts same headers as click route, writes to `page_views`, checks and sends milestone email if view count crosses a threshold (async), returns 204
-- [ ] Called from a lightweight client component on the public page (`navigator.sendBeacon` on mount)
+- [x] `app/api/track/view/route.ts` — POST: accepts `{ pageId }`, extracts same headers as click route, writes to `page_views`, checks and sends milestone email if view count crosses a threshold (async), returns 204
+- [x] Called from a lightweight client component on the public page (`navigator.sendBeacon` on mount)
 
 ### Task 6.6: Request parsing helpers
 - [x] Create `lib/tracking/parse-request.ts`:
