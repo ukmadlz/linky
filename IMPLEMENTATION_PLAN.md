@@ -753,9 +753,9 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 - [x] Update `users.isPro` based on active subscription
 
 ### Task 12.3: Pro feature gating
-- [ ] Create `lib/pro.ts` — `requirePro()` helper
-- [ ] Gate features: remove branding, custom fonts (expanded list), SEO controls, analytics dashboard
-- [ ] Add upgrade prompts in dashboard for gated features
+- [x] Create `lib/pro.ts` — `requirePro()` helper
+- [x] Gate features: remove branding, custom fonts (expanded list), SEO controls, analytics dashboard
+- [x] Add upgrade prompts in dashboard for gated features
 
 ---
 
