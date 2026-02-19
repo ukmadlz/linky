@@ -344,30 +344,30 @@ deleteSecret(vaultObjectId: string): Promise<void>
 New users arrive from OAuth without a username. This task gates dashboard access behind a one-time username-selection step and moves first-signup side effects (default page creation, welcome email, PostHog `user_signed_up`) to onboarding completion where the username is known.
 
 **Session shape change** — add `username` to the session so middleware can gate without a DB round-trip on every request:
-- [ ] Update `SessionData` in `lib/session.ts`: add `username?: string | null`
-- [ ] Update `saveSession` callers throughout to pass `username` where known
+- [x] Update `SessionData` in `lib/session.ts`: add `username?: string | null`
+- [x] Update `saveSession` callers throughout to pass `username` where known
 
 **Auth callback changes** (`app/api/auth/callback/route.ts`):
-- [ ] After find-or-create user:
+- [x] After find-or-create user:
   - New user (no username): save session `{ userId, username: null }`, redirect to `/onboarding`
   - Returning user with username: save session `{ userId, username }`, redirect to `/dashboard`
   - Returning user without username (edge case): save session `{ userId, username: null }`, redirect to `/onboarding`
-- [ ] Remove from callback: auto-create default page, send welcome email, capture `user_signed_up` — all moved to onboarding completion (Task 2.5 submit API below)
-- [ ] Keep `user_logged_in` PostHog event only for returning users who already have a username
+- [x] Remove from callback: auto-create default page, send welcome email, capture `user_signed_up` — all moved to onboarding completion (Task 2.5 submit API below)
+- [x] Keep `user_logged_in` PostHog event only for returning users who already have a username
 
 **Middleware** (`proxy.ts` — Next.js proxy/middleware file):
-- [ ] Update `proxy.ts` to cover the full protected route set: `/dashboard`, `/appearance`, `/settings`, `/analytics`, `/webhooks`, `/onboarding`, `/api/pages`, `/api/user`, `/api/webhooks`, `/api/analytics`
-- [ ] Gate logic:
+- [x] Update `proxy.ts` to cover the full protected route set: `/dashboard`, `/appearance`, `/settings`, `/analytics`, `/webhooks`, `/onboarding`, `/api/pages`, `/api/user`, `/api/webhooks`, `/api/analytics`
+- [x] Gate logic:
   - Unauthenticated (no `session.userId`): redirect to `/login`
   - Authenticated but `session.username` is null/missing: redirect to `/onboarding` — except when the request is already targeting `/onboarding` or `/api/auth/*` (to avoid redirect loops)
   - Authenticated with username: allow through
 
 **`requireAuth()` update** (`lib/auth.ts`):
-- [ ] After fetching user from DB, if `user.username` is null, redirect to `/onboarding` — second layer of defense for server components that call `requireAuth()` directly
+- [x] After fetching user from DB, if `user.username` is null, redirect to `/onboarding` — second layer of defense for server components that call `requireAuth()` directly
 
 **Onboarding page** (`app/(auth)/onboarding/page.tsx`):
-- [ ] Server component; if the user already has a username (session check), redirect immediately to `/dashboard`
-- [ ] Client component `OnboardingForm` handles the interactive form:
+- [x] Server component; if the user already has a username (session check), redirect immediately to `/dashboard`
+- [x] Client component `OnboardingForm` handles the interactive form:
   - Linky wordmark at top, "Choose your username" serif heading
   - Subtext: "This becomes your page URL — choose wisely, you can change it later in settings"
   - Username input with inline `linky.app/` prefix label
@@ -380,13 +380,13 @@ New users arrive from OAuth without a username. This task gates dashboard access
   - No skip option — username is required to proceed
 
 **Username availability API** (`app/api/user/username/check/route.ts`):
-- [ ] `GET ?username=xyz` — validates format then checks DB uniqueness:
+- [x] `GET ?username=xyz` — validates format then checks DB uniqueness:
   - Format rules: 3–30 chars, `/^[a-z0-9][a-z0-9-]*[a-z0-9]$/` (single char allowed: `/^[a-z0-9]$/`); not a reserved word (`api`, `r`, `verify`, `login`, `dashboard`, `appearance`, `analytics`, `settings`, `webhooks`)
   - Returns `{ available: true }` or `{ available: false, reason: "taken" | "invalid" | "reserved" }`
   - No auth required (called during onboarding before session has a username)
 
 **Onboarding submit API** (`app/api/auth/onboarding/route.ts`):
-- [ ] `POST { username: string, name?: string }`:
+- [x] `POST { username: string, name?: string }`:
   - Requires `session.userId`; returns 401 if absent
   - Returns 409 if user already has a username (idempotency guard against double-submit)
   - Validates username format (same rules as check endpoint); returns 422 on format failure
