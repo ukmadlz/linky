@@ -578,14 +578,14 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ## Phase 7 — Dashboard Layout & Settings
 
 ### Task 7.1: Dashboard layout
-- [ ] Create `app/(dashboard)/layout.tsx`:
-  - [ ] Left sidebar: dark navy (`#292d4c`) or `slate-900` bg, icon + label navigation items, active state uses purple accent bg (`#5f4dc5/15`) with purple text
-  - [ ] Nav items: Dashboard (page editor), Appearance (theme), Settings (profile)
-  - [ ] Top bar: off-white bg, user avatar (rounded-full) + name + logout dropdown
-  - [ ] Main content area: warm off-white (`#f7f5f4`) background, white card panels with subtle borders
-  - [ ] Responsive: sidebar collapses to bottom nav on mobile (icon-only, no labels)
-  - [ ] Smooth transitions on nav hover states (`0.6s cubic-bezier` — Gather-inspired)
-  - [ ] Protect with `requireAuth()`
+- [x] Create `app/(dashboard)/layout.tsx`:
+  - [x] Left sidebar: dark navy (`#292d4c`) or `slate-900` bg, icon + label navigation items, active state uses purple accent bg (`#5f4dc5/15`) with purple text
+  - [x] Nav items: Dashboard (page editor), Appearance (theme), Settings (profile)
+  - [x] Top bar: off-white bg, user avatar (rounded-full) + name + logout dropdown
+  - [x] Main content area: warm off-white (`#f7f5f4`) background, white card panels with subtle borders
+  - [x] Responsive: sidebar collapses to bottom nav on mobile (icon-only, no labels)
+  - [x] Smooth transitions on nav hover states (`0.6s cubic-bezier` — Gather-inspired)
+  - [x] Protect with `requireAuth()`
 
 ### Task 7.2: Settings page
 - [ ] Create `app/(dashboard)/settings/page.tsx`:
