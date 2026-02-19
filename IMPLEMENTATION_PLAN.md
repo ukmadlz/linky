@@ -744,7 +744,7 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ## Phase 12 — Subscriptions & Billing (Phase 2)
 
 ### Task 12.1: Subscriptions schema
-- [ ] Add `subscriptions` table to schema: id, userId, stripeSubscriptionId, stripePriceId, status, periodStart, periodEnd, createdAt, updatedAt
+- [x] Add `subscriptions` table to schema: id, userId, stripeSubscriptionId, stripePriceId, status, periodStart, periodEnd, createdAt, updatedAt
 
 ### Task 12.2: Stripe integration
 - [ ] `app/api/stripe/checkout/route.ts` — create checkout session
