@@ -1,0 +1,780 @@
+# Linky — Implementation Plan
+
+> An integration-first link-in-bio platform where users compose pages from content blocks that embed third-party services (YouTube, Spotify, Stripe, Mailchimp, etc.) via oEmbed auto-detection and direct iframe embeds.
+
+**Tech stack**: Next.js 15 (App Router), PostgreSQL + Drizzle ORM, Tailwind CSS + shadcn/ui, WorkOS auth, iron-session
+
+---
+
+## Design Direction
+
+**Inspiration**: [The Real Roots](https://www.therealroots.com/) (typography & warmth), [Status AI](https://www.statusai.com/) (dark gradients & motion), [Gather](https://www.gather.town/) (color system & interactive polish)
+
+### Typography
+- **Display/headings**: Serif font (Playfair Display or Suez One) — adds warmth and premium feel, inspired by Real Roots and Status AI
+- **Body/UI**: DM Sans (400, 500, 700) — clean geometric sans-serif, shared by both Real Roots and Gather
+- **Monospace** (code blocks/custom code editor): Fragment Mono or JetBrains Mono
+- Load via `next/font/google` for zero layout shift
+
+### Color System (token-based)
+- **Light mode (default)**:
+  - Background: warm off-white (`#f7f5f4`) — from Gather's approachable neutral palette
+  - Surface/cards: white (`#ffffff`)
+  - Text primary: dark navy (`#292d4c`) — from Gather, softer than pure black
+  - Text secondary: medium gray (`#67697f`)
+  - Accent primary: purple (`#5f4dc5`) — from Gather, distinctive and modern
+  - Accent secondary: bright blue (`#4d65ff`) — from Real Roots focus states
+  - Success: green (`#00c245`), destructive: red
+- **Dark mode (midnight theme & dashboard)**:
+  - Background: deep gradient from black → dark blue (`blue-950`) → purple-tinted black — inspired by Status AI's layered dark aesthetic
+  - Surface: `slate-900` with subtle border
+  - Text: `slate-100` / `slate-400`
+  - Accent: brighter purple/blue to maintain contrast
+- All colors defined as CSS custom properties for theme switching
+
+### Motion & Interactions
+- **Hover states**: Scale transforms (`hover:scale-105`) on cards and buttons with smooth transitions (`0.6s cubic-bezier`) — from Gather and Status AI
+- **Link buttons**: Animated underline trail on hover (transform-origin shift) — from Real Roots
+- **Page transitions**: Fade-in on section load for public pages
+- **Floating elements**: Subtle `animate-float` on decorative elements (landing page only) — from Status AI's playful orbs
+- **Block editor**: Smooth drag-and-drop with spring physics via `@dnd-kit`
+- Keep animations tasteful — no motion on public pages unless the theme opts in
+
+### Spacing & Layout
+- 8px grid system (spacing: 8, 16, 24, 32, 48, 64, 96)
+- Generous section padding (`py-24 px-6`) — from Status AI's breathing room
+- Content max-widths: `max-w-sm` (480px) for public link pages, `max-w-6xl` for dashboard, `max-w-7xl` for landing page
+- Border radius: `8px` default (rounded-lg), `full` for avatars and pills
+
+### Button Styles
+- **Filled** (default): Solid accent color, white text, rounded-lg, `hover:scale-[1.02]` + slight brightness shift
+- **Outline**: Border with transparent bg, accent border color, hover fills with `accent/10` bg
+- **Soft**: Light accent tint bg (`accent/15`), accent text, no border
+- **Shadow**: White bg, subtle shadow, hover lifts with increased shadow
+- All buttons: smooth `transition-all duration-200`, consistent `h-10 px-4` sizing
+
+### Public Page Aesthetic
+- Clean, centered single-column layout (like a polished card on the warm off-white bg)
+- Avatar with soft shadow, serif display name, sans-serif bio
+- Link buttons with generous padding and smooth hover animations
+- Embeds rendered with subtle card containers and rounded corners
+- Minimal chrome — the content is the focus
+
+### Dashboard Aesthetic
+- Left sidebar (dark navy or slate-900) with icon + label navigation, active state uses purple accent bg
+- Main content area on off-white background
+- Cards/panels with white bg, subtle borders, rounded-lg
+- Editor uses inline editing with clear visual states (editing, saved, error)
+- Theme editor live preview in a phone-frame mockup with drop shadow
+
+### Landing Page
+- Full-width hero with large serif headline, gradient text accent, and a CTA button
+- Layered background effect: warm gradient with subtle radial glows — inspired by Status AI but lighter/warmer
+- Feature sections alternating text-left/image-right layout
+- Smooth scroll-triggered fade-in animations
+- Social proof section (if applicable)
+
+---
+
+## Phase 1 — Project Foundation
+
+### Task 1.1: Initialize Next.js project
+- [x] Run `create-next-app` with TypeScript, Tailwind, App Router, `src/` disabled
+- [x] Install core dependencies: `drizzle-orm`, `postgres`, `drizzle-kit`, `zod`, `nanoid`, `iron-session`, `posthog-js`, `posthog-node`, `resend`, `react-email`, `@react-email/components`
+- [x] Install dev dependencies: `drizzle-kit`, `@types/node`, `prettier`
+- [x] Configure `tsconfig.json` path aliases (`@/` → project root)
+- [x] Create `.env.local` template with `DATABASE_URL`, `WORKOS_CLIENT_ID`, `WORKOS_API_KEY`, `SESSION_SECRET`, `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`
+
+### Task 1.2: Set up shadcn/ui
+- [ ] Initialize shadcn/ui with `npx shadcn@latest init`
+- [ ] Install foundational components: `button`, `input`, `label`, `card`, `dialog`, `dropdown-menu`, `tabs`, `toast`, `separator`, `avatar`, `badge`, `switch`, `select`, `popover`, `command`
+- [ ] Set up `components/ui/` directory
+
+### Task 1.3: Set up self-hosted PostHog (product analytics)
+
+PostHog is used for **product usage analytics** (how users interact with the dashboard — feature adoption, editor usage, conversion funnels). This is separate from the link click/page view tracking stored in our DB (which powers the end-user analytics dashboard).
+
+- [ ] Create `lib/posthog/client.ts` — browser-side PostHog client:
+  - [ ] Initialize `posthog-js` with `NEXT_PUBLIC_POSTHOG_KEY` and `NEXT_PUBLIC_POSTHOG_HOST` (self-hosted instance URL)
+  - [ ] Disable autocapture, session recording, and heatmaps (opt-in only) — keep it lean
+  - [ ] Enable `capture_pageview: false` (we'll send manual pageviews for dashboard routes only)
+- [ ] Create `lib/posthog/server.ts` — server-side PostHog client:
+  - [ ] Initialize `posthog-node` with the same host/key
+  - [ ] Lazy-init singleton pattern (same as DB client)
+  - [ ] Used for server-side event capture (e.g., user signup, page created, block created)
+- [ ] Create `components/providers/PostHogProvider.tsx` — client component:
+  - [ ] Wraps `posthog-js` initialization in a React context provider
+  - [ ] Identifies the user on login (`posthog.identify(userId, { email, username })`)
+  - [ ] Resets on logout (`posthog.reset()`)
+  - [ ] Only loaded in the dashboard layout (not on public pages — no tracking visitors)
+- [ ] Add `PostHogProvider` to `app/(dashboard)/layout.tsx`
+
+**Key product events to track**:
+
+| Event | Trigger | Properties |
+|-------|---------|------------|
+| `user_signed_up` | New user created (server) | `{ provider, email_domain }` |
+| `user_logged_in` | OAuth callback (server) | `{ provider }` |
+| `page_created` | Page created (server) | `{ slug }` |
+| `block_added` | Block created (server) | `{ block_type, page_id }` |
+| `block_deleted` | Block deleted (server) | `{ block_type, page_id }` |
+| `block_reordered` | Blocks reordered (server) | `{ page_id, block_count }` |
+| `theme_changed` | Theme preset selected (client) | `{ theme_id, has_overrides }` |
+| `theme_customized` | Custom override saved (client) | `{ changed_fields[] }` |
+| `embed_resolved` | Embed URL resolved (server) | `{ provider_name, embed_type }` |
+| `page_published` | Page set to published (server) | `{ slug }` |
+| `page_unpublished` | Page set to unpublished (server) | `{ slug }` |
+| `settings_updated` | Profile settings saved (server) | `{ changed_fields[] }` |
+
+> **Privacy**: PostHog is self-hosted — no data leaves your infrastructure. Only dashboard users (page owners) are tracked, never public page visitors. No tracking scripts are loaded on public pages.
+
+### Task 1.4: Set up Resend (transactional email)
+
+Resend handles all transactional emails to page owners (not their visitors). Emails are built with React Email for type-safe, component-based templates.
+
+- [ ] Create `lib/resend.ts` — Resend client singleton:
+  - [ ] Initialize with `RESEND_API_KEY`
+  - [ ] Export `sendEmail({ to, subject, react })` helper that wraps `resend.emails.send()` with default `from` address from `RESEND_FROM_EMAIL`
+  - [ ] Non-blocking: all email sends are fire-and-forget (no `await` in request path — use `waitUntil` or catch-and-log)
+- [ ] Create `emails/` directory for React Email templates:
+  - [ ] `emails/WelcomeEmail.tsx` — sent on first signup; branded header, "Welcome to Linky" heading, quick-start tips (add your first link, customize your theme, share your page), CTA button to dashboard
+  - [ ] `emails/WeeklyStatsEmail.tsx` — weekly digest; page views, total clicks, top 3 clicked links, comparison to previous week (up/down arrows), CTA to full analytics
+  - [ ] `emails/MilestoneEmail.tsx` — triggered on milestones; e.g., "Your page just hit 100 views!" or "You reached 50 link clicks this week!", celebratory tone, CTA to dashboard
+  - [ ] `emails/PagePublishedEmail.tsx` — sent when user first publishes their page; confirmation with public URL, share tips (copy link, add to Instagram bio), QR code preview (Phase 2)
+- [ ] All templates use `@react-email/components` (Html, Head, Body, Container, Section, Text, Button, Img, Hr) with inline styles matching the Linky brand (warm off-white bg, purple accent, DM Sans font stack)
+- [ ] Create `lib/email/send-welcome.ts`, `lib/email/send-weekly-stats.ts`, `lib/email/send-milestone.ts`, `lib/email/send-page-published.ts` — thin wrappers that render the template and call `sendEmail()`
+
+**Notification triggers**:
+
+| Email | Trigger | When |
+|-------|---------|------|
+| Welcome | User signs up | Auth callback (Task 2.2) |
+| Page Published | Page `isPublished` set to `true` for the first time | Page PATCH API (Task 8.1) |
+| Weekly Stats | Cron job (every Monday) | API route / Vercel Cron (Task 1.4a below) |
+| Milestone | View/click count crosses threshold | Checked during click redirect / page view tracking (Tasks 6.4, 6.5) |
+
+- [ ] Create `app/api/cron/weekly-stats/route.ts`:
+  - [ ] Protected by a `CRON_SECRET` env var (verify `Authorization` header)
+  - [ ] Query all users with published pages
+  - [ ] For each user: aggregate last 7 days of views + clicks, compare to prior 7 days
+  - [ ] Send `WeeklyStatsEmail` via Resend (batch with `resend.batch.send()` for efficiency)
+  - [ ] Add `CRON_SECRET` to `.env.local` template
+- [ ] Create `lib/email/check-milestones.ts`:
+  - [ ] `checkAndSendMilestones(pageId, metric, newCount)` — checks if count crosses a milestone threshold (100, 500, 1000, 5000, 10000 views/clicks)
+  - [ ] Tracks sent milestones to avoid duplicates (add `milestonesSent` jsonb column to `pages` table or use a simple check against last milestone)
+
+### Task 1.5: Set up PostgreSQL + Drizzle
+- [ ] Create `drizzle.config.ts` pointing to `DATABASE_URL`
+- [ ] Create `lib/db/index.ts` — Drizzle client with `postgres` driver (lazy-init singleton)
+- [ ] Create `lib/db/schema.ts` with MVP tables:
+
+**`users`**
+| Column | Type | Notes |
+|--------|------|-------|
+| id | text (PK) | nanoid |
+| email | varchar(255) | unique, not null |
+| username | varchar(50) | unique |
+| name | varchar(100) | |
+| bio | text | |
+| avatarUrl | text | |
+| workosUserId | varchar(255) | unique |
+| isPro | boolean | default false |
+| createdAt | timestamp | default now |
+| updatedAt | timestamp | default now |
+
+**`pages`**
+| Column | Type | Notes |
+|--------|------|-------|
+| id | text (PK) | nanoid |
+| userId | text (FK → users) | cascade delete |
+| slug | varchar(100) | unique, not null |
+| title | varchar(200) | |
+| description | text | |
+| isPublished | boolean | default true |
+| themeId | varchar(50) | default "default" |
+| themeOverrides | jsonb | default {} |
+| seoTitle | varchar(200) | Phase 2 |
+| seoDescription | text | Phase 2 |
+| ogImageUrl | text | Phase 2 |
+| createdAt | timestamp | default now |
+| updatedAt | timestamp | default now |
+
+**`blocks`**
+| Column | Type | Notes |
+|--------|------|-------|
+| id | text (PK) | nanoid |
+| pageId | text (FK → pages) | cascade delete |
+| parentId | text | self-ref for groups (Phase 2) |
+| type | enum | link, text, embed, social_icons, divider, custom_code (+ future types) |
+| position | integer | default 0 |
+| isVisible | boolean | default true |
+| data | jsonb | type-specific, validated by Zod |
+| scheduledStart | timestamp | Phase 2 |
+| scheduledEnd | timestamp | Phase 2 |
+| createdAt | timestamp | default now |
+| updatedAt | timestamp | default now |
+
+**`click_events`**
+| Column | Type | Notes |
+|--------|------|-------|
+| id | text (PK) | nanoid |
+| blockId | text (FK → blocks) | cascade delete |
+| pageId | text (FK → pages) | cascade delete |
+| destinationUrl | text | the URL the user was redirected to |
+| referrer | text | HTTP Referer header |
+| userAgent | text | raw UA string |
+| browser | varchar(50) | parsed from UA (e.g., "Chrome 122") |
+| os | varchar(50) | parsed from UA (e.g., "macOS 15") |
+| device | varchar(20) | "desktop" / "mobile" / "tablet" |
+| country | varchar(2) | from IP geolocation |
+| region | varchar(100) | state/province from IP geo |
+| city | varchar(100) | from IP geo |
+| language | varchar(20) | Accept-Language header (primary) |
+| isBot | boolean | default false, detected from UA |
+| timestamp | timestamp | default now |
+
+> **GDPR compliance**: No IP addresses are stored. Geolocation is resolved at request time via IP and only the country/region/city are persisted — the IP itself is discarded. No cookies or fingerprinting are used for tracking. User-agent is stored for analytics (browser/OS/device breakdown) which is a legitimate interest under GDPR. No personal identifiers are collected or linked across sessions.
+
+**`page_views`**
+| Column | Type | Notes |
+|--------|------|-------|
+| id | text (PK) | nanoid |
+| pageId | text (FK → pages) | cascade delete |
+| referrer | text | HTTP Referer header |
+| userAgent | text | raw UA string |
+| browser | varchar(50) | parsed from UA |
+| os | varchar(50) | parsed from UA |
+| device | varchar(20) | "desktop" / "mobile" / "tablet" |
+| country | varchar(2) | from IP geolocation |
+| region | varchar(100) | state/province from IP geo |
+| city | varchar(100) | from IP geo |
+| language | varchar(20) | Accept-Language header (primary) |
+| isBot | boolean | default false |
+| timestamp | timestamp | default now |
+
+- [ ] Create indexes on: users(email, username), pages(userId, slug), blocks(pageId, position, parentId), click_events(blockId, pageId, timestamp), page_views(pageId, timestamp)
+- [ ] Run `drizzle-kit generate` to create migration files, then `drizzle-kit migrate` to apply them
+
+### Task 1.6: Database query helpers
+- [ ] Create `lib/db/queries.ts` with typed query functions:
+  - [ ] `getUserByWorkosId(workosUserId)`
+  - [ ] `getUserById(id)`
+  - [ ] `createUser({ email, workosUserId, name?, avatarUrl? })`
+  - [ ] `updateUser(id, data)`
+  - [ ] `getPageBySlug(slug)`
+  - [ ] `getPagesByUserId(userId)`
+  - [ ] `createPage({ userId, slug, title? })`
+  - [ ] `updatePage(id, data)`
+  - [ ] `deletePage(id)`
+  - [ ] `getBlocksByPageId(pageId)` — ordered by position, visible only
+  - [ ] `getAllBlocksByPageId(pageId)` — ordered by position, include hidden (for editor)
+  - [ ] `createBlock({ pageId, type, position, data })`
+  - [ ] `updateBlock(id, data)`
+  - [ ] `deleteBlock(id)`
+  - [ ] `reorderBlocks(pageId, orderedIds[])`
+  - [ ] `recordClick({ blockId, pageId, referrer?, userAgent?, country? })`
+  - [ ] `recordPageView({ pageId, referrer?, userAgent?, country? })`
+
+---
+
+## Phase 2 — Authentication
+
+### Task 2.1: WorkOS setup (Auth + Vault)
+- [ ] Create `lib/workos.ts` — lazy-init WorkOS client singleton (used for both OAuth and Vault — single client)
+- [ ] Create `lib/session.ts` — iron-session helpers (getSession, saveSession, destroySession)
+- [ ] Session shape: `{ userId: string }`
+- [ ] Create `lib/vault.ts` — typed Vault helpers built on `workos.vault.*`:
+
+```ts
+// Naming convention: objects are named "{secretType}" and isolated per-user
+// via context: { organizationId: workosUserId }
+
+// Store a secret on behalf of a user — returns the Vault object ID to persist in DB
+storeSecret(workosUserId: string, name: string, value: string): Promise<string>
+  → workos.vault.createObject({ name, value, context: { organizationId: workosUserId } })
+  → returns object.id
+
+// Retrieve a secret by its Vault object ID
+readSecret(vaultObjectId: string): Promise<string>
+  → workos.vault.readObject({ id: vaultObjectId })
+  → returns object.value
+
+// Update a secret's value in-place (same Vault object ID, key context unchanged)
+updateSecret(vaultObjectId: string, value: string): Promise<void>
+  → workos.vault.updateObject({ id: vaultObjectId, value })
+
+// Delete a secret (marks for deletion; becomes unavailable to API immediately)
+deleteSecret(vaultObjectId: string): Promise<void>
+  → workos.vault.deleteObject({ id: vaultObjectId })
+```
+
+**What goes in Vault** — any sensitive credential stored on behalf of a user; the DB stores only the Vault object ID:
+
+| Secret | DB column | Vault object name |
+|--------|-----------|-------------------|
+| Webhook endpoint signing secret | `webhook_endpoints.secretVaultId` | `webhook_secret` |
+| Future: user's custom Stripe secret key | `user_integrations.vaultId` | `stripe_secret_key` |
+| Future: user's Mailchimp API key | `user_integrations.vaultId` | `mailchimp_api_key` |
+| Future: user's custom analytics pixel ID | `user_integrations.vaultId` | `analytics_pixel_id` |
+
+> **Security model**: Each user's secrets are cryptographically isolated in Vault via their WorkOS user ID as context. Raw secret values are never written to the Linky database — only opaque Vault object IDs. If the DB is compromised, secrets remain encrypted and inaccessible.
+
+### Task 2.2: Auth API routes
+- [ ] `app/api/auth/oauth/route.ts` — GET: redirect to WorkOS OAuth (Google provider)
+- [ ] `app/api/auth/callback/route.ts` — GET: exchange code for user profile, find-or-create user in DB, set session, capture `user_signed_up` (if new) or `user_logged_in` via PostHog server client, send welcome email via Resend (if new user), redirect to `/dashboard`
+- [ ] `app/api/auth/logout/route.ts` — POST: destroy session, redirect to `/`
+- [ ] `app/api/auth/session/route.ts` — GET: return current session user or 401
+
+### Task 2.3: Auth middleware + helpers
+- [ ] Create `lib/auth.ts` — `requireAuth()` helper that reads session and returns user or throws/redirects
+- [ ] Create `middleware.ts` — protect `/dashboard/*`, `/api/pages/*`, `/api/user/*` routes (redirect unauthenticated to `/login`)
+
+### Task 2.4: Login page
+- [ ] `app/(auth)/login/page.tsx` — centered card on warm off-white bg, serif "Welcome to Linky" heading, sans-serif subtext, "Sign in with Google" button (filled style with Google icon), subtle brand illustration or gradient glow behind card
+- [ ] `app/(auth)/layout.tsx` — full-height centered layout with warm background
+
+---
+
+## Phase 3 — Block System Core
+
+### Task 3.1: Block type schemas (Zod)
+- [ ] Create `lib/blocks/schemas.ts`:
+
+```
+linkBlockSchema:        { url: string (URL), title: string, thumbnailUrl?: string (URL), icon?: string, verificationEnabled?: boolean, verificationMode?: "age" | "acknowledge" }
+textBlockSchema:        { content: string, variant: "heading" | "paragraph", align: "left" | "center" | "right" }
+embedBlockSchema:       { originalUrl: string (URL), providerName: string, embedType: "oembed" | "iframe" | "custom", oembedData?: object, embedHtml?: string, iframeUrl?: string (URL), aspectRatio?: string }
+socialIconsBlockSchema: { icons: [{ platform: string, url: string (URL) }], size: "sm" | "md" | "lg", style: "filled" | "outline" | "monochrome" }
+dividerBlockSchema:     { style: "line" | "space" | "dots" }
+customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
+```
+
+- [ ] Export `blockDataSchemas: Record<BlockType, ZodSchema>` for validation dispatch
+
+> **Note on `custom_code` blocks**: User-provided HTML is sanitized server-side on save. Allowed tags: `<div>`, `<span>`, `<p>`, `<a>`, `<img>`, `<ul>`, `<ol>`, `<li>`, `<h1>`–`<h6>`, `<strong>`, `<em>`, `<br>`, `<iframe>` (src allowlisted). All `<script>` tags and event handlers (`onclick`, etc.) are stripped. Custom CSS is scoped to the block container to prevent style leaking.
+
+### Task 3.2: Block type registry
+- [ ] Create `lib/blocks/registry.ts`:
+  - [ ] `BlockTypeDefinition`: `{ type, label, icon (Lucide name), dataSchema, defaultData }`
+  - [ ] Export `blockRegistry: Record<BlockType, BlockTypeDefinition>`
+  - [ ] Export `getBlockDef(type)` helper
+
+### Task 3.3: Block renderer components (public page)
+- [ ] `components/blocks/BlockRenderer.tsx` — switch on `block.type`, dispatch to typed component
+- [ ] `components/blocks/LinkBlock.tsx` — server component; renders `<a>` linking to `/r/[blockId]` (redirect route) instead of the destination URL directly; this ensures every click is tracked server-side with full request headers before redirecting
+- [ ] `components/blocks/TextBlock.tsx` — server component; renders heading (`<h2>`) or paragraph (`<p>`) with alignment
+- [ ] `components/blocks/EmbedBlock.tsx` — server component; renders sanitized oEmbed HTML or sandboxed iframe with lazy loading; falls back to styled link
+- [ ] `components/blocks/SocialIconsBlock.tsx` — server component; renders row of platform icons (use `lucide-react` or custom SVGs for Twitter, Instagram, TikTok, YouTube, GitHub, LinkedIn, etc.)
+- [ ] `components/blocks/DividerBlock.tsx` — server component; renders `<hr>`, spacer `<div>`, or dotted separator
+- [ ] `components/blocks/CustomCodeBlock.tsx` — server component; renders sanitized user HTML inside a scoped container with user CSS applied via `<style scoped>` or a CSS-in-JS wrapper; no raw `<script>` execution
+
+---
+
+## Phase 4 — Integration/Embed System
+
+### Task 4.1: oEmbed resolver
+- [ ] Create `lib/embeds/oembed.ts`:
+  - [ ] `KNOWN_PROVIDERS` map: domain → oEmbed endpoint URL (YouTube, Spotify, Vimeo, SoundCloud, Twitter/X)
+  - [ ] `resolveOEmbed(url: string): Promise<OEmbedResult>`:
+    1. Check known providers map → fetch oEmbed JSON
+    2. Fetch URL HTML → parse `<link rel="alternate" type="application/json+oembed">` → fetch endpoint
+    3. Return `{ providerName, embedType, oembedData, embedHtml }`
+
+### Task 4.2: Iframe provider patterns
+- [ ] Create `lib/embeds/providers.ts`:
+  - [ ] `IFRAME_PATTERNS`: array of `{ match: RegExp, transform: (url, match) → iframeSrc, aspectRatio, providerName }`
+  - [ ] MVP patterns: YouTube (`/watch?v=` → `/embed/`), Spotify (`/track|album|playlist/` → `/embed/`), Vimeo (`/\d+` → `/player.vimeo.com/video/`), SoundCloud, Google Maps
+  - [ ] `resolveIframe(url: string): IframeResult | null`
+
+### Task 4.3: Embed sanitization
+- [ ] Create `lib/embeds/sanitize.ts`:
+  - [ ] `ALLOWED_IFRAME_DOMAINS` allowlist: youtube.com, youtube-nocookie.com, player.vimeo.com, open.spotify.com, w.soundcloud.com, platform.twitter.com, google.com/maps, calendly.com
+  - [ ] `sanitizeEmbedHtml(html: string): string` — strip all tags except `<iframe>` with `src` on allowlist; use a lightweight HTML parser (or regex for iframes specifically)
+  - [ ] `sanitizeCustomHtml(html: string): string` — for `custom_code` blocks; allow safe HTML tags (`div`, `span`, `p`, `a`, `img`, `ul`, `ol`, `li`, `h1`–`h6`, `strong`, `em`, `br`, `iframe` with allowlisted `src`); strip `<script>`, event handlers (`on*` attributes), `javascript:` URLs
+  - [ ] `scopeCustomCss(css: string, containerId: string): string` — prefix all CSS selectors with the block's container ID to prevent style leaking to the rest of the page
+
+### Task 4.4: Unified embed resolution endpoint
+- [ ] Create `lib/embeds/resolve.ts`:
+  - [ ] `resolveEmbed(url: string): Promise<EmbedBlockData>`:
+    1. Try `resolveIframe(url)` for known patterns (fastest, best quality)
+    2. Try `resolveOEmbed(url)` for oEmbed-capable URLs
+    3. Fallback: return `{ originalUrl, providerName: "Unknown", embedType: "custom" }` (renders as styled link)
+- [ ] Create `app/api/embeds/resolve/route.ts` — POST: accepts `{ url }`, returns resolved embed data; capture `embed_resolved` to PostHog
+
+---
+
+## Phase 5 — Theming System
+
+### Task 5.1: Theme types and presets
+- [ ] Create `lib/themes/types.ts`:
+  - [ ] `ThemeConfig` interface: backgroundColor, textColor, headingColor, buttonStyle ("filled" | "outline" | "soft" | "shadow"), buttonColor, buttonTextColor, buttonRadius ("none" | "sm" | "md" | "lg" | "full"), fontFamily, socialIconColor, maxWidth ("sm" | "md" | "lg"), blockSpacing ("tight" | "normal" | "relaxed")
+- [ ] Create `lib/themes/presets.ts`:
+  - [ ] 5 presets aligned with the design direction:
+    - `default` — warm off-white bg (`#f7f5f4`), dark navy text (`#292d4c`), purple accent (`#5f4dc5`), DM Sans, filled buttons, rounded-lg
+    - `midnight` — deep gradient dark bg (black → `blue-950`), slate-100 text, bright purple/blue accent, DM Sans, outline buttons with glow, rounded-lg — inspired by Status AI
+    - `forest` — soft sage green bg, dark green text, earth-tone accent, DM Sans, soft buttons, rounded-md
+    - `sunset` — warm peach/cream bg, dark warm gray text, coral/orange accent, Playfair Display headings, filled buttons, rounded-full (pill)
+    - `minimal` — pure white bg, pure black text, no accent color (black buttons), Inter font, shadow button style, rounded-none (sharp corners)
+  - [ ] Export `themePresets: Record<string, ThemeConfig>`
+
+### Task 5.2: Theme resolution and CSS variables
+- [ ] Create `lib/themes/resolve.ts`:
+  - [ ] `resolveTheme(themeId: string, overrides: Partial<ThemeConfig>): ThemeConfig`
+  - [ ] Merges preset with sparse user overrides
+- [ ] Create `lib/themes/to-css-vars.ts`:
+  - [ ] `themeToCssVars(theme: ThemeConfig): Record<string, string>`
+  - [ ] Maps properties to CSS custom properties: `--bg-color`, `--text-color`, `--heading-color`, `--btn-color`, `--btn-text-color`, `--btn-radius`, `--btn-style`, `--social-icon-color`, `--max-width`, `--block-spacing`
+
+### Task 5.3: Theme-aware CSS
+- [ ] Add theme CSS custom property usage to `globals.css`:
+  - [ ] `.linky-page` container: background, text color, max-width, centering
+  - [ ] `.block-link` buttons: color, text, radius, style variants (filled/outline/soft/shadow)
+  - [ ] `.block-text` headings/paragraphs: heading color, text color
+  - [ ] `.block-social-icons`: icon color
+  - [ ] Spacing between blocks via `--block-spacing`
+
+---
+
+## Phase 6 — Public Page
+
+### Task 6.1: Public page route
+- [ ] Create `app/(public)/[slug]/page.tsx`:
+  - [ ] Server component with `export const revalidate = 60` (ISR)
+  - [ ] `generateMetadata()`: fetch page by slug → return title, description, OG image
+  - [ ] Default export: fetch page + user + blocks → resolve theme → render with CSS vars
+  - [ ] Render: `PageHeader` (avatar, name, bio) → `BlockRenderer` for each block → optional `LinkyBranding` footer
+  - [ ] Link blocks render with `href="/r/[blockId]"` — clicks go through the redirect route for server-side tracking
+  - [ ] Include a lightweight `PageViewTracker` client component that fires `navigator.sendBeacon("/api/track/view")` on mount for page view recording
+- [ ] Create `app/(public)/[slug]/not-found.tsx` — styled 404 page
+
+### Task 6.2: Page header component
+- [ ] Create `components/public/PageHeader.tsx`:
+  - [ ] Avatar image (with fallback initials)
+  - [ ] Display name
+  - [ ] Bio text
+  - [ ] Uses theme CSS variables
+
+### Task 6.3: Linky branding footer
+- [ ] Create `components/public/LinkyBranding.tsx`:
+  - [ ] Small "Made with Linky" badge at bottom of free pages
+  - [ ] Links to marketing site
+
+### Task 6.4: Click redirect route
+- [ ] `app/r/[blockId]/route.ts` — GET: the core click-tracking mechanism
+  1. [ ] Look up block by ID → get destination URL, pageId, and `verificationEnabled`/`verificationMode`
+  2. [ ] If `verificationEnabled` is true, check for a valid `linky_verified_{blockId}` session cookie — if absent, **redirect to `/verify/[blockId]`** instead of proceeding
+  3. [ ] Extract from request headers (no cookies, no IP storage):
+     - [ ] `Referer` → referrer
+     - [ ] `User-Agent` → raw UA + parse into browser, OS, device (use `ua-parser-js`)
+     - [ ] `Accept-Language` → primary language code
+     - [ ] IP → resolve to country/region/city via geo lookup (e.g., Vercel's `req.geo` or a lightweight IP-to-geo service), then **discard the IP**
+     - [ ] Detect bots from UA string
+  4. [ ] Write `click_events` row (async, non-blocking — use `waitUntil` if on Vercel)
+  5. [ ] Check and send milestone email if click count crosses a threshold (async, non-blocking)
+  6. [ ] Return **302 redirect** to the destination URL
+  - [ ] If block not found or not visible → redirect to page or return 404
+
+### Task 6.7: Age/content verification interstitial
+- [ ] `app/verify/[blockId]/page.tsx` — Server component that renders the verification gate:
+  - [ ] Fetch block by ID → get `verificationMode`; 404 if block not found or verification not enabled
+  - [ ] **`age` mode**: Full-page interstitial with:
+    - Linky logo + block title
+    - "This link contains age-restricted content" heading
+    - Date of birth picker (day / month / year selects)
+    - "Continue" button — submits to the POST handler
+    - Small print: "We do not store your date of birth. Age is verified on your device."
+  - [ ] **`acknowledge` mode**: Simpler full-page interstitial with:
+    - Warning icon + "Mature content" heading
+    - "The following link may contain content not suitable for all audiences."
+    - "Continue" primary button + "Go back" secondary link
+  - [ ] Styled to match the page owner's theme (fetch page theme from block's pageId)
+  - [ ] No tracking scripts, no PostHog, no analytics on this interstitial
+- [ ] `app/verify/[blockId]/route.ts` — POST: processes the verification form:
+  - [ ] **`age` mode**: Parse submitted DOB, compute age; if < 18, return the interstitial page with an error state ("You must be 18 or older to access this link") — **DOB is never stored**
+  - [ ] **`acknowledge` mode**: Accept immediately (any POST = acknowledged)
+  - [ ] On success: set a `linky_verified_{blockId}` cookie (httpOnly, sameSite: lax, maxAge: 3600 — expires in 1 hour; not persistent across browser sessions)
+  - [ ] Redirect to `/r/[blockId]` — the redirect route will now find the cookie and proceed normally
+
+> **GDPR / Privacy**: The date of birth entered is used only to compute age in memory and is never written to any database or log. The verification cookie contains only a boolean flag (`verified=1`) and the blockId — no personal data. The 1-hour expiry means re-verification is required if the user returns later.
+
+### Task 6.5: Page view tracking
+- [ ] `app/api/track/view/route.ts` — POST: accepts `{ pageId }`, extracts same headers as click route, writes to `page_views`, checks and sends milestone email if view count crosses a threshold (async), returns 204
+- [ ] Called from a lightweight client component on the public page (`navigator.sendBeacon` on mount)
+
+### Task 6.6: Request parsing helpers
+- [ ] Create `lib/tracking/parse-request.ts`:
+  - [ ] `parseRequest(request: Request): TrackingData` — extracts referrer, UA, browser, OS, device, language, country/region/city, isBot from request headers
+  - [ ] Centralizes header parsing logic shared between click redirect and page view routes
+  - [ ] Install `ua-parser-js` for reliable UA parsing
+  - [ ] **No IP address in the returned data** — geo is resolved and IP discarded within this function
+
+---
+
+## Phase 7 — Dashboard Layout & Settings
+
+### Task 7.1: Dashboard layout
+- [ ] Create `app/(dashboard)/layout.tsx`:
+  - [ ] Left sidebar: dark navy (`#292d4c`) or `slate-900` bg, icon + label navigation items, active state uses purple accent bg (`#5f4dc5/15`) with purple text
+  - [ ] Nav items: Dashboard (page editor), Appearance (theme), Settings (profile)
+  - [ ] Top bar: off-white bg, user avatar (rounded-full) + name + logout dropdown
+  - [ ] Main content area: warm off-white (`#f7f5f4`) background, white card panels with subtle borders
+  - [ ] Responsive: sidebar collapses to bottom nav on mobile (icon-only, no labels)
+  - [ ] Smooth transitions on nav hover states (`0.6s cubic-bezier` — Gather-inspired)
+  - [ ] Protect with `requireAuth()`
+
+### Task 7.2: Settings page
+- [ ] Create `app/(dashboard)/settings/page.tsx`:
+  - [ ] Profile form: name, bio, username (with availability check), avatar URL
+  - [ ] Account section: email (read-only from WorkOS), sign out button
+  - [ ] Danger zone: delete account (Phase 2)
+- [ ] Create `app/api/user/profile/route.ts`:
+  - [ ] GET: return current user profile
+  - [ ] PATCH: update name, bio, username, avatarUrl (validate username uniqueness); capture `settings_updated` to PostHog
+
+---
+
+## Phase 8 — Page Editor
+
+### Task 8.1: Page CRUD API routes
+- [ ] `app/api/pages/route.ts`:
+  - [ ] GET: list user's pages
+  - [ ] POST: create page (auto-generate slug from username, auto-create page for new users); capture `page_created` to PostHog
+- [ ] `app/api/pages/[pageId]/route.ts`:
+  - [ ] GET: return page with all blocks
+  - [ ] PATCH: update page fields (title, description, isPublished, themeId, themeOverrides); capture `page_published`/`page_unpublished` and `theme_changed` to PostHog when relevant; send PagePublished email via Resend on first publish
+  - [ ] DELETE: delete page
+
+### Task 8.2: Block CRUD API routes
+- [ ] `app/api/pages/[pageId]/blocks/route.ts`:
+  - [ ] GET: list all blocks for page (include hidden, for editor)
+  - [ ] POST: create block (validate type + data against Zod schema, auto-assign position); capture `block_added` to PostHog
+- [ ] `app/api/pages/[pageId]/blocks/[blockId]/route.ts`:
+  - [ ] PATCH: update block (data, isVisible, type-specific fields)
+  - [ ] DELETE: delete block; capture `block_deleted` to PostHog
+- [ ] `app/api/pages/[pageId]/blocks/reorder/route.ts`:
+  - [ ] POST: accepts `{ orderedIds: string[] }`, bulk-updates positions; capture `block_reordered` to PostHog
+
+### Task 8.3: Page editor UI
+- [ ] Create `app/(dashboard)/dashboard/page.tsx`:
+  - [ ] Fetch user's page (or create one if none exists)
+  - [ ] Render `PageEditor` component
+- [ ] Create `components/dashboard/PageEditor.tsx`:
+  - [ ] Block list with drag-and-drop reorder (use `@dnd-kit/core` + `@dnd-kit/sortable`)
+  - [ ] Each block shows: type icon, title/preview, visibility toggle, edit button, delete button
+  - [ ] Inline editing: clicking a block opens an edit form (drawer or inline expand)
+  - [ ] Auto-saves on change (debounced PATCH calls)
+  - [ ] Install: `@dnd-kit/core`, `@dnd-kit/sortable`, `@dnd-kit/utilities`
+
+### Task 8.4: Block palette (add block)
+- [ ] Create `components/dashboard/BlockPalette.tsx`:
+  - [ ] Triggered by "Add block" button
+  - [ ] Shows grid of available block types with icons and labels
+  - [ ] Clicking a type creates a new block with default data and appends it to the page
+
+### Task 8.5: Block editor forms
+- [ ] Create `components/dashboard/block-editors/LinkEditor.tsx`:
+  - [ ] Fields: URL (input), title (input), thumbnail URL (input, optional)
+  - [ ] Auto-fetch page title + favicon when URL is entered
+  - [ ] **Verification section** (collapsible, off by default):
+    - [ ] Toggle switch: "Require verification before this link opens"
+    - [ ] When enabled, show mode selector:
+      - `age` — "Age gate (18+): visitor must enter their date of birth"
+      - `acknowledge` — "Content warning: visitor must click to confirm before continuing"
+    - [ ] Preview text shown below: e.g. "Visitors will see an age verification screen before being redirected"
+- [ ] Create `components/dashboard/block-editors/TextEditor.tsx`:
+  - [ ] Fields: content (textarea), variant (select: heading/paragraph), alignment (button group)
+- [ ] Create `components/dashboard/block-editors/EmbedEditor.tsx`:
+  - [ ] Fields: URL (input) — on paste/blur, call `/api/embeds/resolve` and show preview
+  - [ ] Display: provider name, embed preview (iframe or thumbnail)
+- [ ] Create `components/dashboard/block-editors/SocialIconsEditor.tsx`:
+  - [ ] Repeatable row: platform (select from list), URL (input)
+  - [ ] Add/remove icons
+  - [ ] Size and style selectors
+- [ ] Create `components/dashboard/block-editors/DividerEditor.tsx`:
+  - [ ] Style selector: line / space / dots
+- [ ] Create `components/dashboard/block-editors/CustomCodeEditor.tsx`:
+  - [ ] HTML editor: `<textarea>` or code editor (e.g., `@uiw/react-textarea-code-editor`) with syntax highlighting
+  - [ ] CSS editor: separate `<textarea>` for custom styles
+  - [ ] Live preview panel showing sanitized output
+  - [ ] Warning banner explaining which tags/attributes are allowed
+  - [ ] On save: HTML is sanitized server-side before storage, `sanitized: true` flag set
+
+---
+
+## Phase 9 — Theme Editor
+
+### Task 9.1: Appearance page
+- [ ] Create `app/(dashboard)/appearance/page.tsx`:
+  - [ ] Two-column layout: theme controls on left, live preview on right
+  - [ ] Render `ThemeEditor` + `LivePreview`
+
+### Task 9.2: Theme editor component
+- [ ] Create `components/dashboard/ThemeEditor.tsx`:
+  - [ ] **Preset picker**: grid of 5 theme cards showing color swatches, click to select
+  - [ ] **Custom overrides** (accordion sections):
+    - [ ] Colors: background, text, heading, button, button text, social icons (color pickers)
+    - [ ] Button style: filled / outline / soft / shadow (visual gallery)
+    - [ ] Button radius: none / sm / md / lg / full (visual gallery)
+    - [ ] Font: dropdown of 10-15 popular Google Fonts
+    - [ ] Layout: max width (sm/md/lg), block spacing (tight/normal/relaxed)
+  - [ ] Saves to `pages.themeId` + `pages.themeOverrides` via PATCH
+
+### Task 9.3: Live preview component
+- [ ] Create `components/dashboard/LivePreview.tsx`:
+  - [ ] Renders a scaled-down mobile preview of the public page
+  - [ ] Uses the same `BlockRenderer` components as the public page
+  - [ ] Applies CSS variables from the current theme state in real-time
+  - [ ] Framed in a phone-shaped container
+
+---
+
+## Phase 10 — Polish & Launch Readiness
+
+### Task 10.1: Landing page
+- [ ] Create `app/page.tsx`:
+  - [ ] Hero section: large serif headline with gradient text accent, sans-serif subline, prominent CTA button — layered background with warm radial glows (Status AI-inspired, lighter)
+  - [ ] Phone mockup showing an example Linky page (screenshot or live render)
+  - [ ] Feature sections: 3 columns with icons, alternating text/image rows for key features (blocks, integrations, themes)
+  - [ ] Scroll-triggered fade-in animations on sections
+  - [ ] Footer with links, minimal branding
+
+### Task 10.2: Loading states and error handling
+- [ ] Add loading skeletons to dashboard pages (`loading.tsx` files)
+- [ ] Add `error.tsx` boundary to dashboard and public page routes
+- [ ] Add toast notifications for save success/failure in editor
+- [ ] Add optimistic updates to block reorder
+
+### Task 10.3: Responsive design pass
+- [ ] Dashboard: sidebar → bottom nav on mobile
+- [ ] Page editor: stack preview below editor on mobile
+- [ ] Public page: already mobile-first (single column, max-width constrained)
+- [ ] Theme editor: stack controls above preview on mobile
+
+### Task 10.4: SEO and metadata
+- [ ] `app/layout.tsx`: default metadata (title, description, OG image for the marketing site)
+- [ ] Public pages: dynamic metadata from page fields via `generateMetadata`
+- [ ] Add `robots.txt` and `sitemap.xml` (Phase 2)
+
+---
+
+## Phase 11 — Analytics Dashboard (Phase 2)
+
+### Task 11.1: Analytics API routes
+- [ ] `app/api/analytics/[pageId]/summary/route.ts`:
+  - [ ] Returns: total views, total clicks, unique visitors (approximate), top 5 referrers, top 5 clicked blocks
+  - [ ] Time range parameter: 7d, 30d, 90d
+  - [ ] Aggregates from `click_events` and `page_views` tables
+
+### Task 11.2: Analytics dashboard page
+- [ ] Create `app/(dashboard)/analytics/page.tsx`:
+  - [ ] Summary cards: views, clicks, CTR
+  - [ ] Click timeseries chart (per day)
+  - [ ] Top links table (by clicks)
+  - [ ] Top referrers table
+  - [ ] Time range selector (7d / 30d / 90d)
+  - [ ] Use a lightweight chart library (e.g., `recharts`)
+
+---
+
+## Phase 12 — Subscriptions & Billing (Phase 2)
+
+### Task 12.1: Subscriptions schema
+- [ ] Add `subscriptions` table to schema: id, userId, stripeSubscriptionId, stripePriceId, status, periodStart, periodEnd, createdAt, updatedAt
+
+### Task 12.2: Stripe integration
+- [ ] `app/api/stripe/checkout/route.ts` — create checkout session
+- [ ] `app/api/stripe/portal/route.ts` — create billing portal session
+- [ ] `app/api/webhooks/stripe/route.ts` — handle subscription lifecycle events (created, updated, deleted)
+- [ ] Update `users.isPro` based on active subscription
+
+### Task 12.3: Pro feature gating
+- [ ] Create `lib/pro.ts` — `requirePro()` helper
+- [ ] Gate features: remove branding, custom fonts (expanded list), SEO controls, analytics dashboard
+- [ ] Add upgrade prompts in dashboard for gated features
+
+---
+
+## Phase 13 — Extended Features (Phase 2)
+
+### Task 13.1: Additional block types
+- [ ] `image` block: `{ url, alt, linkUrl? }` — standalone image with optional click-through
+- [ ] `email_collect` block: `{ provider: "mailchimp" | "kit" | ..., embedCode }` — embedded signup form
+- [ ] `group` block: `{ title, isCollapsed }` — collapsible section containing child blocks (uses `parentId`)
+
+### Task 13.2: Block scheduling
+- [ ] Add scheduling UI to block editor: start date/time, end date/time
+- [ ] Filter blocks by schedule in public page query (`WHERE scheduledStart IS NULL OR scheduledStart <= NOW()`)
+
+### Task 13.3: Additional embed providers
+- [ ] Add iframe patterns for: Calendly, Typeform, Gumroad, Stripe Payment Links, Apple Music, TikTok, Twitch
+- [ ] Add oEmbed endpoints for any that support it
+
+### Task 13.4: Multiple pages per user
+- [ ] Update dashboard to show page list
+- [ ] Add page creation flow with custom slug
+- [ ] Update navigation
+
+### Task 13.5: QR code generation
+- [ ] Add QR code button to dashboard that generates a QR code for the public page URL
+- [ ] Use `qrcode` package, render as downloadable SVG/PNG
+
+### Task 13.6: SEO controls
+- [ ] Add SEO section to page settings: custom title, description, OG image upload
+- [ ] Wire into `generateMetadata` on public page
+
+---
+
+## Phase 14 — Webhooks & Automation (Future)
+
+### Task 14.1: Webhook schema
+- [ ] Add `webhook_endpoints` table: id, userId, url, **secretVaultId** (Vault object ID — never store raw secret), events (jsonb), isActive, createdAt
+  - [ ] On create: generate HMAC secret, store in Vault via `storeSecret(workosUserId, "webhook_secret", generatedSecret)`, persist returned Vault ID in `secretVaultId`
+  - [ ] On delete: call `deleteSecret(secretVaultId)` to remove from Vault, then delete DB row
+  - [ ] On sign: call `readSecret(secretVaultId)` to retrieve secret at delivery time, sign payload, discard value immediately
+- [ ] Add `webhook_deliveries` table: id, endpointId, event, payload, statusCode, response, attempts, deliveredAt, createdAt
+
+### Task 14.2: Webhook event system
+- [ ] Define events: `page.viewed`, `link.clicked`, `page.updated`, `block.created`, `block.deleted`
+- [ ] Create `lib/webhooks/emit.ts` — queues webhook deliveries when events occur
+- [ ] Create `lib/webhooks/deliver.ts` — reads secret from Vault via `readSecret(endpoint.secretVaultId)`, signs payload with HMAC-SHA256, delivers to endpoint URL, retries (3x exponential backoff); secret value held only in memory for duration of the request
+
+### Task 14.3: Webhook management UI
+- [ ] Dashboard page to manage endpoints: add/edit/delete URLs, select events
+- [ ] Delivery log with status, payload preview, retry button
+
+### Task 14.4: Zapier integration
+- [ ] REST hooks pattern or polling endpoint for Zapier triggers
+- [ ] Provides access to all webhook events
+
+---
+
+## Phase 15 — Custom Domains (Future)
+
+### Task 15.1: Domain schema and verification
+- [ ] `custom_domains` table: id, pageId, domain, isVerified, sslStatus, verifiedAt, createdAt
+- [ ] DNS verification flow: user adds CNAME/A record, platform checks via DNS lookup
+
+### Task 15.2: Domain middleware
+- [ ] `middleware.ts` extension: check incoming hostname against `custom_domains` table
+- [ ] Route custom domain requests to the correct page
+
+### Task 15.3: SSL provisioning
+- [ ] Integration with hosting provider's SSL (e.g., Vercel automatic SSL)
+- [ ] Status tracking in `custom_domains.sslStatus`
+
+---
+
+## Verification Checklist
+
+After each phase, verify:
+
+- [ ] **Phase 1**: `drizzle-kit generate` creates migration files, `drizzle-kit migrate` applies them, tables exist in DB; PostHog client initializes in dashboard without errors, events appear in self-hosted PostHog instance; Resend client sends a test email successfully; React Email templates render correctly in dev preview (`npx react-email dev`)
+- [ ] **Phase 2**: `/login` → OAuth flow → session set → redirect to `/dashboard`
+- [ ] **Phase 3**: Block Zod schemas validate correct/incorrect data
+- [ ] **Phase 4**: `/api/embeds/resolve` returns embed data for YouTube, Spotify URLs
+- [ ] **Phase 5**: `resolveTheme("midnight", { buttonColor: "#ff0000" })` returns merged config
+- [ ] **Phase 6**: `/{username}` renders page with blocks, themed correctly; clicking a link redirects via `/r/[blockId]` → 302 to destination with `click_events` row (browser, OS, device, country, language populated, no IP stored); page view tracked on load; verified link shows `/verify/[blockId]` interstitial (age mode rejects DOB under 18, acknowledge mode passes on Continue), sets 1hr cookie, then redirects normally
+- [ ] **Phase 7**: Dashboard layout renders with navigation, settings form saves
+- [ ] **Phase 8**: Can add/edit/reorder/delete all block types in editor
+- [ ] **Phase 9**: Theme presets switch live, custom overrides persist
+- [ ] **Phase 10**: Landing page renders, loading states work, mobile layout correct
