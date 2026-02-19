@@ -41,14 +41,8 @@ export async function POST(request: Request) {
     .then((count) => checkAndSendMilestones(pageId!, "views", count))
     .catch(console.error);
 
-  // Use waitUntil if available (Vercel edge), otherwise fire-and-forget
-  if (typeof (globalThis as { waitUntil?: (p: Promise<unknown>) => void }).waitUntil === "function") {
-    (globalThis as { waitUntil: (p: Promise<unknown>) => void }).waitUntil(
-      Promise.all([viewPromise, milestonePromise])
-    );
-  } else {
-    Promise.all([viewPromise, milestonePromise]).catch(console.error);
-  }
+  // Fire-and-forget — don't block the response
+  Promise.all([viewPromise, milestonePromise]).catch(console.error);
 
   return new NextResponse(null, { status: 204 });
 }

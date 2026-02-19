@@ -733,24 +733,24 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ## Phase 14 — Webhooks & Automation (Future)
 
 ### Task 14.1: Webhook schema
-- [ ] Add `webhook_endpoints` table: id, userId, url, **secretVaultId** (Vault object ID — never store raw secret), events (jsonb), isActive, createdAt
-  - [ ] On create: generate HMAC secret, store in Vault via `storeSecret(workosUserId, "webhook_secret", generatedSecret)`, persist returned Vault ID in `secretVaultId`
-  - [ ] On delete: call `deleteSecret(secretVaultId)` to remove from Vault, then delete DB row
-  - [ ] On sign: call `readSecret(secretVaultId)` to retrieve secret at delivery time, sign payload, discard value immediately
-- [ ] Add `webhook_deliveries` table: id, endpointId, event, payload, statusCode, response, attempts, deliveredAt, createdAt
+- [x] Add `webhook_endpoints` table: id, userId, url, **secretVaultId** (Vault object ID — never store raw secret), events (jsonb), isActive, createdAt
+  - [x] On create: generate HMAC secret, store in Vault via `storeSecret(workosUserId, "webhook_secret", generatedSecret)`, persist returned Vault ID in `secretVaultId`
+  - [x] On delete: call `deleteSecret(secretVaultId)` to remove from Vault, then delete DB row
+  - [x] On sign: call `readSecret(secretVaultId)` to retrieve secret at delivery time, sign payload, discard value immediately
+- [x] Add `webhook_deliveries` table: id, endpointId, event, payload, statusCode, response, attempts, deliveredAt, createdAt
 
 ### Task 14.2: Webhook event system
-- [ ] Define events: `page.viewed`, `link.clicked`, `page.updated`, `block.created`, `block.deleted`
-- [ ] Create `lib/webhooks/emit.ts` — queues webhook deliveries when events occur
-- [ ] Create `lib/webhooks/deliver.ts` — reads secret from Vault via `readSecret(endpoint.secretVaultId)`, signs payload with HMAC-SHA256, delivers to endpoint URL, retries (3x exponential backoff); secret value held only in memory for duration of the request
+- [x] Define events: `page.viewed`, `link.clicked`, `page.updated`, `block.created`, `block.deleted`
+- [x] Create `lib/webhooks/emit.ts` — queues webhook deliveries when events occur
+- [x] Create `lib/webhooks/deliver.ts` — reads secret from Vault via `readSecret(endpoint.secretVaultId)`, signs payload with HMAC-SHA256, delivers to endpoint URL, retries (3x exponential backoff); secret value held only in memory for duration of the request
 
 ### Task 14.3: Webhook management UI
-- [ ] Dashboard page to manage endpoints: add/edit/delete URLs, select events
-- [ ] Delivery log with status, payload preview, retry button
+- [x] Dashboard page to manage endpoints: add/edit/delete URLs, select events
+- [x] Delivery log with status, payload preview, retry button
 
 ### Task 14.4: Zapier integration
-- [ ] REST hooks pattern or polling endpoint for Zapier triggers
-- [ ] Provides access to all webhook events
+- [x] REST hooks pattern or polling endpoint for Zapier triggers
+- [x] Provides access to all webhook events
 
 ---
 

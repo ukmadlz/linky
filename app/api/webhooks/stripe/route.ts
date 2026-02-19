@@ -35,8 +35,10 @@ export async function POST(request: Request) {
 
       const priceId = sub.items.data[0]?.price.id ?? "";
       const status = sub.status;
-      const periodStart = new Date((sub.current_period_start ?? 0) * 1000);
-      const periodEnd = new Date((sub.current_period_end ?? 0) * 1000);
+      // In Stripe SDK v20+, period dates are on the subscription item
+      const firstItem = sub.items.data[0] as (Stripe.SubscriptionItem & { current_period_start?: number; current_period_end?: number }) | undefined;
+      const periodStart = new Date((firstItem?.current_period_start ?? 0) * 1000);
+      const periodEnd = new Date((firstItem?.current_period_end ?? 0) * 1000);
 
       // Upsert subscription
       await db

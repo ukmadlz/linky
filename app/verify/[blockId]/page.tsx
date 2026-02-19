@@ -84,7 +84,7 @@ export default async function VerifyPage({ params, searchParams }: VerifyPagePro
           </div>
         )}
 
-        <form method="POST" action={`/verify/${blockId}`}>
+        <form method="POST" action={`/api/verify/${blockId}`}>
           {isAge ? (
             <>
               {/* Age verification: DOB fields */}

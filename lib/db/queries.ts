@@ -8,12 +8,16 @@ import {
   clickEvents,
   pageViews,
   customDomains,
+  webhookEndpoints,
+  webhookDeliveries,
   type User,
   type Page,
   type Block,
   type NewUser,
   type NewBlock,
   type CustomDomain,
+  type WebhookEndpoint,
+  type WebhookDelivery,
 } from "./schema";
 
 // ─────────────────────────────────────────────────────────────
@@ -366,6 +370,124 @@ export async function updateCustomDomain(
 
 export async function deleteCustomDomain(id: string): Promise<void> {
   await db.delete(customDomains).where(eq(customDomains.id, id));
+}
+
+// ─────────────────────────────────────────────────────────────
+// Webhook queries
+// ─────────────────────────────────────────────────────────────
+
+export async function getWebhookEndpointsByUserId(
+  userId: string
+): Promise<WebhookEndpoint[]> {
+  return db.select().from(webhookEndpoints).where(eq(webhookEndpoints.userId, userId));
+}
+
+export async function getWebhookEndpointById(
+  id: string
+): Promise<WebhookEndpoint | null> {
+  const [row] = await db
+    .select()
+    .from(webhookEndpoints)
+    .where(eq(webhookEndpoints.id, id))
+    .limit(1);
+  return row ?? null;
+}
+
+export async function createWebhookEndpoint(data: {
+  userId: string;
+  url: string;
+  secretVaultId: string;
+  events: string[];
+}): Promise<WebhookEndpoint> {
+  const id = nanoid();
+  const [row] = await db
+    .insert(webhookEndpoints)
+    .values({
+      id,
+      userId: data.userId,
+      url: data.url,
+      secretVaultId: data.secretVaultId,
+      events: data.events,
+    })
+    .returning();
+  return row;
+}
+
+export async function updateWebhookEndpoint(
+  id: string,
+  data: Partial<Pick<WebhookEndpoint, "url" | "events" | "isActive">>
+): Promise<WebhookEndpoint | null> {
+  const [row] = await db
+    .update(webhookEndpoints)
+    .set({ ...data, updatedAt: new Date() })
+    .where(eq(webhookEndpoints.id, id))
+    .returning();
+  return row ?? null;
+}
+
+export async function deleteWebhookEndpoint(id: string): Promise<void> {
+  await db.delete(webhookEndpoints).where(eq(webhookEndpoints.id, id));
+}
+
+/** Get all active endpoints subscribed to an event for a user */
+export async function getActiveEndpointsForUser(
+  userId: string,
+  event: string
+): Promise<WebhookEndpoint[]> {
+  const all = await db
+    .select()
+    .from(webhookEndpoints)
+    .where(
+      and(eq(webhookEndpoints.userId, userId), eq(webhookEndpoints.isActive, true))
+    );
+  return all.filter((ep) => {
+    const events = ep.events as string[];
+    return events.includes(event) || events.includes("*");
+  });
+}
+
+export async function createWebhookDelivery(data: {
+  endpointId: string;
+  event: string;
+  payload: Record<string, unknown>;
+}): Promise<WebhookDelivery> {
+  const id = nanoid();
+  const [row] = await db
+    .insert(webhookDeliveries)
+    .values({
+      id,
+      endpointId: data.endpointId,
+      event: data.event,
+      payload: data.payload,
+    })
+    .returning();
+  return row;
+}
+
+export async function updateWebhookDelivery(
+  id: string,
+  data: Partial<
+    Pick<WebhookDelivery, "statusCode" | "response" | "attempts" | "deliveredAt">
+  >
+): Promise<WebhookDelivery | null> {
+  const [row] = await db
+    .update(webhookDeliveries)
+    .set(data)
+    .where(eq(webhookDeliveries.id, id))
+    .returning();
+  return row ?? null;
+}
+
+export async function getWebhookDeliveriesByEndpoint(
+  endpointId: string,
+  limit = 50
+): Promise<WebhookDelivery[]> {
+  return db
+    .select()
+    .from(webhookDeliveries)
+    .where(eq(webhookDeliveries.endpointId, endpointId))
+    .orderBy(sql`${webhookDeliveries.createdAt} DESC`)
+    .limit(limit);
 }
 
 // ─────────────────────────────────────────────────────────────

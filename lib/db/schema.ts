@@ -236,6 +236,64 @@ export const subscriptionsRelations = relations(subscriptions, ({ one }) => ({
 }));
 
 // ─────────────────────────────────────────────────────────────
+// webhook_endpoints
+// ─────────────────────────────────────────────────────────────
+
+export const webhookEndpoints = pgTable(
+  "webhook_endpoints",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    url: text("url").notNull(),
+    secretVaultId: text("secret_vault_id").notNull(), // WorkOS Vault object ID — never the raw secret
+    events: jsonb("events").default([]).notNull(), // e.g. ["page.viewed", "link.clicked"]
+    isActive: boolean("is_active").default(true).notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (t) => [
+    index("webhook_endpoints_user_id_idx").on(t.userId),
+  ]
+);
+
+// ─────────────────────────────────────────────────────────────
+// webhook_deliveries
+// ─────────────────────────────────────────────────────────────
+
+export const webhookDeliveries = pgTable(
+  "webhook_deliveries",
+  {
+    id: text("id").primaryKey(),
+    endpointId: text("endpoint_id")
+      .notNull()
+      .references(() => webhookEndpoints.id, { onDelete: "cascade" }),
+    event: varchar("event", { length: 100 }).notNull(),
+    payload: jsonb("payload").default({}).notNull(),
+    statusCode: integer("status_code"),
+    response: text("response"),
+    attempts: integer("attempts").default(0).notNull(),
+    deliveredAt: timestamp("delivered_at"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (t) => [
+    index("webhook_deliveries_endpoint_id_idx").on(t.endpointId),
+    index("webhook_deliveries_event_idx").on(t.event),
+    index("webhook_deliveries_created_at_idx").on(t.createdAt),
+  ]
+);
+
+export const webhookEndpointsRelations = relations(webhookEndpoints, ({ one, many }) => ({
+  user: one(users, { fields: [webhookEndpoints.userId], references: [users.id] }),
+  deliveries: many(webhookDeliveries),
+}));
+
+export const webhookDeliveriesRelations = relations(webhookDeliveries, ({ one }) => ({
+  endpoint: one(webhookEndpoints, { fields: [webhookDeliveries.endpointId], references: [webhookEndpoints.id] }),
+}));
+
+// ─────────────────────────────────────────────────────────────
 // custom_domains
 // ─────────────────────────────────────────────────────────────
 
@@ -281,3 +339,7 @@ export type Subscription = typeof subscriptions.$inferSelect;
 export type NewSubscription = typeof subscriptions.$inferInsert;
 export type CustomDomain = typeof customDomains.$inferSelect;
 export type NewCustomDomain = typeof customDomains.$inferInsert;
+export type WebhookEndpoint = typeof webhookEndpoints.$inferSelect;
+export type NewWebhookEndpoint = typeof webhookEndpoints.$inferInsert;
+export type WebhookDelivery = typeof webhookDeliveries.$inferSelect;
+export type NewWebhookDelivery = typeof webhookDeliveries.$inferInsert;

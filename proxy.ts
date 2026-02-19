@@ -4,9 +4,13 @@ import type { SessionData } from "./lib/session";
 
 const SESSION_COOKIE_NAME = "linky_session";
 
-// Protected route prefixes — middleware runs on these
-const PROTECTED_PREFIXES = ["/dashboard", "/appearance", "/settings"];
-const PROTECTED_API_PREFIXES = ["/api/pages", "/api/user", "/api/analytics"];
+const APP_HOSTNAME = new URL(
+  process.env.NEXT_PUBLIC_APP_URL ?? "https://linky.page"
+).hostname;
+
+// Protected route prefixes — proxy runs on these
+const PROTECTED_PREFIXES = ["/dashboard", "/appearance", "/settings", "/webhooks"];
+const PROTECTED_API_PREFIXES = ["/api/pages", "/api/user", "/api/analytics", "/api/webhooks/endpoints", "/api/webhooks/deliveries", "/api/zapier"];
 
 async function getSessionUserId(
   request: NextRequest
@@ -27,8 +31,46 @@ async function getSessionUserId(
 }
 
 export async function proxy(request: NextRequest) {
+  const hostname = request.headers.get("host")?.split(":")[0] ?? "";
   const { pathname } = request.nextUrl;
 
+  // ── Custom domain routing ──────────────────────────────────────────────────
+  // Skip for main app hostname, localhost, vercel preview domains
+  const isCustomDomain =
+    hostname &&
+    hostname !== APP_HOSTNAME &&
+    hostname !== "localhost" &&
+    !hostname.endsWith(".vercel.app") &&
+    !hostname.endsWith(".local");
+
+  if (isCustomDomain) {
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+    try {
+      const res = await fetch(
+        `${appUrl}/api/domains/lookup?domain=${encodeURIComponent(hostname)}`,
+        { next: { revalidate: 60 } }
+      );
+
+      if (res.ok) {
+        const { slug } = (await res.json()) as { slug: string | null };
+        if (slug) {
+          const url = request.nextUrl.clone();
+          const originalPath = request.nextUrl.pathname;
+          url.pathname =
+            originalPath === "/" || originalPath === ""
+              ? `/${slug}`
+              : `/${slug}${originalPath}`;
+          return NextResponse.rewrite(url);
+        }
+      }
+    } catch {
+      // Fall through to normal routing if lookup fails
+    }
+
+    return NextResponse.next();
+  }
+
+  // ── Auth protection ────────────────────────────────────────────────────────
   const isProtectedPage = PROTECTED_PREFIXES.some((prefix) =>
     pathname.startsWith(prefix)
   );
@@ -56,11 +98,11 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/dashboard/:path*",
-    "/appearance/:path*",
-    "/settings/:path*",
-    "/api/pages/:path*",
-    "/api/user/:path*",
-    "/api/analytics/:path*",
+    /*
+     * Match all paths except:
+     * - _next/static, _next/image (Next.js internals)
+     * - favicon.ico, sitemap.xml, robots.txt
+     */
+    "/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
   ],
 };

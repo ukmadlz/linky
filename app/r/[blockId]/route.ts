@@ -68,14 +68,8 @@ export async function GET(request: Request, { params }: Params) {
     .then((count) => checkAndSendMilestones(block.pageId, "clicks", count))
     .catch(console.error);
 
-  // Use waitUntil if available (Vercel edge runtime), otherwise fire-and-forget
-  if (typeof (globalThis as { waitUntil?: (p: Promise<unknown>) => void }).waitUntil === "function") {
-    (globalThis as { waitUntil: (p: Promise<unknown>) => void }).waitUntil(
-      Promise.all([clickPromise, milestonePromise])
-    );
-  } else {
-    Promise.all([clickPromise, milestonePromise]).catch(console.error);
-  }
+  // Fire-and-forget — don't block the redirect
+  Promise.all([clickPromise, milestonePromise]).catch(console.error);
 
   // 6. Return 302 redirect to the destination URL
   return NextResponse.redirect(data.url, { status: 302 });
