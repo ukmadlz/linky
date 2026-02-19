@@ -503,14 +503,14 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ## Phase 6 — Public Page
 
 ### Task 6.1: Public page route
-- [ ] Create `app/(public)/[slug]/page.tsx`:
-  - [ ] Server component with `export const revalidate = 60` (ISR)
-  - [ ] `generateMetadata()`: fetch page by slug → return title, description, OG image
-  - [ ] Default export: fetch page + user + blocks → resolve theme → render with CSS vars
-  - [ ] Render: `PageHeader` (avatar, name, bio) → `BlockRenderer` for each block → optional `LinkyBranding` footer
-  - [ ] Link blocks render with `href="/r/[blockId]"` — clicks go through the redirect route for server-side tracking
-  - [ ] Include a lightweight `PageViewTracker` client component that fires `navigator.sendBeacon("/api/track/view")` on mount for page view recording
-- [ ] Create `app/(public)/[slug]/not-found.tsx` — styled 404 page
+- [x] Create `app/(public)/[slug]/page.tsx`:
+  - [x] Server component with `export const revalidate = 60` (ISR)
+  - [x] `generateMetadata()`: fetch page by slug → return title, description, OG image
+  - [x] Default export: fetch page + user + blocks → resolve theme → render with CSS vars
+  - [x] Render: `PageHeader` (avatar, name, bio) → `BlockRenderer` for each block → optional `LinkyBranding` footer
+  - [x] Link blocks render with `href="/r/[blockId]"` — clicks go through the redirect route for server-side tracking
+  - [x] Include a lightweight `PageViewTracker` client component that fires `navigator.sendBeacon("/api/track/view")` on mount for page view recording
+- [x] Create `app/(public)/[slug]/not-found.tsx` — styled 404 page
 
 ### Task 6.2: Page header component
 - [ ] Create `components/public/PageHeader.tsx`:
