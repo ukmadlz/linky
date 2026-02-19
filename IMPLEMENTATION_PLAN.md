@@ -747,10 +747,10 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 - [x] Add `subscriptions` table to schema: id, userId, stripeSubscriptionId, stripePriceId, status, periodStart, periodEnd, createdAt, updatedAt
 
 ### Task 12.2: Stripe integration
-- [ ] `app/api/stripe/checkout/route.ts` — create checkout session
-- [ ] `app/api/stripe/portal/route.ts` — create billing portal session
-- [ ] `app/api/webhooks/stripe/route.ts` — handle subscription lifecycle events (created, updated, deleted)
-- [ ] Update `users.isPro` based on active subscription
+- [x] `app/api/stripe/checkout/route.ts` — create checkout session
+- [x] `app/api/stripe/portal/route.ts` — create billing portal session
+- [x] `app/api/webhooks/stripe/route.ts` — handle subscription lifecycle events (created, updated, deleted)
+- [x] Update `users.isPro` based on active subscription
 
 ### Task 12.3: Pro feature gating
 - [ ] Create `lib/pro.ts` — `requirePro()` helper
