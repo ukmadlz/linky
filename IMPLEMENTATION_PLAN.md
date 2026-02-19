@@ -280,10 +280,10 @@ Resend handles all transactional emails to page owners (not their visitors). Ema
 ## Phase 2 — Authentication
 
 ### Task 2.1: WorkOS setup (Auth + Vault)
-- [ ] Create `lib/workos.ts` — lazy-init WorkOS client singleton (used for both OAuth and Vault — single client)
-- [ ] Create `lib/session.ts` — iron-session helpers (getSession, saveSession, destroySession)
-- [ ] Session shape: `{ userId: string }`
-- [ ] Create `lib/vault.ts` — typed Vault helpers built on `workos.vault.*`:
+- [x] Create `lib/workos.ts` — lazy-init WorkOS client singleton (used for both OAuth and Vault — single client)
+- [x] Create `lib/session.ts` — iron-session helpers (getSession, saveSession, destroySession)
+- [x] Session shape: `{ userId: string }`
+- [x] Create `lib/vault.ts` — typed Vault helpers built on `workos.vault.*`:
 
 ```ts
 // Naming convention: objects are named "{secretType}" and isolated per-user
