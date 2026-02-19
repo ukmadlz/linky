@@ -459,12 +459,12 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
   - [x] `scopeCustomCss(css: string, containerId: string): string` — prefix all CSS selectors with the block's container ID to prevent style leaking to the rest of the page
 
 ### Task 4.4: Unified embed resolution endpoint
-- [ ] Create `lib/embeds/resolve.ts`:
-  - [ ] `resolveEmbed(url: string): Promise<EmbedBlockData>`:
+- [x] Create `lib/embeds/resolve.ts`:
+  - [x] `resolveEmbed(url: string): Promise<EmbedBlockData>`:
     1. Try `resolveIframe(url)` for known patterns (fastest, best quality)
     2. Try `resolveOEmbed(url)` for oEmbed-capable URLs
     3. Fallback: return `{ originalUrl, providerName: "Unknown", embedType: "custom" }` (renders as styled link)
-- [ ] Create `app/api/embeds/resolve/route.ts` — POST: accepts `{ url }`, returns resolved embed data; capture `embed_resolved` to PostHog
+- [x] Create `app/api/embeds/resolve/route.ts` — POST: accepts `{ url }`, returns resolved embed data; capture `embed_resolved` to PostHog
 
 ---
 
