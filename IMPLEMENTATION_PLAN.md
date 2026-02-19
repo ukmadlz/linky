@@ -631,10 +631,10 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
   - [x] Install: `@dnd-kit/core`, `@dnd-kit/sortable`, `@dnd-kit/utilities`
 
 ### Task 8.4: Block palette (add block)
-- [ ] Create `components/dashboard/BlockPalette.tsx`:
-  - [ ] Triggered by "Add block" button
-  - [ ] Shows grid of available block types with icons and labels
-  - [ ] Clicking a type creates a new block with default data and appends it to the page
+- [x] Create `components/dashboard/BlockPalette.tsx`:
+  - [x] Triggered by "Add block" button
+  - [x] Shows grid of available block types with icons and labels
+  - [x] Clicking a type creates a new block with default data and appends it to the page
 
 ### Task 8.5: Block editor forms
 - [ ] Create `components/dashboard/block-editors/LinkEditor.tsx`:
