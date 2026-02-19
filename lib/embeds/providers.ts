@@ -57,6 +57,71 @@ const IFRAME_PATTERNS: IframePattern[] = [
     aspectRatio: "4/3",
     providerName: "Google Maps",
   },
+  // Calendly: calendly.com/user or calendly.com/user/event-type
+  {
+    match: /calendly\.com\/([a-zA-Z0-9_-]+(?:\/[a-zA-Z0-9_-]+)?)/,
+    transform: (_url, match) =>
+      `https://calendly.com/${match[1]}?embed_domain=linky.page&embed_type=Inline`,
+    aspectRatio: "3/4",
+    providerName: "Calendly",
+  },
+  // Typeform: user.typeform.com/to/formID
+  {
+    match: /(?:[a-zA-Z0-9-]+\.)?typeform\.com\/to\/([a-zA-Z0-9]+)/,
+    transform: (_url, match) =>
+      `https://form.typeform.com/to/${match[1]}?typeform-embed=embed-widget`,
+    aspectRatio: "1/1",
+    providerName: "Typeform",
+  },
+  // Gumroad: gumroad.com/l/productID or gumroad.com/products
+  {
+    match: /gumroad\.com\/l\/([a-zA-Z0-9_-]+)/,
+    transform: (_url, match) =>
+      `https://gumroad.com/l/${match[1]}?as_embed=true`,
+    aspectRatio: "3/4",
+    providerName: "Gumroad",
+  },
+  // Stripe Payment Links: buy.stripe.com/XXXX
+  {
+    match: /buy\.stripe\.com\/([a-zA-Z0-9_-]+)/,
+    transform: (_url, match) =>
+      `https://buy.stripe.com/${match[1]}#embedded`,
+    aspectRatio: "3/4",
+    providerName: "Stripe",
+  },
+  // Apple Music: music.apple.com/us/album|playlist|artist
+  {
+    match: /music\.apple\.com\/([a-z]{2})\/(?:album|playlist|artist)\/[^/]+\/([a-z0-9.-]+)/,
+    transform: (url) => {
+      const embedUrl = url
+        .replace("music.apple.com", "embed.music.apple.com")
+        .replace("/album/", "/album/")
+        .replace("/playlist/", "/playlist/");
+      return embedUrl;
+    },
+    aspectRatio: "3/2",
+    providerName: "Apple Music",
+  },
+  // TikTok: tiktok.com/@user/video/ID or vm.tiktok.com/shortcode
+  {
+    match: /tiktok\.com\/@[^/]+\/video\/(\d+)/,
+    transform: (_url, match) =>
+      `https://www.tiktok.com/embed/v2/${match[1]}`,
+    aspectRatio: "9/16",
+    providerName: "TikTok",
+  },
+  // Twitch channel: twitch.tv/channel
+  {
+    match: /twitch\.tv\/([a-zA-Z0-9_]+)(?:\/clip\/([a-zA-Z0-9_-]+))?$/,
+    transform: (_url, match) => {
+      if (match[2]) {
+        return `https://clips.twitch.tv/embed?clip=${match[2]}&parent=linky.page&autoplay=false`;
+      }
+      return `https://player.twitch.tv/?channel=${match[1]}&parent=linky.page&autoplay=false`;
+    },
+    aspectRatio: "16/9",
+    providerName: "Twitch",
+  },
 ];
 
 export function resolveIframe(url: string): IframeResult | null {

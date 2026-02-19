@@ -706,8 +706,8 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 - [x] Filter blocks by schedule in public page query (`WHERE scheduledStart IS NULL OR scheduledStart <= NOW()`)
 
 ### Task 13.3: Additional embed providers
-- [ ] Add iframe patterns for: Calendly, Typeform, Gumroad, Stripe Payment Links, Apple Music, TikTok, Twitch
-- [ ] Add oEmbed endpoints for any that support it
+- [x] Add iframe patterns for: Calendly, Typeform, Gumroad, Stripe Payment Links, Apple Music, TikTok, Twitch
+- [x] Add oEmbed endpoints for any that support it
 
 ### Task 13.4: Multiple pages per user
 - [ ] Update dashboard to show page list

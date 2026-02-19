@@ -15,6 +15,8 @@ const KNOWN_PROVIDERS: Record<string, string> = {
   "soundcloud.com": "https://soundcloud.com/oembed",
   "twitter.com": "https://publish.twitter.com/oembed",
   "x.com": "https://publish.twitter.com/oembed",
+  "typeform.com": "https://api.typeform.com/oembed",
+  "tiktok.com": "https://www.tiktok.com/oembed",
 };
 
 function getKnownEndpoint(url: string): string | null {

@@ -14,6 +14,13 @@ const ALLOWED_IFRAME_DOMAINS = [
   "platform.twitter.com",
   "google.com",
   "calendly.com",
+  "form.typeform.com",
+  "gumroad.com",
+  "buy.stripe.com",
+  "embed.music.apple.com",
+  "www.tiktok.com",
+  "player.twitch.tv",
+  "clips.twitch.tv",
 ];
 
 function isAllowedDomain(url: string): boolean {
@@ -34,12 +41,12 @@ export function EmbedBlock({ block }: EmbedBlockProps) {
   if (!data.originalUrl) return null;
 
   const aspectRatio = data.aspectRatio ?? "16/9";
-  const paddingBottom =
-    aspectRatio === "1/1"
-      ? "100%"
-      : aspectRatio === "4/3"
-        ? "75%"
-        : "56.25%"; // default 16/9
+  function aspectToPaddingBottom(ratio: string): string {
+    const [w, h] = ratio.split("/").map(Number);
+    if (!w || !h) return "56.25%";
+    return `${((h / w) * 100).toFixed(4)}%`;
+  }
+  const paddingBottom = aspectToPaddingBottom(aspectRatio);
 
   // oEmbed: render sanitized HTML
   if (data.embedType === "oembed" && data.embedHtml) {
