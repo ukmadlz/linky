@@ -852,12 +852,12 @@ After each phase, verify:
 ## Phase 16 — Unit Tests
 
 ### Task 16.1: Testing infrastructure setup
-- [ ] Install Vitest, `@vitejs/plugin-react`, `@testing-library/react`, `@testing-library/user-event`, `@testing-library/jest-dom`, `msw` (Mock Service Worker for API mocking)
-- [ ] Create `vitest.config.ts` with jsdom environment, path alias matching `tsconfig.json`, and `setupFiles` pointing to a test setup file
-- [ ] Create `tests/setup.ts` — imports `@testing-library/jest-dom/matchers`, extends Vitest `expect`, sets up MSW server lifecycle (`beforeAll` / `afterEach` / `afterAll`)
-- [ ] Add `"test": "vitest run"` and `"test:watch": "vitest"` scripts to `package.json`
-- [ ] Create `tests/mocks/db.ts` — vi.mock for `lib/db/queries` so unit tests never hit a real database
-- [ ] Create `tests/mocks/handlers.ts` — MSW request handlers for the internal API routes used by client components
+- [x] Install Vitest, `@vitejs/plugin-react`, `@testing-library/react`, `@testing-library/user-event`, `@testing-library/jest-dom`, `msw` (Mock Service Worker for API mocking)
+- [x] Create `vitest.config.ts` with jsdom environment, path alias matching `tsconfig.json`, and `setupFiles` pointing to a test setup file
+- [x] Create `tests/setup.ts` — imports `@testing-library/jest-dom/matchers`, extends Vitest `expect`, sets up MSW server lifecycle (`beforeAll` / `afterEach` / `afterAll`)
+- [x] Add `"test": "vitest run"` and `"test:watch": "vitest"` scripts to `package.json`
+- [x] Create `tests/mocks/db.ts` — vi.mock for `lib/db/queries` so unit tests never hit a real database
+- [x] Create `tests/mocks/handlers.ts` — MSW request handlers for the internal API routes used by client components
 
 ### Task 16.2: Block schema unit tests
 - [ ] Create `tests/unit/blocks/schemas.test.ts`:
