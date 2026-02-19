@@ -491,12 +491,12 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
   - [x] Maps properties to CSS custom properties: `--bg-color`, `--text-color`, `--heading-color`, `--btn-color`, `--btn-text-color`, `--btn-radius`, `--btn-style`, `--social-icon-color`, `--max-width`, `--block-spacing`
 
 ### Task 5.3: Theme-aware CSS
-- [ ] Add theme CSS custom property usage to `globals.css`:
-  - [ ] `.linky-page` container: background, text color, max-width, centering
-  - [ ] `.block-link` buttons: color, text, radius, style variants (filled/outline/soft/shadow)
-  - [ ] `.block-text` headings/paragraphs: heading color, text color
-  - [ ] `.block-social-icons`: icon color
-  - [ ] Spacing between blocks via `--block-spacing`
+- [x] Add theme CSS custom property usage to `globals.css`:
+  - [x] `.linky-page` container: background, text color, max-width, centering
+  - [x] `.block-link` buttons: color, text, radius, style variants (filled/outline/soft/shadow)
+  - [x] `.block-text` headings/paragraphs: heading color, text color
+  - [x] `.block-social-icons`: icon color
+  - [x] Spacing between blocks via `--block-spacing`
 
 ---
 
