@@ -5,18 +5,19 @@ export const metadata: Metadata = {
   title: "Sign in",
 };
 
-export default function LoginPage({
+export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: { error?: string; next?: string };
+  searchParams: Promise<{ error?: string; next?: string }>;
 }) {
+  const { error } = await searchParams;
   const errorMessages: Record<string, string> = {
     no_code: "Authentication failed. Please try again.",
     auth_failed: "Something went wrong. Please try again.",
   };
 
-  const errorMessage = searchParams.error
-    ? errorMessages[searchParams.error] ?? "An error occurred."
+  const errorMessage = error
+    ? errorMessages[error] ?? "An error occurred."
     : null;
 
   return (
