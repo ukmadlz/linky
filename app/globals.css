@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    /* Linky Light Mode - Warm off-white palette */
+    /* biohasl.ink Light Mode - Warm off-white palette */
     --background: 30 20% 97%;
     --foreground: 234 25% 23%;
 
@@ -55,7 +55,7 @@
   }
 
   .dark {
-    /* Linky Dark Mode - Midnight theme */
+    /* biohasl.ink Dark Mode - Midnight theme */
     --background: 230 50% 4%;
     --foreground: 214 32% 91%;
 

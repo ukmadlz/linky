@@ -180,7 +180,7 @@ export default function WebhooksPage() {
                 type="url"
                 value={newUrl}
                 onChange={(e) => setNewUrl(e.target.value)}
-                placeholder="https://yourapp.com/webhooks/linky"
+                placeholder="https://yourapp.com/webhooks/bio"
                 required
                 className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-[#5f4dc5] focus:outline-none focus:ring-2 focus:ring-[#5f4dc5]/20"
               />

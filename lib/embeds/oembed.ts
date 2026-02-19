@@ -48,7 +48,7 @@ async function fetchOEmbed(
 async function discoverOEmbedEndpoint(url: string): Promise<string | null> {
   try {
     const response = await fetch(url, {
-      headers: { "User-Agent": "Linky/1.0 oEmbed-Fetcher" },
+      headers: { "User-Agent": "biohasl.ink/1.0 oEmbed-Fetcher" },
       next: { revalidate: 3600 },
     });
     if (!response.ok) return null;

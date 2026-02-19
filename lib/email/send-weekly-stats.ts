@@ -21,7 +21,7 @@ export async function sendWeeklyStatsEmail({
 }) {
   await sendEmail({
     to,
-    subject: "Your Linky weekly stats 📊",
+    subject: "Your biohasl.ink weekly stats",
     react: createElement(WeeklyStatsEmail, {
       name,
       pageViews,

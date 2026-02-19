@@ -91,7 +91,7 @@ export default async function PublicPage({ params }: PublicPageProps) {
           ))}
         </main>
 
-        {/* "Made with Linky" branding footer (free tier only) */}
+        {/* "Made with biohasl.ink" branding footer (free tier only) */}
         {!user?.isPro && <SiteBranding />}
       </div>
     </>

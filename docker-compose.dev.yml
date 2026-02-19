@@ -1,0 +1,246 @@
+name: linky-dev
+
+# ── Shared PostHog environment ─────────────────────────────────────────────────
+# Referenced by posthog, posthog-worker, and posthog-plugins via YAML anchors.
+x-posthog-env: &posthog-env
+  DATABASE_URL: postgres://posthog:posthog@posthog-db:5432/posthog
+  REDIS_URL: redis://redis:6379/
+  CLICKHOUSE_HOST: clickhouse
+  CLICKHOUSE_DATABASE: posthog
+  CLICKHOUSE_SECURE: "0"
+  CLICKHOUSE_VERIFY: "0"
+  CLICKHOUSE_USER: default
+  CLICKHOUSE_PASSWORD: ""
+  KAFKA_HOSTS: kafka:9092
+  # Change SECRET_KEY to something random in a team/shared environment
+  SECRET_KEY: dev-posthog-secret-do-not-use-in-production
+  SITE_URL: http://localhost:8010
+  JS_URL: http://localhost:8010
+  IS_BEHIND_PROXY: "1"
+  DISABLE_SECURE_SSL_REDIRECT: "1"
+  OBJECT_STORAGE_ENABLED: "true"
+  OBJECT_STORAGE_ENDPOINT: http://object-storage:19000
+  OBJECT_STORAGE_REGION: us-east-1
+  OBJECT_STORAGE_ACCESS_KEY_ID: linky_storage_user
+  OBJECT_STORAGE_SECRET_ACCESS_KEY: linky_storage_password
+  OBJECT_STORAGE_BUCKET: posthog
+  # Skip version checks so any posthog:latest works without pinning all deps
+  SKIP_SERVICE_VERSION_REQUIREMENTS: "1"
+  # Disable internal self-capture to keep data clean
+  CAPTURE_INTERNAL_METRICS: "false"
+
+services:
+
+  # ── DB Migrations (runs once then exits) ─────────────────────────────────────
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: npm run db:push
+    volumes:
+      - .:/app
+      - /app/node_modules
+    env_file:
+      - .env.local
+    environment:
+      DATABASE_URL: postgresql://linky:linky@postgres:5432/linky
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  # ── Next.js Application ──────────────────────────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules   # keep container's node_modules isolated
+      - /app/.next          # keep container's build cache isolated
+    # Load secrets from .env.local, then override service URLs for Docker networking
+    env_file:
+      - .env.local
+    environment:
+      DATABASE_URL: postgresql://linky:linky@postgres:5432/linky
+      NEXT_PUBLIC_POSTHOG_HOST: http://localhost:8010
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  # ── App Database (PostgreSQL 18) ──────────────────────────────────────────────
+  postgres:
+    image: postgres:18-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: linky
+      POSTGRES_PASSWORD: linky
+      POSTGRES_DB: linky
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U linky -d linky"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  # ── PostHog: Metadata DB ──────────────────────────────────────────────────────
+  # Separate Postgres instance for PostHog's own metadata / Django ORM.
+  # PostHog supports pg 15–16; do not change to pg 18 until PostHog certifies it.
+  posthog-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: posthog
+      POSTGRES_PASSWORD: posthog
+      POSTGRES_DB: posthog
+    volumes:
+      - posthog-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U posthog -d posthog"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  # ── PostHog: Redis ────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  # ── PostHog: ClickHouse (event store) ─────────────────────────────────────────
+  clickhouse:
+    image: clickhouse/clickhouse-server:24.3
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    environment:
+      # PostHog creates its own tables and databases on first run
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: "1"
+    volumes:
+      - clickhouse-data:/var/lib/clickhouse
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8123/ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  # ── PostHog: Kafka (KRaft mode — no Zookeeper required) ──────────────────────
+  # Using the official Apache image; Bitnami has moved off Docker Hub.
+  kafka:
+    image: apache/kafka:3.8.0
+    environment:
+      KAFKA_NODE_ID: "1"
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: "1"
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: "1"
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: "0"
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      # Stable cluster ID for dev (base64url-encoded UUID, 22 chars)
+      CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+      KAFKA_HEAP_OPTS: "-Xmx512m -Xms256m"
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    restart: unless-stopped
+
+  # ── PostHog: Object Storage (MinIO) ───────────────────────────────────────────
+  # Stores session recordings, exported data, and dashboard images.
+  object-storage:
+    image: minio/minio:latest
+    environment:
+      MINIO_ROOT_USER: linky_storage_user
+      MINIO_ROOT_PASSWORD: linky_storage_password
+    # Auto-create the posthog bucket on startup
+    entrypoint: >
+      sh -c "mkdir -p /data/posthog && minio server /data --address ':19000' --console-address ':19001'"
+    ports:
+      - "19000:19000"   # S3 API
+      - "19001:19001"   # MinIO console  →  http://localhost:19001
+    volumes:
+      - object-storage-data:/data
+    restart: unless-stopped
+
+  # ── PostHog: Web (Django + API) ───────────────────────────────────────────────
+  # Runs DB migrations automatically on first start.
+  # After first startup, visit http://localhost:8010 to create your org/project
+  # and copy the project API key into NEXT_PUBLIC_POSTHOG_KEY in .env.local.
+  posthog:
+    image: posthog/posthog:latest
+    ports:
+      - "8010:8000"
+    environment:
+      <<: *posthog-env
+    depends_on:
+      posthog-db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      clickhouse:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      object-storage:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8000/_health/"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s   # give migrations time to run
+    restart: unless-stopped
+
+  # ── PostHog: Async Worker (Celery) ────────────────────────────────────────────
+  # Handles emails, scheduled tasks, and background jobs.
+  posthog-worker:
+    image: posthog/posthog:latest
+    command: ./bin/docker-worker-celery
+    environment:
+      <<: *posthog-env
+    depends_on:
+      posthog:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ── PostHog: Plugin Server (CDP / event ingestion processing) ─────────────────
+  # Processes captured events, runs plugins, and handles feature flags.
+  posthog-plugins:
+    image: posthog/posthog:latest
+    command: ./bin/plugin-server --no-restart-loop
+    environment:
+      <<: *posthog-env
+    depends_on:
+      posthog:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  posthog-db-data:
+  redis-data:
+  clickhouse-data:
+  kafka-data:
+  object-storage-data:

@@ -1,0 +1,16 @@
+FROM node:22-alpine
+
+WORKDIR /app
+
+# Install dependencies in a separate layer so they're cached
+# unless package.json / package-lock.json change
+COPY package*.json ./
+RUN npm ci
+
+# Source is bind-mounted at runtime for hot reload.
+# node_modules and .next are kept as anonymous volumes so the
+# host directory never shadows the container-built artifacts.
+
+EXPOSE 3000
+
+CMD ["npm", "run", "dev"]

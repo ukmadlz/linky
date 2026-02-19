@@ -64,9 +64,9 @@ export async function deliverWebhook(
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-Linky-Timestamp": timestamp,
-          "X-Linky-Signature": `sha256=${signature}`,
-          "User-Agent": "Linky-Webhook/1.0",
+          "X-Bio-Timestamp": timestamp,
+          "X-Bio-Signature": `sha256=${signature}`,
+          "User-Agent": "biohasl.ink-Webhook/1.0",
         },
         body: payloadJson,
         signal: AbortSignal.timeout(10_000), // 10s timeout per attempt

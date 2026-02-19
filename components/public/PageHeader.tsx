@@ -12,7 +12,7 @@ interface PageHeaderProps {
  * Uses theme CSS variables for colors.
  */
 export function PageHeader({ name, bio, avatarUrl, username }: PageHeaderProps) {
-  const displayName = name || username || "Linky User";
+  const displayName = name || username || "Bio User";
   const initials = displayName
     .split(" ")
     .map((part) => part[0])

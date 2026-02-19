@@ -23,7 +23,7 @@ export default function NotFound() {
           className="mt-8 inline-flex items-center rounded-lg px-5 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:scale-[1.02] hover:brightness-110"
           style={{ backgroundColor: "#5f4dc5" }}
         >
-          Go to Linky
+          Go to biohasl.ink
         </Link>
       </div>
     </div>

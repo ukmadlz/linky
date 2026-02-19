@@ -14,7 +14,7 @@ export async function sendPagePublishedEmail({
   const pageUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${slug}`;
   await sendEmail({
     to,
-    subject: "Your Linky page is live! 🚀",
+    subject: "Your biohasl.ink page is live!",
     react: createElement(PagePublishedEmail, {
       name,
       pageUrl,
