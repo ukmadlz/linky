@@ -948,12 +948,12 @@ After each phase, verify:
   - [x] Removing a row fires `onChange` with the icon removed from the array
 
 ### Task 16.11: Component tests — public page components
-- [ ] Create `tests/unit/components/public/PageHeader.test.tsx`:
-  - [ ] Renders avatar, display name, and bio
-  - [ ] Falls back to initials when `avatarUrl` is absent
-- [ ] Create `tests/unit/components/public/LinkyBranding.test.tsx`:
-  - [ ] Renders "Made with Linky" text
-  - [ ] Contains a link to the marketing site
+- [x] Create `tests/unit/components/public/PageHeader.test.tsx`:
+  - [x] Renders avatar, display name, and bio
+  - [x] Falls back to initials when `avatarUrl` is absent
+- [x] Create `tests/unit/components/public/LinkyBranding.test.tsx`:
+  - [x] Renders "Made with Linky" text
+  - [x] Contains a link to the marketing site
 
 ### Task 16.12: Run full test suite and confirm coverage
 - [ ] Run `npm run test` — all tests pass with zero failures (110 tests, 19 files)
