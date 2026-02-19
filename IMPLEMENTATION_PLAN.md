@@ -719,8 +719,8 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 - [x] Use `qrcode` package, render as downloadable SVG/PNG
 
 ### Task 13.6: SEO controls
-- [ ] Add SEO section to page settings: custom title, description, OG image upload
-- [ ] Wire into `generateMetadata` on public page
+- [x] Add SEO section to page settings: custom title, description, OG image upload
+- [x] Wire into `generateMetadata` on public page
 
 ---
 

@@ -22,9 +22,9 @@ const updatePageSchema = z.object({
   isPublished: z.boolean().optional(),
   themeId: z.string().max(50).optional(),
   themeOverrides: z.record(z.unknown()).optional(),
-  seoTitle: z.string().max(200).optional(),
-  seoDescription: z.string().max(500).optional(),
-  ogImageUrl: z.string().url().max(500).optional().or(z.literal("")),
+  seoTitle: z.string().max(200).nullable().optional(),
+  seoDescription: z.string().max(500).nullable().optional(),
+  ogImageUrl: z.string().url().max(500).nullable().optional().or(z.literal("")),
 });
 
 async function getAuthorizedPage(pageId: string, userId: string) {
@@ -78,9 +78,9 @@ export async function PATCH(request: Request, { params }: Params) {
     isPublished: data.isPublished,
     themeId: data.themeId,
     themeOverrides: data.themeOverrides as Partial<ThemeConfig> | undefined,
-    seoTitle: data.seoTitle,
-    seoDescription: data.seoDescription,
-    ogImageUrl: data.ogImageUrl || undefined,
+    ...(data.seoTitle !== undefined ? { seoTitle: data.seoTitle } : {}),
+    ...(data.seoDescription !== undefined ? { seoDescription: data.seoDescription } : {}),
+    ...(data.ogImageUrl !== undefined ? { ogImageUrl: data.ogImageUrl || null } : {}),
   });
 
   if (!updated) {

@@ -5,6 +5,7 @@ import { requireAuth } from "@/lib/auth";
 import { getPageById, getAllBlocksByPageId } from "@/lib/db/queries";
 import { PageEditor } from "@/components/dashboard/PageEditor";
 import { QRCodeButton } from "@/components/dashboard/QRCodeButton";
+import { SEOPanel } from "@/components/dashboard/SEOPanel";
 
 interface Props {
   params: Promise<{ pageId: string }>;
@@ -47,6 +48,10 @@ export default async function PageEditorRoute({ params }: Props) {
       </div>
 
       <PageEditor page={page} initialBlocks={blocks} />
+
+      <div className="mt-8">
+        <SEOPanel page={page} />
+      </div>
     </div>
   );
 }

@@ -129,7 +129,7 @@ export async function updatePage(
       | "ogImageUrl"
       | "milestonesSent"
     >
-  >
+  > & { seoTitle?: string | null; seoDescription?: string | null; ogImageUrl?: string | null }
 ): Promise<Page | null> {
   const [page] = await db
     .update(pages)
