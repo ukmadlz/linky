@@ -1,0 +1,30 @@
+// Mock for lib/db/queries — prevents unit tests from hitting the real database.
+// Import this via vi.mock("@/lib/db/queries") in individual test files.
+export const getUserByWorkosId = vi.fn();
+export const getUserById = vi.fn();
+export const createUser = vi.fn();
+export const updateUser = vi.fn();
+export const getPageBySlug = vi.fn();
+export const getPagesByUserId = vi.fn();
+export const getPageById = vi.fn();
+export const createPage = vi.fn();
+export const updatePage = vi.fn();
+export const deletePage = vi.fn();
+export const getBlocksByPageId = vi.fn();
+export const getAllBlocksByPageId = vi.fn();
+export const getBlockById = vi.fn();
+export const createBlock = vi.fn();
+export const updateBlock = vi.fn();
+export const deleteBlock = vi.fn();
+export const reorderBlocks = vi.fn();
+export const recordClick = vi.fn();
+export const recordPageView = vi.fn();
+export const getWebhookEndpointsByUserId = vi.fn();
+export const getWebhookEndpointById = vi.fn();
+export const createWebhookEndpoint = vi.fn();
+export const updateWebhookEndpoint = vi.fn();
+export const deleteWebhookEndpoint = vi.fn();
+export const getActiveEndpointsForUser = vi.fn();
+export const createWebhookDelivery = vi.fn();
+export const updateWebhookDelivery = vi.fn();
+export const getWebhookDeliveriesByEndpoint = vi.fn();
