@@ -914,10 +914,10 @@ After each phase, verify:
   - [x] POST `/api/pages/[pageId]/blocks/reorder` with `orderedIds` returns 200
 
 ### Task 16.8: API route unit tests — embeds
-- [ ] Create `tests/unit/api/embeds.test.ts`:
-  - [ ] POST `/api/embeds/resolve` with a YouTube URL returns `{ embedType: "iframe", providerName: "YouTube", iframeUrl: ... }`
-  - [ ] POST `/api/embeds/resolve` with an unrecognized URL returns a `custom` embedType fallback
-  - [ ] POST `/api/embeds/resolve` with a missing `url` body field returns 400
+- [x] Create `tests/unit/api/embeds.test.ts`:
+  - [x] POST `/api/embeds/resolve` with a YouTube URL returns `{ embedType: "iframe", providerName: "YouTube", iframeUrl: ... }`
+  - [x] POST `/api/embeds/resolve` with an unrecognized URL returns a `custom` embedType fallback
+  - [x] POST `/api/embeds/resolve` with a missing `url` body field returns 400
 
 ### Task 16.9: Component tests — block renderers
 - [ ] Create `tests/unit/components/blocks/LinkBlock.test.tsx`:
