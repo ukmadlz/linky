@@ -808,8 +808,8 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 - [x] Delivery log with status, payload preview, retry button
 
 ### Task 14.4: Zapier integration
-- [ ] REST hooks pattern or polling endpoint for Zapier triggers
-- [ ] Provides access to all webhook events
+- [x] REST hooks pattern or polling endpoint for Zapier triggers
+- [x] Provides access to all webhook events
 
 ---
 
