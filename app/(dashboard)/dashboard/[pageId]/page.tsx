@@ -4,6 +4,7 @@ import { ChevronLeft } from "lucide-react";
 import { requireAuth } from "@/lib/auth";
 import { getPageById, getAllBlocksByPageId } from "@/lib/db/queries";
 import { PageEditor } from "@/components/dashboard/PageEditor";
+import { QRCodeButton } from "@/components/dashboard/QRCodeButton";
 
 interface Props {
   params: Promise<{ pageId: string }>;
@@ -34,6 +35,7 @@ export default async function PageEditorRoute({ params }: Props) {
           </h1>
           <p className="text-sm text-slate-400">linky.page/{page.slug}</p>
         </div>
+        <QRCodeButton slug={page.slug} pageTitle={page.title} />
         <a
           href={`/${page.slug}`}
           target="_blank"

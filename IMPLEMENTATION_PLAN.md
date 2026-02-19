@@ -715,8 +715,8 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 - [x] Update navigation
 
 ### Task 13.5: QR code generation
-- [ ] Add QR code button to dashboard that generates a QR code for the public page URL
-- [ ] Use `qrcode` package, render as downloadable SVG/PNG
+- [x] Add QR code button to dashboard that generates a QR code for the public page URL
+- [x] Use `qrcode` package, render as downloadable SVG/PNG
 
 ### Task 13.6: SEO controls
 - [ ] Add SEO section to page settings: custom title, description, OG image upload
