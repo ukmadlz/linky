@@ -891,11 +891,11 @@ After each phase, verify:
   - [x] `scopeCustomCss` prefixes all selectors with the container ID
 
 ### Task 16.5: API route unit tests — user profile
-- [ ] Create `tests/unit/api/user/profile.test.ts` using MSW to intercept `lib/db` calls:
-  - [ ] GET `/api/user/profile` returns 401 when no session
-  - [ ] GET `/api/user/profile` returns 200 with user JSON when session is valid
-  - [ ] PATCH `/api/user/profile` with valid body updates user and returns 200
-  - [ ] PATCH `/api/user/profile` with taken username returns 409
+- [x] Create `tests/unit/api/user/profile.test.ts` using MSW to intercept `lib/db` calls:
+  - [x] GET `/api/user/profile` returns 401 when no session
+  - [x] GET `/api/user/profile` returns 200 with user JSON when session is valid
+  - [x] PATCH `/api/user/profile` with valid body updates user and returns 200
+  - [x] PATCH `/api/user/profile` with taken username returns 409
 
 ### Task 16.6: API route unit tests — pages
 - [ ] Create `tests/unit/api/pages.test.ts`:
