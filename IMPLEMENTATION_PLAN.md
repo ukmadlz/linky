@@ -824,8 +824,8 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 - [x] Route custom domain requests to the correct page
 
 ### Task 15.3: SSL provisioning
-- [ ] Integration with hosting provider's SSL (e.g., Vercel automatic SSL)
-- [ ] Status tracking in `custom_domains.sslStatus`
+- [x] Integration with hosting provider's SSL (e.g., Vercel automatic SSL)
+- [x] Status tracking in `custom_domains.sslStatus`
 
 ---
 
