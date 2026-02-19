@@ -604,27 +604,27 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ## Phase 9 — Theme Editor
 
 ### Task 9.1: Appearance page
-- [ ] Create `app/(dashboard)/appearance/page.tsx`:
-  - [ ] Two-column layout: theme controls on left, live preview on right
-  - [ ] Render `ThemeEditor` + `LivePreview`
+- [x] Create `app/(dashboard)/appearance/page.tsx`:
+  - [x] Two-column layout: theme controls on left, live preview on right
+  - [x] Render `ThemeEditor` + `LivePreview`
 
 ### Task 9.2: Theme editor component
-- [ ] Create `components/dashboard/ThemeEditor.tsx`:
-  - [ ] **Preset picker**: grid of 5 theme cards showing color swatches, click to select
-  - [ ] **Custom overrides** (accordion sections):
-    - [ ] Colors: background, text, heading, button, button text, social icons (color pickers)
-    - [ ] Button style: filled / outline / soft / shadow (visual gallery)
-    - [ ] Button radius: none / sm / md / lg / full (visual gallery)
-    - [ ] Font: dropdown of 10-15 popular Google Fonts
-    - [ ] Layout: max width (sm/md/lg), block spacing (tight/normal/relaxed)
-  - [ ] Saves to `pages.themeId` + `pages.themeOverrides` via PATCH
+- [x] Create `components/dashboard/ThemeEditor.tsx`:
+  - [x] **Preset picker**: grid of 5 theme cards showing color swatches, click to select
+  - [x] **Custom overrides** (accordion sections):
+    - [x] Colors: background, text, heading, button, button text, social icons (color pickers)
+    - [x] Button style: filled / outline / soft / shadow (visual gallery)
+    - [x] Button radius: none / sm / md / lg / full (visual gallery)
+    - [x] Font: dropdown of 10-15 popular Google Fonts
+    - [x] Layout: max width (sm/md/lg), block spacing (tight/normal/relaxed)
+  - [x] Saves to `pages.themeId` + `pages.themeOverrides` via PATCH
 
 ### Task 9.3: Live preview component
-- [ ] Create `components/dashboard/LivePreview.tsx`:
-  - [ ] Renders a scaled-down mobile preview of the public page
-  - [ ] Uses the same `BlockRenderer` components as the public page
-  - [ ] Applies CSS variables from the current theme state in real-time
-  - [ ] Framed in a phone-shaped container
+- [x] Create `components/dashboard/LivePreview.tsx`:
+  - [x] Renders a scaled-down mobile preview of the public page
+  - [x] Uses the same `BlockRenderer` components as the public page
+  - [x] Applies CSS variables from the current theme state in real-time
+  - [x] Framed in a phone-shaped container
 
 ---
 
