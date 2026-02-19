@@ -725,10 +725,10 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ## Phase 11 — Analytics Dashboard (Phase 2)
 
 ### Task 11.1: Analytics API routes
-- [ ] `app/api/analytics/[pageId]/summary/route.ts`:
-  - [ ] Returns: total views, total clicks, unique visitors (approximate), top 5 referrers, top 5 clicked blocks
-  - [ ] Time range parameter: 7d, 30d, 90d
-  - [ ] Aggregates from `click_events` and `page_views` tables
+- [x] `app/api/analytics/[pageId]/summary/route.ts`:
+  - [x] Returns: total views, total clicks, unique visitors (approximate), top 5 referrers, top 5 clicked blocks
+  - [x] Time range parameter: 7d, 30d, 90d
+  - [x] Aggregates from `click_events` and `page_views` tables
 
 ### Task 11.2: Analytics dashboard page
 - [ ] Create `app/(dashboard)/analytics/page.tsx`:
