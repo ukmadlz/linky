@@ -6,7 +6,7 @@ import { resolveTheme } from "@/lib/themes/resolve";
 import { themeToCssVars } from "@/lib/themes/to-css-vars";
 import { BlockRenderer } from "@/components/blocks/BlockRenderer";
 import { PageHeader } from "@/components/public/PageHeader";
-import { LinkyBranding } from "@/components/public/LinkyBranding";
+import { SiteBranding } from "@/components/public/SiteBranding";
 import { PageViewTracker } from "@/components/public/PageViewTracker";
 import type { ThemeConfig } from "@/lib/themes/types";
 
@@ -92,7 +92,7 @@ export default async function PublicPage({ params }: PublicPageProps) {
         </main>
 
         {/* "Made with Linky" branding footer (free tier only) */}
-        {!user?.isPro && <LinkyBranding />}
+        {!user?.isPro && <SiteBranding />}
       </div>
     </>
   );

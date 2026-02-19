@@ -1,8 +1,8 @@
 /**
- * Small "Made with Linky" footer badge shown on free pages.
- * Links back to the Linky marketing site.
+ * Small "Made with biohasl.ink" footer badge shown on free pages.
+ * Links back to the biohasl.ink marketing site.
  */
-export function LinkyBranding() {
+export function SiteBranding() {
   return (
     <footer className="mt-8 flex justify-center pb-6">
       <a
