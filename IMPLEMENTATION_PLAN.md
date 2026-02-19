@@ -860,13 +860,13 @@ After each phase, verify:
 - [x] Create `tests/mocks/handlers.ts` — MSW request handlers for the internal API routes used by client components
 
 ### Task 16.2: Block schema unit tests
-- [ ] Create `tests/unit/blocks/schemas.test.ts`:
-  - [ ] `linkBlockSchema`: valid URL + title passes; missing URL fails; invalid URL fails; optional fields (`thumbnailUrl`, `icon`) are truly optional
-  - [ ] `textBlockSchema`: valid content + variant + align passes; invalid variant enum fails; invalid align enum fails
-  - [ ] `embedBlockSchema`: valid `oembed` and `iframe` embedTypes pass; missing `originalUrl` fails; unknown `embedType` fails
-  - [ ] `socialIconsBlockSchema`: valid icons array passes; empty icons array fails; invalid platform URL fails; invalid size/style enum fails
-  - [ ] `dividerBlockSchema`: all three style values pass; unknown style fails
-  - [ ] `customCodeBlockSchema`: valid html + optional css passes; missing html fails
+- [x] Create `tests/unit/blocks/schemas.test.ts`:
+  - [x] `linkBlockSchema`: valid URL + title passes; missing URL fails; invalid URL fails; optional fields (`thumbnailUrl`, `icon`) are truly optional
+  - [x] `textBlockSchema`: valid content + variant + align passes; invalid variant enum fails; invalid align enum fails
+  - [x] `embedBlockSchema`: valid `oembed` and `iframe` embedTypes pass; missing `originalUrl` fails; unknown `embedType` fails
+  - [x] `socialIconsBlockSchema`: valid icons array passes; empty icons array fails; invalid platform URL fails; invalid size/style enum fails
+  - [x] `dividerBlockSchema`: all three style values pass; unknown style fails
+  - [x] `customCodeBlockSchema`: valid html + optional css passes; missing html fails
 
 ### Task 16.3: Theme resolution unit tests
 - [ ] Create `tests/unit/themes/resolve.test.ts`:
