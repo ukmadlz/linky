@@ -65,7 +65,7 @@ export default function DashboardPage() {
                   {page.title ?? page.slug}
                 </p>
                 <p className="truncate text-sm text-slate-400">
-                  linky.page/{page.slug}
+                  biohasl.ink/{page.slug}
                 </p>
               </div>
 

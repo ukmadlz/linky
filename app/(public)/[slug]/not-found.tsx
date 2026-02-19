@@ -16,7 +16,7 @@ export default function NotFound() {
           Page not found
         </h1>
         <p className="mt-2 text-sm" style={{ color: "#67697f" }}>
-          This Linky page doesn&apos;t exist or isn&apos;t published yet.
+          This biohasl.ink page doesn&apos;t exist or isn&apos;t published yet.
         </p>
         <Link
           href="/"

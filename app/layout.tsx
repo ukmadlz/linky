@@ -22,8 +22,8 @@ const fragmentMono = Fragment_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Linky — Your Link in Bio",
-    template: "%s | Linky",
+    default: "biohasl.ink — Your Link in Bio",
+    template: "%s | biohasl.ink",
   },
   description:
     "Create a beautiful link-in-bio page with embeds, integrations, and full theming. Share everything in one link.",

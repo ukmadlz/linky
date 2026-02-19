@@ -26,7 +26,7 @@ export default async function LoginPage({
       <div className="text-center mb-8">
         <Link href="/" className="inline-block">
           <span className="font-serif text-3xl font-bold text-foreground tracking-tight">
-            Linky
+            biohasl.ink
           </span>
         </Link>
         <h1 className="font-serif text-2xl font-semibold text-foreground mt-4">

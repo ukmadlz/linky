@@ -43,7 +43,7 @@ export function SEOPanel({ page }: SEOPanelProps) {
   }
 
   const previewTitle = seoTitle || page.title || "My Page";
-  const previewDesc = seoDescription || page.description || "Check out my Linky page.";
+  const previewDesc = seoDescription || page.description || "Check out my biohasl.ink page.";
 
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -53,7 +53,7 @@ export function SEOPanel({ page }: SEOPanelProps) {
       <div className="mb-5 rounded-lg border border-slate-100 bg-slate-50 p-4">
         <p className="mb-1 text-xs font-medium text-slate-400 uppercase tracking-wide">Preview</p>
         <p className="text-sm font-medium text-[#1a0dab] truncate">{previewTitle}</p>
-        <p className="text-xs text-[#006621] truncate">linky.page/{page.slug}</p>
+        <p className="text-xs text-[#006621] truncate">biohasl.ink/{page.slug}</p>
         <p className="mt-1 text-sm text-slate-600 line-clamp-2">{previewDesc}</p>
       </div>
 

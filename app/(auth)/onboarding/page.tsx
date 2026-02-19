@@ -5,7 +5,7 @@ import { Metadata } from "next";
 import { OnboardingForm } from "./OnboardingForm";
 
 export const metadata: Metadata = {
-  title: "Choose your username — Linky",
+  title: "Choose your username — biohasl.ink",
 };
 
 export default async function OnboardingPage() {
@@ -42,7 +42,7 @@ export default async function OnboardingPage() {
       {/* Brand */}
       <div className="text-center mb-8">
         <span className="font-serif text-3xl font-bold text-foreground tracking-tight">
-          Linky
+          biohasl.ink
         </span>
         <h1 className="font-serif text-2xl font-semibold text-foreground mt-4">
           Choose your username

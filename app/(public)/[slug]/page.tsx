@@ -26,11 +26,11 @@ export async function generateMetadata({ params }: PublicPageProps): Promise<Met
 
   const user = await getUserById(page.userId);
   const displayName = user?.name || user?.username || slug;
-  const title = page.seoTitle || page.title || `${displayName} | Linky`;
+  const title = page.seoTitle || page.title || `${displayName} | biohasl.ink`;
   const description =
     page.seoDescription ||
     page.description ||
-    `Check out ${displayName}'s Linky page.`;
+    `Check out ${displayName}'s page on biohasl.ink.`;
 
   return {
     title,

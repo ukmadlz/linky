@@ -37,7 +37,7 @@ export function Sidebar() {
         {/* Brand */}
         <div className="flex h-16 items-center border-b border-slate-800 px-6">
           <span className="font-display text-xl font-semibold text-white">
-            Linky
+            biohasl.ink
           </span>
         </div>
 

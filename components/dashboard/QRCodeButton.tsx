@@ -14,7 +14,7 @@ export function QRCodeButton({ slug, pageTitle }: QRCodeButtonProps) {
   const [svgData, setSvgData] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
-  const url = `https://linky.page/${slug}`;
+  const url = `https://biohasl.ink/${slug}`;
 
   async function handleOpen() {
     setOpen(true);

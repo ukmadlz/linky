@@ -23,7 +23,7 @@ const FEATURES = [
     icon: "🎵",
     title: "Rich Embeds",
     description:
-      "Auto-detect YouTube, Spotify, Vimeo, SoundCloud and more. Paste a URL — Linky does the rest.",
+      "Auto-detect YouTube, Spotify, Vimeo, SoundCloud and more. Paste a URL — biohasl.ink does the rest.",
   },
   {
     icon: "🔒",
@@ -45,7 +45,7 @@ export default function LandingPage() {
       {/* Nav */}
       <nav className="flex items-center justify-between px-6 py-5 lg:px-12">
         <span className="font-display text-xl font-bold" style={{ color: "#292d4c" }}>
-          Linky
+          biohasl.ink
         </span>
         <Link
           href="/login"
@@ -162,7 +162,7 @@ export default function LandingPage() {
             Ready to get started?
           </h2>
           <p className="mt-3 text-lg text-white/80">
-            Create your free Linky page in under 2 minutes.
+            Create your free biohasl.ink page in under 2 minutes.
           </p>
           <Link
             href="/login"
@@ -180,7 +180,7 @@ export default function LandingPage() {
         style={{ color: "#67697f" }}
       >
         <p>
-          © {new Date().getFullYear()} Linky. Built with ♥ for creators.
+          © {new Date().getFullYear()} biohasl.ink. Built with ♥ for creators.
         </p>
       </footer>
     </div>

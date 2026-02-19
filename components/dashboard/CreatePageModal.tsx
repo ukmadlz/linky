@@ -82,7 +82,7 @@ export function CreatePageModal({ onClose }: CreatePageModalProps) {
             </label>
             <div className="flex items-center gap-0 rounded-lg border border-slate-200 focus-within:border-[#5f4dc5] focus-within:ring-2 focus-within:ring-[#5f4dc5]/20">
               <span className="whitespace-nowrap rounded-l-lg border-r border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-400">
-                linky.page/
+                biohasl.ink/
               </span>
               <input
                 id="page-slug"

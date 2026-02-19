@@ -34,7 +34,7 @@ export default async function PageEditorRoute({ params }: Props) {
           <h1 className="font-display text-2xl font-semibold text-[#292d4c]">
             {page.title ?? page.slug}
           </h1>
-          <p className="text-sm text-slate-400">linky.page/{page.slug}</p>
+          <p className="text-sm text-slate-400">biohasl.ink/{page.slug}</p>
         </div>
         <QRCodeButton slug={page.slug} pageTitle={page.title} />
         <a

@@ -120,7 +120,7 @@ export default function SettingsPage() {
             </label>
             <div className="flex items-center rounded-lg border border-slate-200 focus-within:border-[#5f4dc5] focus-within:ring-2 focus-within:ring-[#5f4dc5]/20">
               <span className="select-none border-r border-slate-200 px-3 py-2.5 text-sm text-slate-400">
-                linky.page/
+                biohasl.ink/
               </span>
               <input
                 id="username"

@@ -132,7 +132,7 @@ export function OnboardingForm({
         <div className="relative flex items-center">
           {/* Prefix */}
           <span className="absolute left-3 text-sm text-muted-foreground select-none pointer-events-none">
-            linky.app/
+            biohasl.ink/
           </span>
           <Input
             id="username"
@@ -197,9 +197,9 @@ export function OnboardingForm({
       {/* URL preview */}
       {username && (
         <p className="text-sm text-center text-muted-foreground bg-muted/50 rounded-lg py-2 px-3">
-          Your Linky page:{" "}
+          Your page:{" "}
           <span className="font-medium text-foreground">
-            linky.app/{username}
+            biohasl.ink/{username}
           </span>
         </p>
       )}
