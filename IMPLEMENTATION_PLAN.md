@@ -555,49 +555,49 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
   - [x] POST: accepts `{ orderedIds: string[] }`, bulk-updates positions; capture `block_reordered` to PostHog
 
 ### Task 8.3: Page editor UI
-- [ ] Create `app/(dashboard)/dashboard/page.tsx`:
-  - [ ] Fetch user's page (or create one if none exists)
-  - [ ] Render `PageEditor` component
-- [ ] Create `components/dashboard/PageEditor.tsx`:
-  - [ ] Block list with drag-and-drop reorder (use `@dnd-kit/core` + `@dnd-kit/sortable`)
-  - [ ] Each block shows: type icon, title/preview, visibility toggle, edit button, delete button
-  - [ ] Inline editing: clicking a block opens an edit form (drawer or inline expand)
-  - [ ] Auto-saves on change (debounced PATCH calls)
-  - [ ] Install: `@dnd-kit/core`, `@dnd-kit/sortable`, `@dnd-kit/utilities`
+- [x] Create `app/(dashboard)/dashboard/page.tsx`:
+  - [x] Fetch user's page (or create one if none exists)
+  - [x] Render `PageEditor` component
+- [x] Create `components/dashboard/PageEditor.tsx`:
+  - [x] Block list with drag-and-drop reorder (use `@dnd-kit/core` + `@dnd-kit/sortable`)
+  - [x] Each block shows: type icon, title/preview, visibility toggle, edit button, delete button
+  - [x] Inline editing: clicking a block opens an edit form (drawer or inline expand)
+  - [x] Auto-saves on change (debounced PATCH calls)
+  - [x] Install: `@dnd-kit/core`, `@dnd-kit/sortable`, `@dnd-kit/utilities`
 
 ### Task 8.4: Block palette (add block)
-- [ ] Create `components/dashboard/BlockPalette.tsx`:
-  - [ ] Triggered by "Add block" button
-  - [ ] Shows grid of available block types with icons and labels
-  - [ ] Clicking a type creates a new block with default data and appends it to the page
+- [x] Create `components/dashboard/BlockPalette.tsx`:
+  - [x] Triggered by "Add block" button
+  - [x] Shows grid of available block types with icons and labels
+  - [x] Clicking a type creates a new block with default data and appends it to the page
 
 ### Task 8.5: Block editor forms
-- [ ] Create `components/dashboard/block-editors/LinkEditor.tsx`:
-  - [ ] Fields: URL (input), title (input), thumbnail URL (input, optional)
-  - [ ] Auto-fetch page title + favicon when URL is entered
-  - [ ] **Verification section** (collapsible, off by default):
-    - [ ] Toggle switch: "Require verification before this link opens"
-    - [ ] When enabled, show mode selector:
+- [x] Create `components/dashboard/block-editors/LinkEditor.tsx`:
+  - [x] Fields: URL (input), title (input), thumbnail URL (input, optional)
+  - [x] Auto-fetch page title + favicon when URL is entered
+  - [x] **Verification section** (collapsible, off by default):
+    - [x] Toggle switch: "Require verification before this link opens"
+    - [x] When enabled, show mode selector:
       - `age` — "Age gate (18+): visitor must enter their date of birth"
       - `acknowledge` — "Content warning: visitor must click to confirm before continuing"
-    - [ ] Preview text shown below: e.g. "Visitors will see an age verification screen before being redirected"
-- [ ] Create `components/dashboard/block-editors/TextEditor.tsx`:
-  - [ ] Fields: content (textarea), variant (select: heading/paragraph), alignment (button group)
-- [ ] Create `components/dashboard/block-editors/EmbedEditor.tsx`:
-  - [ ] Fields: URL (input) — on paste/blur, call `/api/embeds/resolve` and show preview
-  - [ ] Display: provider name, embed preview (iframe or thumbnail)
-- [ ] Create `components/dashboard/block-editors/SocialIconsEditor.tsx`:
-  - [ ] Repeatable row: platform (select from list), URL (input)
-  - [ ] Add/remove icons
-  - [ ] Size and style selectors
-- [ ] Create `components/dashboard/block-editors/DividerEditor.tsx`:
-  - [ ] Style selector: line / space / dots
-- [ ] Create `components/dashboard/block-editors/CustomCodeEditor.tsx`:
-  - [ ] HTML editor: `<textarea>` or code editor (e.g., `@uiw/react-textarea-code-editor`) with syntax highlighting
-  - [ ] CSS editor: separate `<textarea>` for custom styles
-  - [ ] Live preview panel showing sanitized output
-  - [ ] Warning banner explaining which tags/attributes are allowed
-  - [ ] On save: HTML is sanitized server-side before storage, `sanitized: true` flag set
+    - [x] Preview text shown below: e.g. "Visitors will see an age verification screen before being redirected"
+- [x] Create `components/dashboard/block-editors/TextEditor.tsx`:
+  - [x] Fields: content (textarea), variant (select: heading/paragraph), alignment (button group)
+- [x] Create `components/dashboard/block-editors/EmbedEditor.tsx`:
+  - [x] Fields: URL (input) — on paste/blur, call `/api/embeds/resolve` and show preview
+  - [x] Display: provider name, embed preview (iframe or thumbnail)
+- [x] Create `components/dashboard/block-editors/SocialIconsEditor.tsx`:
+  - [x] Repeatable row: platform (select from list), URL (input)
+  - [x] Add/remove icons
+  - [x] Size and style selectors
+- [x] Create `components/dashboard/block-editors/DividerEditor.tsx`:
+  - [x] Style selector: line / space / dots
+- [x] Create `components/dashboard/block-editors/CustomCodeEditor.tsx`:
+  - [x] HTML editor: `<textarea>` or code editor (e.g., `@uiw/react-textarea-code-editor`) with syntax highlighting
+  - [x] CSS editor: separate `<textarea>` for custom styles
+  - [x] Live preview panel showing sanitized output
+  - [x] Warning banner explaining which tags/attributes are allowed
+  - [x] On save: HTML is sanitized server-side before storage, `sanitized: true` flag set
 
 ---
 
