@@ -419,10 +419,10 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 > **Note on `custom_code` blocks**: User-provided HTML is sanitized server-side on save. Allowed tags: `<div>`, `<span>`, `<p>`, `<a>`, `<img>`, `<ul>`, `<ol>`, `<li>`, `<h1>`–`<h6>`, `<strong>`, `<em>`, `<br>`, `<iframe>` (src allowlisted). All `<script>` tags and event handlers (`onclick`, etc.) are stripped. Custom CSS is scoped to the block container to prevent style leaking.
 
 ### Task 3.2: Block type registry
-- [ ] Create `lib/blocks/registry.ts`:
-  - [ ] `BlockTypeDefinition`: `{ type, label, icon (Lucide name), dataSchema, defaultData }`
-  - [ ] Export `blockRegistry: Record<BlockType, BlockTypeDefinition>`
-  - [ ] Export `getBlockDef(type)` helper
+- [x] Create `lib/blocks/registry.ts`:
+  - [x] `BlockTypeDefinition`: `{ type, label, icon (Lucide name), dataSchema, defaultData }`
+  - [x] Export `blockRegistry: Record<BlockType, BlockTypeDefinition>`
+  - [x] Export `getBlockDef(type)` helper
 
 ### Task 3.3: Block renderer components (public page)
 - [ ] `components/blocks/BlockRenderer.tsx` — switch on `block.type`, dispatch to typed component
