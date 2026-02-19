@@ -45,7 +45,10 @@ export function Sidebar() {
         <nav className="flex-1 p-4">
           <ul className="space-y-1">
             {navItems.map(({ href, label, icon: Icon }) => {
-              const isActive = pathname === href;
+              const isActive =
+                href === "/dashboard"
+                  ? pathname === "/dashboard" || pathname.startsWith("/dashboard/")
+                  : pathname === href;
               return (
                 <li key={href}>
                   <Link
@@ -89,7 +92,10 @@ export function Sidebar() {
       {/* Mobile bottom nav */}
       <nav className="fixed bottom-0 left-0 right-0 z-40 flex border-t border-slate-800 bg-[#1e2235] md:hidden">
         {navItems.map(({ href, label, icon: Icon }) => {
-          const isActive = pathname === href;
+          const isActive =
+            href === "/dashboard"
+              ? pathname === "/dashboard" || pathname.startsWith("/dashboard/")
+              : pathname === href;
           return (
             <Link
               key={href}

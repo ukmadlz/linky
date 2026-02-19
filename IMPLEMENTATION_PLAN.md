@@ -710,9 +710,9 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 - [x] Add oEmbed endpoints for any that support it
 
 ### Task 13.4: Multiple pages per user
-- [ ] Update dashboard to show page list
-- [ ] Add page creation flow with custom slug
-- [ ] Update navigation
+- [x] Update dashboard to show page list
+- [x] Add page creation flow with custom slug
+- [x] Update navigation
 
 ### Task 13.5: QR code generation
 - [ ] Add QR code button to dashboard that generates a QR code for the public page URL
