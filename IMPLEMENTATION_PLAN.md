@@ -879,16 +879,16 @@ After each phase, verify:
   - [x] Values match the theme config properties
 
 ### Task 16.4: Embed resolver unit tests
-- [ ] Create `tests/unit/embeds/providers.test.ts`:
-  - [ ] `resolveIframe("https://www.youtube.com/watch?v=dQw4w9WgXcQ")` returns a result with `iframeUrl` containing `youtube.com/embed/dQw4w9WgXcQ`
-  - [ ] `resolveIframe("https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT")` returns a Spotify embed src
-  - [ ] `resolveIframe("https://vimeo.com/148751763")` returns a Vimeo player embed src
-  - [ ] `resolveIframe("https://example.com")` returns `null` (not a known pattern)
-- [ ] Create `tests/unit/embeds/sanitize.test.ts`:
-  - [ ] `sanitizeEmbedHtml` strips non-iframe tags, keeps `<iframe>` with allowlisted `src`
-  - [ ] `sanitizeEmbedHtml` strips `<iframe>` whose `src` is not on the allowlist
-  - [ ] `sanitizeCustomHtml` keeps allowed tags (`p`, `a`, `strong`, etc.) and strips `<script>`, `onclick`, `javascript:` hrefs
-  - [ ] `scopeCustomCss` prefixes all selectors with the container ID
+- [x] Create `tests/unit/embeds/providers.test.ts`:
+  - [x] `resolveIframe("https://www.youtube.com/watch?v=dQw4w9WgXcQ")` returns a result with `iframeUrl` containing `youtube.com/embed/dQw4w9WgXcQ`
+  - [x] `resolveIframe("https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT")` returns a Spotify embed src
+  - [x] `resolveIframe("https://vimeo.com/148751763")` returns a Vimeo player embed src
+  - [x] `resolveIframe("https://example.com")` returns `null` (not a known pattern)
+- [x] Create `tests/unit/embeds/sanitize.test.ts`:
+  - [x] `sanitizeEmbedHtml` strips non-iframe tags, keeps `<iframe>` with allowlisted `src`
+  - [x] `sanitizeEmbedHtml` strips `<iframe>` whose `src` is not on the allowlist
+  - [x] `sanitizeCustomHtml` keeps allowed tags (`p`, `a`, `strong`, etc.) and strips `<script>`, `onclick`, `javascript:` hrefs
+  - [x] `scopeCustomCss` prefixes all selectors with the container ID
 
 ### Task 16.5: API route unit tests — user profile
 - [ ] Create `tests/unit/api/user/profile.test.ts` using MSW to intercept `lib/db` calls:
