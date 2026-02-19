@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Palette, Settings } from "lucide-react";
+import { LayoutDashboard, Palette, Settings, BarChart2 } from "lucide-react";
 
 const navItems = [
   {
@@ -14,6 +14,11 @@ const navItems = [
     href: "/appearance",
     label: "Appearance",
     icon: Palette,
+  },
+  {
+    href: "/analytics",
+    label: "Analytics",
+    icon: BarChart2,
   },
   {
     href: "/settings",
