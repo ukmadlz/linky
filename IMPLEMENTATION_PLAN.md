@@ -956,9 +956,9 @@ After each phase, verify:
   - [x] Contains a link to the marketing site
 
 ### Task 16.12: Run full test suite and confirm coverage
-- [ ] Run `npm run test` — all tests pass with zero failures (110 tests, 19 files)
-- [ ] Run `npm run build` — zero TypeScript and build errors
-- [ ] Confirm test count is at least 60 individual test cases across all test files
+- [x] Run `npm run test` — all tests pass with zero failures (110 tests, 19 files)
+- [x] Run `npm run build` — zero TypeScript and build errors
+- [x] Confirm test count is at least 60 individual test cases across all test files
 
 ---
 
