@@ -653,7 +653,7 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ### Task 10.4: SEO and metadata
 - [x] `app/layout.tsx`: default metadata (title, description, OG image for the marketing site)
 - [x] Public pages: dynamic metadata from page fields via `generateMetadata`
-- [ ] Add `robots.txt` and `sitemap.xml` (Phase 2)
+- [x] Add `robots.txt` and `sitemap.xml` (Phase 2)
 
 ---
 
