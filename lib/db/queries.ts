@@ -7,11 +7,13 @@ import {
   blocks,
   clickEvents,
   pageViews,
+  customDomains,
   type User,
   type Page,
   type Block,
   type NewUser,
   type NewBlock,
+  type CustomDomain,
 } from "./schema";
 
 // ─────────────────────────────────────────────────────────────
@@ -309,6 +311,66 @@ export async function getPageViewCount(pageId: string): Promise<number> {
     .where(eq(pageViews.pageId, pageId));
   return Number(result?.count ?? 0);
 }
+
+// ─────────────────────────────────────────────────────────────
+// Custom domain queries
+// ─────────────────────────────────────────────────────────────
+
+export async function getCustomDomainByDomain(
+  domain: string
+): Promise<CustomDomain | null> {
+  const [row] = await db
+    .select()
+    .from(customDomains)
+    .where(eq(customDomains.domain, domain.toLowerCase()))
+    .limit(1);
+  return row ?? null;
+}
+
+export async function getCustomDomainsByPageId(
+  pageId: string
+): Promise<CustomDomain[]> {
+  return db
+    .select()
+    .from(customDomains)
+    .where(eq(customDomains.pageId, pageId));
+}
+
+export async function createCustomDomain(data: {
+  pageId: string;
+  domain: string;
+}): Promise<CustomDomain> {
+  const id = nanoid();
+  const [row] = await db
+    .insert(customDomains)
+    .values({
+      id,
+      pageId: data.pageId,
+      domain: data.domain.toLowerCase(),
+    })
+    .returning();
+  return row;
+}
+
+export async function updateCustomDomain(
+  id: string,
+  data: Partial<Pick<CustomDomain, "isVerified" | "sslStatus" | "verifiedAt">>
+): Promise<CustomDomain | null> {
+  const [row] = await db
+    .update(customDomains)
+    .set({ ...data, updatedAt: new Date() })
+    .where(eq(customDomains.id, id))
+    .returning();
+  return row ?? null;
+}
+
+export async function deleteCustomDomain(id: string): Promise<void> {
+  await db.delete(customDomains).where(eq(customDomains.id, id));
+}
+
+// ─────────────────────────────────────────────────────────────
+// Tracking queries (continued)
+// ─────────────────────────────────────────────────────────────
 
 /** Total click count for a page (for milestone checking) */
 export async function getPageClickCount(pageId: string): Promise<number> {

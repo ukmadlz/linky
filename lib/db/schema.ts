@@ -22,6 +22,9 @@ export const blockTypeEnum = pgEnum("block_type", [
   "social_icons",
   "divider",
   "custom_code",
+  "image",
+  "email_collect",
+  "group",
 ]);
 
 // ─────────────────────────────────────────────────────────────
@@ -233,6 +236,34 @@ export const subscriptionsRelations = relations(subscriptions, ({ one }) => ({
 }));
 
 // ─────────────────────────────────────────────────────────────
+// custom_domains
+// ─────────────────────────────────────────────────────────────
+
+export const customDomains = pgTable(
+  "custom_domains",
+  {
+    id: text("id").primaryKey(),
+    pageId: text("page_id")
+      .notNull()
+      .references(() => pages.id, { onDelete: "cascade" }),
+    domain: varchar("domain", { length: 253 }).unique().notNull(),
+    isVerified: boolean("is_verified").default(false).notNull(),
+    sslStatus: varchar("ssl_status", { length: 20 }).default("pending").notNull(), // pending, provisioning, active, error
+    verifiedAt: timestamp("verified_at"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (t) => [
+    index("custom_domains_page_id_idx").on(t.pageId),
+    index("custom_domains_domain_idx").on(t.domain),
+  ]
+);
+
+export const customDomainsRelations = relations(customDomains, ({ one }) => ({
+  page: one(pages, { fields: [customDomains.pageId], references: [pages.id] }),
+}));
+
+// ─────────────────────────────────────────────────────────────
 // TypeScript types
 // ─────────────────────────────────────────────────────────────
 
@@ -248,3 +279,5 @@ export type PageView = typeof pageViews.$inferSelect;
 export type NewPageView = typeof pageViews.$inferInsert;
 export type Subscription = typeof subscriptions.$inferSelect;
 export type NewSubscription = typeof subscriptions.$inferInsert;
+export type CustomDomain = typeof customDomains.$inferSelect;
+export type NewCustomDomain = typeof customDomains.$inferInsert;
