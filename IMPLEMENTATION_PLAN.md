@@ -934,18 +934,18 @@ After each phase, verify:
   - [x] Each anchor has the correct `href`
 
 ### Task 16.10: Component tests — dashboard editors
-- [ ] Create `tests/unit/components/dashboard/LinkEditor.test.tsx`:
-  - [ ] Renders URL and title fields
-  - [ ] Verification toggle is hidden by default; shows mode selector after enabling
-  - [ ] Selecting `age` mode shows the "Age gate" description; `acknowledge` shows its description
-- [ ] Create `tests/unit/components/dashboard/TextEditor.test.tsx`:
-  - [ ] Renders content textarea, variant select, and alignment buttons
-  - [ ] Changing variant select fires the `onChange` callback with the updated value
-- [ ] Create `tests/unit/components/dashboard/DividerEditor.test.tsx`:
-  - [ ] All three style options are present and selectable
-- [ ] Create `tests/unit/components/dashboard/SocialIconsEditor.test.tsx`:
-  - [ ] "Add icon" button appends a new row
-  - [ ] Removing a row fires `onChange` with the icon removed from the array
+- [x] Create `tests/unit/components/dashboard/LinkEditor.test.tsx`:
+  - [x] Renders URL and title fields
+  - [x] Verification toggle is hidden by default; shows mode selector after enabling
+  - [x] Selecting `age` mode shows the "Age gate" description; `acknowledge` shows its description
+- [x] Create `tests/unit/components/dashboard/TextEditor.test.tsx`:
+  - [x] Renders content textarea, variant select, and alignment buttons
+  - [x] Changing variant select fires the `onChange` callback with the updated value
+- [x] Create `tests/unit/components/dashboard/DividerEditor.test.tsx`:
+  - [x] All three style options are present and selectable
+- [x] Create `tests/unit/components/dashboard/SocialIconsEditor.test.tsx`:
+  - [x] "Add icon" button appends a new row
+  - [x] Removing a row fires `onChange` with the icon removed from the array
 
 ### Task 16.11: Component tests — public page components
 - [ ] Create `tests/unit/components/public/PageHeader.test.tsx`:
