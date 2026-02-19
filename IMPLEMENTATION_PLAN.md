@@ -446,10 +446,10 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
     3. Return `{ providerName, embedType, oembedData, embedHtml }`
 
 ### Task 4.2: Iframe provider patterns
-- [ ] Create `lib/embeds/providers.ts`:
-  - [ ] `IFRAME_PATTERNS`: array of `{ match: RegExp, transform: (url, match) → iframeSrc, aspectRatio, providerName }`
-  - [ ] MVP patterns: YouTube (`/watch?v=` → `/embed/`), Spotify (`/track|album|playlist/` → `/embed/`), Vimeo (`/\d+` → `/player.vimeo.com/video/`), SoundCloud, Google Maps
-  - [ ] `resolveIframe(url: string): IframeResult | null`
+- [x] Create `lib/embeds/providers.ts`:
+  - [x] `IFRAME_PATTERNS`: array of `{ match: RegExp, transform: (url, match) → iframeSrc, aspectRatio, providerName }`
+  - [x] MVP patterns: YouTube (`/watch?v=` → `/embed/`), Spotify (`/track|album|playlist/` → `/embed/`), Vimeo (`/\d+` → `/player.vimeo.com/video/`), SoundCloud, Google Maps
+  - [x] `resolveIframe(url: string): IframeResult | null`
 
 ### Task 4.3: Embed sanitization
 - [ ] Create `lib/embeds/sanitize.ts`:
