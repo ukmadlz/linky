@@ -679,18 +679,18 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ## Phase 12 — Subscriptions & Billing (Phase 2)
 
 ### Task 12.1: Subscriptions schema
-- [ ] Add `subscriptions` table to schema: id, userId, stripeSubscriptionId, stripePriceId, status, periodStart, periodEnd, createdAt, updatedAt
+- [x] Add `subscriptions` table to schema: id, userId, stripeSubscriptionId, stripePriceId, status, periodStart, periodEnd, createdAt, updatedAt
 
 ### Task 12.2: Stripe integration
-- [ ] `app/api/stripe/checkout/route.ts` — create checkout session
-- [ ] `app/api/stripe/portal/route.ts` — create billing portal session
-- [ ] `app/api/webhooks/stripe/route.ts` — handle subscription lifecycle events (created, updated, deleted)
-- [ ] Update `users.isPro` based on active subscription
+- [x] `app/api/stripe/checkout/route.ts` — create checkout session
+- [x] `app/api/stripe/portal/route.ts` — create billing portal session
+- [x] `app/api/webhooks/stripe/route.ts` — handle subscription lifecycle events (created, updated, deleted)
+- [x] Update `users.isPro` based on active subscription
 
 ### Task 12.3: Pro feature gating
-- [ ] Create `lib/pro.ts` — `requirePro()` helper
-- [ ] Gate features: remove branding, custom fonts (expanded list), SEO controls, analytics dashboard
-- [ ] Add upgrade prompts in dashboard for gated features
+- [x] Create `lib/pro.ts` — `requirePro()` helper
+- [x] Gate features: remove branding, custom fonts (expanded list), SEO controls, analytics dashboard
+- [x] Add upgrade prompts in dashboard for gated features
 
 ---
 

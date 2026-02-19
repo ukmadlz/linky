@@ -204,6 +204,35 @@ export const pageViewsRelations = relations(pageViews, ({ one }) => ({
 }));
 
 // ─────────────────────────────────────────────────────────────
+// subscriptions
+// ─────────────────────────────────────────────────────────────
+
+export const subscriptions = pgTable(
+  "subscriptions",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    stripeSubscriptionId: varchar("stripe_subscription_id", { length: 255 }).unique().notNull(),
+    stripePriceId: varchar("stripe_price_id", { length: 255 }).notNull(),
+    status: varchar("status", { length: 50 }).notNull(), // active, canceled, past_due, etc.
+    periodStart: timestamp("period_start"),
+    periodEnd: timestamp("period_end"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (t) => [
+    index("subscriptions_user_id_idx").on(t.userId),
+    index("subscriptions_stripe_id_idx").on(t.stripeSubscriptionId),
+  ]
+);
+
+export const subscriptionsRelations = relations(subscriptions, ({ one }) => ({
+  user: one(users, { fields: [subscriptions.userId], references: [users.id] }),
+}));
+
+// ─────────────────────────────────────────────────────────────
 // TypeScript types
 // ─────────────────────────────────────────────────────────────
 
@@ -217,3 +246,5 @@ export type ClickEvent = typeof clickEvents.$inferSelect;
 export type NewClickEvent = typeof clickEvents.$inferInsert;
 export type PageView = typeof pageViews.$inferSelect;
 export type NewPageView = typeof pageViews.$inferInsert;
+export type Subscription = typeof subscriptions.$inferSelect;
+export type NewSubscription = typeof subscriptions.$inferInsert;
