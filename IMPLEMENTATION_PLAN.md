@@ -920,18 +920,18 @@ After each phase, verify:
   - [x] POST `/api/embeds/resolve` with a missing `url` body field returns 400
 
 ### Task 16.9: Component tests — block renderers
-- [ ] Create `tests/unit/components/blocks/LinkBlock.test.tsx`:
-  - [ ] Renders an anchor tag with `href` pointing to `/r/[blockId]`
-  - [ ] Displays the link title
-  - [ ] Does not render when `isVisible` is false
-- [ ] Create `tests/unit/components/blocks/TextBlock.test.tsx`:
-  - [ ] Renders `<h2>` for `variant: "heading"` and `<p>` for `variant: "paragraph"`
-  - [ ] Applies correct text-alignment class for each `align` value
-- [ ] Create `tests/unit/components/blocks/DividerBlock.test.tsx`:
-  - [ ] Renders `<hr>` for `style: "line"`, a spacer `<div>` for `"space"`, dots for `"dots"`
-- [ ] Create `tests/unit/components/blocks/SocialIconsBlock.test.tsx`:
-  - [ ] Renders one anchor per icon in the data array
-  - [ ] Each anchor has the correct `href`
+- [x] Create `tests/unit/components/blocks/LinkBlock.test.tsx`:
+  - [x] Renders an anchor tag with `href` pointing to `/r/[blockId]`
+  - [x] Displays the link title
+  - [x] Does not render when `isVisible` is false
+- [x] Create `tests/unit/components/blocks/TextBlock.test.tsx`:
+  - [x] Renders `<h2>` for `variant: "heading"` and `<p>` for `variant: "paragraph"`
+  - [x] Applies correct text-alignment class for each `align` value
+- [x] Create `tests/unit/components/blocks/DividerBlock.test.tsx`:
+  - [x] Renders `<hr>` for `style: "line"`, a spacer `<div>` for `"space"`, dots for `"dots"`
+- [x] Create `tests/unit/components/blocks/SocialIconsBlock.test.tsx`:
+  - [x] Renders one anchor per icon in the data array
+  - [x] Each anchor has the correct `href`
 
 ### Task 16.10: Component tests — dashboard editors
 - [ ] Create `tests/unit/components/dashboard/LinkEditor.test.tsx`:
