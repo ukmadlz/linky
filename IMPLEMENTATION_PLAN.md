@@ -969,44 +969,44 @@ After each phase, verify:
 > **Breaking change**: Renaming the session cookie (`linky_session` → `bio_session`) and the verification cookie prefix (`linky_verified_*` → `bio_verified_*`) will invalidate all existing sessions on first deploy. All logged-in users will be signed out once. This is expected and acceptable for a rebrand launch.
 
 ### Task 17.1: Package and domain fallbacks
-- [ ] `package.json`: set `"name": "biohaslink"` (dots are not valid in npm package names)
-- [ ] Replace all hardcoded fallback domains in source code (`linky.page` → `biohasl.ink`):
+- [x] `package.json`: set `"name": "biohaslink"` (dots are not valid in npm package names)
+- [x] Replace all hardcoded fallback domains in source code (`linky.page` → `biohasl.ink`):
   - `proxy.ts` — `process.env.NEXT_PUBLIC_APP_URL ?? "https://linky.page"`
   - `app/sitemap.ts` — `NEXT_PUBLIC_APP_URL || "https://linky.page"`
   - `app/robots.ts` — `NEXT_PUBLIC_APP_URL || "https://linky.page"`
   - `lib/domains/verify.ts` — `NEXT_PUBLIC_APP_URL ?? "https://linky.page"`
-- [ ] `lib/resend.ts`: update default from address — `"Linky <noreply@linky.app>"` → `"biohasl.ink <noreply@biohasl.ink>"`
+- [x] `lib/resend.ts`: update default from address — `"Linky <noreply@linky.app>"` → `"biohasl.ink <noreply@biohasl.ink>"`
 
 ### Task 17.2: UI branding — wordmark and copy
 
 All occurrences of the "Linky" wordmark and the `linky.page` / `linky.app` URL prefix shown to users:
 
-- [ ] `app/layout.tsx`: root metadata
+- [x] `app/layout.tsx`: root metadata
   - `title.default`: `"Linky — Your Link in Bio"` → `"biohasl.ink — Your Link in Bio"`
   - `title.template`: `"%s | Linky"` → `"%s | biohasl.ink"`
-- [ ] `app/page.tsx` (landing page): every "Linky" in nav, hero copy, feature section body, and footer copyright
-- [ ] `app/(auth)/login/page.tsx`: brand wordmark `Linky` → `biohasl.ink`
-- [ ] `app/(auth)/onboarding/page.tsx`:
+- [x] `app/page.tsx` (landing page): every "Linky" in nav, hero copy, feature section body, and footer copyright
+- [x] `app/(auth)/login/page.tsx`: brand wordmark `Linky` → `biohasl.ink`
+- [x] `app/(auth)/onboarding/page.tsx`:
   - Metadata title: `"Choose your username — Linky"` → `"Choose your username — biohasl.ink"`
   - Wordmark span: `Linky` → `biohasl.ink`
-- [ ] `app/(auth)/onboarding/OnboardingForm.tsx`:
+- [x] `app/(auth)/onboarding/OnboardingForm.tsx`:
   - Inline prefix label: `linky.app/` → `biohasl.ink/`
   - URL preview text: `"Your Linky page: linky.app/[username]"` → `"Your page: biohasl.ink/[username]"`
-- [ ] `components/dashboard/Sidebar.tsx`: brand wordmark → `biohasl.ink`
-- [ ] `app/(dashboard)/dashboard/page.tsx`: URL preview `linky.page/{slug}` → `biohasl.ink/{slug}`
-- [ ] `app/(dashboard)/dashboard/[pageId]/page.tsx`: same URL preview
-- [ ] `app/(dashboard)/settings/page.tsx`: URL prefix `linky.page/` → `biohasl.ink/`
-- [ ] `components/dashboard/CreatePageModal.tsx`: URL prefix `linky.page/` → `biohasl.ink/`
-- [ ] `components/dashboard/SEOPanel.tsx`:
+- [x] `components/dashboard/Sidebar.tsx`: brand wordmark → `biohasl.ink`
+- [x] `app/(dashboard)/dashboard/page.tsx`: URL preview `linky.page/{slug}` → `biohasl.ink/{slug}`
+- [x] `app/(dashboard)/dashboard/[pageId]/page.tsx`: same URL preview
+- [x] `app/(dashboard)/settings/page.tsx`: URL prefix `linky.page/` → `biohasl.ink/`
+- [x] `components/dashboard/CreatePageModal.tsx`: URL prefix `linky.page/` → `biohasl.ink/`
+- [x] `components/dashboard/SEOPanel.tsx`:
   - Default description placeholder: `"Check out my Linky page."` → `"Check out my biohasl.ink page."`
   - SEO preview URL: `linky.page/{slug}` → `biohasl.ink/{slug}`
-- [ ] `app/(public)/[slug]/page.tsx`:
+- [x] `app/(public)/[slug]/page.tsx`:
   - Default page title fallback: `"${displayName} | Linky"` → `"${displayName} | biohasl.ink"`
   - Default description: `"Check out ${displayName}'s Linky page."` → `"Check out ${displayName}'s page on biohasl.ink."`
-- [ ] `app/(public)/[slug]/not-found.tsx`:
+- [x] `app/(public)/[slug]/not-found.tsx`:
   - Body text: `"This Linky page doesn't exist..."` → `"This biohasl.ink page doesn't exist..."`
   - Link text: `"Go to Linky"` → `"Go to biohasl.ink"`
-- [ ] `components/public/LinkyBranding.tsx` (file rename handled in Task 17.6):
+- [x] `components/public/LinkyBranding.tsx` (file rename handled in Task 17.6):
   - Badge text: `"Made with Linky"` → `"Made with biohasl.ink"`
   - Link target: update to `https://biohasl.ink`
 
@@ -1014,7 +1014,7 @@ All occurrences of the "Linky" wordmark and the `linky.page` / `linky.app` URL p
 
 All four templates in `emails/` share the same branding structure:
 
-- [ ] `emails/WelcomeEmail.tsx`:
+- [x] `emails/WelcomeEmail.tsx`:
   - Logo text: `Linky` → `biohasl.ink`
   - Subject (in `lib/email/send-welcome.ts`): `"Welcome to Linky! 🎉"` → `"Welcome to biohasl.ink!"`
   - Heading: `"Welcome to Linky, {name}!"` → `"Welcome to biohasl.ink, {name}!"`
@@ -1022,44 +1022,44 @@ All four templates in `emails/` share the same branding structure:
   - Hardcoded URL: `https://linky.app/dashboard` → `https://biohasl.ink/dashboard`
   - Footer: `"signed up for Linky"` → `"signed up for biohasl.ink"`
   - Tagline: `"Linky · Making links beautiful."` → `"biohasl.ink · Your bio, inked."`
-- [ ] `emails/PagePublishedEmail.tsx`:
+- [x] `emails/PagePublishedEmail.tsx`:
   - Logo text, body copy (`"Your Linky page is now published"`), footer, hardcoded URLs → biohasl.ink equivalents
-- [ ] `emails/WeeklyStatsEmail.tsx`:
+- [x] `emails/WeeklyStatsEmail.tsx`:
   - Logo text, footer (`"you have a Linky page"`), hardcoded dashboard URL → biohasl.ink equivalents
-- [ ] `emails/MilestoneEmail.tsx`:
+- [x] `emails/MilestoneEmail.tsx`:
   - Logo text, body copy (`"Your Linky page is gaining momentum"`), footer, hardcoded dashboard URL → biohasl.ink equivalents
 
 ### Task 17.4: CSS class names
 
-- [ ] `app/globals.css`: rename `.linky-page` → `.bio-page` and `.linky-page .block-wrapper` → `.bio-page .block-wrapper`
-- [ ] `app/(public)/[slug]/page.tsx`: update `className="linky-page"` → `className="bio-page"`
-- [ ] `app/(public)/[slug]/loading.tsx`: same className rename
+- [x] `app/globals.css`: rename `.linky-page` → `.bio-page` and `.linky-page .block-wrapper` → `.bio-page .block-wrapper`
+- [x] `app/(public)/[slug]/page.tsx`: update `className="linky-page"` → `className="bio-page"`
+- [x] `app/(public)/[slug]/loading.tsx`: same className rename
 
 ### Task 17.5: Cookie and session names
 
-- [ ] `lib/session.ts`: `cookieName: "linky_session"` → `cookieName: "bio_session"`
-- [ ] `proxy.ts`: `SESSION_COOKIE_NAME = "linky_session"` → `SESSION_COOKIE_NAME = "bio_session"`
-- [ ] `app/r/[blockId]/route.ts`: verification cookie read — `` `linky_verified_${blockId}` `` → `` `bio_verified_${blockId}` ``
-- [ ] `app/api/verify/[blockId]/route.ts`: verification cookie write — same rename
+- [x] `lib/session.ts`: `cookieName: "linky_session"` → `cookieName: "bio_session"`
+- [x] `proxy.ts`: `SESSION_COOKIE_NAME = "linky_session"` → `SESSION_COOKIE_NAME = "bio_session"`
+- [x] `app/r/[blockId]/route.ts`: verification cookie read — `` `linky_verified_${blockId}` `` → `` `bio_verified_${blockId}` ``
+- [x] `app/api/verify/[blockId]/route.ts`: verification cookie write — same rename
 
 ### Task 17.6: Component and test file rename
 
-- [ ] Rename `components/public/LinkyBranding.tsx` → `components/public/SiteBranding.tsx`
-- [ ] Update the import in `app/(public)/[slug]/page.tsx`: `LinkyBranding` → `SiteBranding`
-- [ ] Rename `tests/unit/components/public/LinkyBranding.test.tsx` → `tests/unit/components/public/SiteBranding.test.tsx`
-- [ ] Update the test file: import path, `describe` block name, and any assertions that check for "Made with Linky" text
+- [x] Rename `components/public/LinkyBranding.tsx` → `components/public/SiteBranding.tsx`
+- [x] Update the import in `app/(public)/[slug]/page.tsx`: `LinkyBranding` → `SiteBranding`
+- [x] Rename `tests/unit/components/public/LinkyBranding.test.tsx` → `tests/unit/components/public/SiteBranding.test.tsx`
+- [x] Update the test file: import path, `describe` block name, and any assertions that check for "Made with Linky" text
 
 ### Task 17.7: Embed provider domain references
 
 These params identify the host domain to third-party embed providers:
 
-- [ ] `lib/embeds/providers.ts`:
+- [x] `lib/embeds/providers.ts`:
   - Calendly: `embed_domain=linky.page` → `embed_domain=biohasl.ink`
   - Twitch clips: `parent=linky.page` → `parent=biohasl.ink`
   - Twitch channel: `parent=linky.page` → `parent=biohasl.ink`
 
 ### Task 17.8: Build and test verification
 
-- [ ] Run `npm run build` — zero TypeScript and build errors
-- [ ] Run `npm run test` — all tests pass (update `SiteBranding.test.tsx` assertions for new text if needed)
-- [ ] `grep -ri "linky" --include="*.ts" --include="*.tsx" --include="*.css" . | grep -v node_modules | grep -v .next | grep -v IMPLEMENTATION_PLAN` returns no remaining matches (confirms complete rename)
+- [x] Run `npm run build` — zero TypeScript and build errors
+- [x] Run `npm run test` — all tests pass (update `SiteBranding.test.tsx` assertions for new text if needed)
+- [x] `grep -ri "linky" --include="*.ts" --include="*.tsx" --include="*.css" . | grep -v node_modules | grep -v .next | grep -v IMPLEMENTATION_PLAN` returns no remaining matches (confirms complete rename)
