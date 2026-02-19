@@ -6,13 +6,13 @@ import { requireAuth } from "./auth";
  * Redirects to /dashboard?upgrade=true if not Pro.
  */
 export async function requirePro() {
-  const user = await requireAuth();
+	const user = await requireAuth();
 
-  if (!user.isPro) {
-    redirect("/dashboard?upgrade=true");
-  }
+	if (!user.isPro) {
+		redirect("/dashboard?upgrade=true");
+	}
 
-  return user;
+	return user;
 }
 
 /**
@@ -20,5 +20,5 @@ export async function requirePro() {
  * Use in components to conditionally render upgrade prompts.
  */
 export function isProUser(isPro: boolean): boolean {
-  return isPro;
+	return isPro;
 }

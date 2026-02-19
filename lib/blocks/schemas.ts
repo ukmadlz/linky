@@ -5,12 +5,12 @@ import { z } from "zod";
 // ─────────────────────────────────────────────────────────────
 
 export const linkBlockSchema = z.object({
-  url: z.string().url("Must be a valid URL"),
-  title: z.string().min(1, "Title is required").max(200),
-  thumbnailUrl: z.string().url().optional().or(z.literal("")),
-  icon: z.string().optional(),
-  verificationEnabled: z.boolean().default(false),
-  verificationMode: z.enum(["age", "acknowledge"]).optional(),
+	url: z.string().url("Must be a valid URL"),
+	title: z.string().min(1, "Title is required").max(200),
+	thumbnailUrl: z.string().url().optional().or(z.literal("")),
+	icon: z.string().optional(),
+	verificationEnabled: z.boolean().default(false),
+	verificationMode: z.enum(["age", "acknowledge"]).optional(),
 });
 
 export type LinkBlockData = z.infer<typeof linkBlockSchema>;
@@ -20,9 +20,9 @@ export type LinkBlockData = z.infer<typeof linkBlockSchema>;
 // ─────────────────────────────────────────────────────────────
 
 export const textBlockSchema = z.object({
-  content: z.string().min(1, "Content is required").max(5000),
-  variant: z.enum(["heading", "paragraph"]),
-  align: z.enum(["left", "center", "right"]).default("center"),
+	content: z.string().min(1, "Content is required").max(5000),
+	variant: z.enum(["heading", "paragraph"]),
+	align: z.enum(["left", "center", "right"]).default("center"),
 });
 
 export type TextBlockData = z.infer<typeof textBlockSchema>;
@@ -32,13 +32,13 @@ export type TextBlockData = z.infer<typeof textBlockSchema>;
 // ─────────────────────────────────────────────────────────────
 
 export const embedBlockSchema = z.object({
-  originalUrl: z.string().url("Must be a valid URL"),
-  providerName: z.string(),
-  embedType: z.enum(["oembed", "iframe", "custom"]),
-  oembedData: z.record(z.unknown()).optional(),
-  embedHtml: z.string().optional(),
-  iframeUrl: z.string().url().optional().or(z.literal("")),
-  aspectRatio: z.string().optional(), // e.g. "16/9", "1/1"
+	originalUrl: z.string().url("Must be a valid URL"),
+	providerName: z.string(),
+	embedType: z.enum(["oembed", "iframe", "custom"]),
+	oembedData: z.record(z.unknown()).optional(),
+	embedHtml: z.string().optional(),
+	iframeUrl: z.string().url().optional().or(z.literal("")),
+	aspectRatio: z.string().optional(), // e.g. "16/9", "1/1"
 });
 
 export type EmbedBlockData = z.infer<typeof embedBlockSchema>;
@@ -48,14 +48,14 @@ export type EmbedBlockData = z.infer<typeof embedBlockSchema>;
 // ─────────────────────────────────────────────────────────────
 
 export const socialIconSchema = z.object({
-  platform: z.string().min(1),
-  url: z.string().url("Must be a valid URL"),
+	platform: z.string().min(1),
+	url: z.string().url("Must be a valid URL"),
 });
 
 export const socialIconsBlockSchema = z.object({
-  icons: z.array(socialIconSchema).min(1, "At least one icon is required"),
-  size: z.enum(["sm", "md", "lg"]).default("md"),
-  style: z.enum(["filled", "outline", "monochrome"]).default("monochrome"),
+	icons: z.array(socialIconSchema).min(1, "At least one icon is required"),
+	size: z.enum(["sm", "md", "lg"]).default("md"),
+	style: z.enum(["filled", "outline", "monochrome"]).default("monochrome"),
 });
 
 export type SocialIconsBlockData = z.infer<typeof socialIconsBlockSchema>;
@@ -65,7 +65,7 @@ export type SocialIconsBlockData = z.infer<typeof socialIconsBlockSchema>;
 // ─────────────────────────────────────────────────────────────
 
 export const dividerBlockSchema = z.object({
-  style: z.enum(["line", "space", "dots"]).default("line"),
+	style: z.enum(["line", "space", "dots"]).default("line"),
 });
 
 export type DividerBlockData = z.infer<typeof dividerBlockSchema>;
@@ -75,9 +75,9 @@ export type DividerBlockData = z.infer<typeof dividerBlockSchema>;
 // ─────────────────────────────────────────────────────────────
 
 export const customCodeBlockSchema = z.object({
-  html: z.string(),
-  css: z.string().optional(),
-  sanitized: z.boolean().default(false),
+	html: z.string(),
+	css: z.string().optional(),
+	sanitized: z.boolean().default(false),
 });
 
 export type CustomCodeBlockData = z.infer<typeof customCodeBlockSchema>;
@@ -87,9 +87,9 @@ export type CustomCodeBlockData = z.infer<typeof customCodeBlockSchema>;
 // ─────────────────────────────────────────────────────────────
 
 export const imageBlockSchema = z.object({
-  url: z.string().url("Must be a valid image URL"),
-  alt: z.string().max(300).default(""),
-  linkUrl: z.string().url().optional().or(z.literal("")),
+	url: z.string().url("Must be a valid image URL"),
+	alt: z.string().max(300).default(""),
+	linkUrl: z.string().url().optional().or(z.literal("")),
 });
 
 export type ImageBlockData = z.infer<typeof imageBlockSchema>;
@@ -99,8 +99,10 @@ export type ImageBlockData = z.infer<typeof imageBlockSchema>;
 // ─────────────────────────────────────────────────────────────
 
 export const emailCollectBlockSchema = z.object({
-  provider: z.enum(["mailchimp", "kit", "beehiiv", "substack", "custom"]).default("custom"),
-  embedCode: z.string().min(1, "Embed code is required"),
+	provider: z
+		.enum(["mailchimp", "kit", "beehiiv", "substack", "custom"])
+		.default("custom"),
+	embedCode: z.string().min(1, "Embed code is required"),
 });
 
 export type EmailCollectBlockData = z.infer<typeof emailCollectBlockSchema>;
@@ -110,8 +112,8 @@ export type EmailCollectBlockData = z.infer<typeof emailCollectBlockSchema>;
 // ─────────────────────────────────────────────────────────────
 
 export const groupBlockSchema = z.object({
-  title: z.string().max(200).default("Group"),
-  isCollapsed: z.boolean().default(false),
+	title: z.string().max(200).default("Group"),
+	isCollapsed: z.boolean().default(false),
 });
 
 export type GroupBlockData = z.infer<typeof groupBlockSchema>;
@@ -121,47 +123,47 @@ export type GroupBlockData = z.infer<typeof groupBlockSchema>;
 // ─────────────────────────────────────────────────────────────
 
 export type BlockType =
-  | "link"
-  | "text"
-  | "embed"
-  | "social_icons"
-  | "divider"
-  | "custom_code"
-  | "image"
-  | "email_collect"
-  | "group";
+	| "link"
+	| "text"
+	| "embed"
+	| "social_icons"
+	| "divider"
+	| "custom_code"
+	| "image"
+	| "email_collect"
+	| "group";
 
 export const blockDataSchemas: Record<BlockType, z.ZodTypeAny> = {
-  link: linkBlockSchema,
-  text: textBlockSchema,
-  embed: embedBlockSchema,
-  social_icons: socialIconsBlockSchema,
-  divider: dividerBlockSchema,
-  custom_code: customCodeBlockSchema,
-  image: imageBlockSchema,
-  email_collect: emailCollectBlockSchema,
-  group: groupBlockSchema,
+	link: linkBlockSchema,
+	text: textBlockSchema,
+	embed: embedBlockSchema,
+	social_icons: socialIconsBlockSchema,
+	divider: dividerBlockSchema,
+	custom_code: customCodeBlockSchema,
+	image: imageBlockSchema,
+	email_collect: emailCollectBlockSchema,
+	group: groupBlockSchema,
 };
 
 export type BlockData =
-  | { type: "link"; data: LinkBlockData }
-  | { type: "text"; data: TextBlockData }
-  | { type: "embed"; data: EmbedBlockData }
-  | { type: "social_icons"; data: SocialIconsBlockData }
-  | { type: "divider"; data: DividerBlockData }
-  | { type: "custom_code"; data: CustomCodeBlockData }
-  | { type: "image"; data: ImageBlockData }
-  | { type: "email_collect"; data: EmailCollectBlockData }
-  | { type: "group"; data: GroupBlockData };
+	| { type: "link"; data: LinkBlockData }
+	| { type: "text"; data: TextBlockData }
+	| { type: "embed"; data: EmbedBlockData }
+	| { type: "social_icons"; data: SocialIconsBlockData }
+	| { type: "divider"; data: DividerBlockData }
+	| { type: "custom_code"; data: CustomCodeBlockData }
+	| { type: "image"; data: ImageBlockData }
+	| { type: "email_collect"; data: EmailCollectBlockData }
+	| { type: "group"; data: GroupBlockData };
 
 /**
  * Validate block data against the correct schema for its type.
  * Returns parsed data or throws a ZodError.
  */
 export function validateBlockData(
-  type: BlockType,
-  data: unknown
+	type: BlockType,
+	data: unknown,
 ): Record<string, unknown> {
-  const schema = blockDataSchemas[type];
-  return schema.parse(data) as Record<string, unknown>;
+	const schema = blockDataSchemas[type];
+	return schema.parse(data) as Record<string, unknown>;
 }

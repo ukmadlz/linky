@@ -1,16 +1,16 @@
 import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://biohasl.ink";
+	const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://biohasl.ink";
 
-  return {
-    rules: [
-      {
-        userAgent: "*",
-        allow: "/",
-        disallow: ["/dashboard", "/settings", "/appearance", "/api/"],
-      },
-    ],
-    sitemap: `${baseUrl}/sitemap.xml`,
-  };
+	return {
+		rules: [
+			{
+				userAgent: "*",
+				allow: "/",
+				disallow: ["/dashboard", "/settings", "/appearance", "/api/"],
+			},
+		],
+		sitemap: `${baseUrl}/sitemap.xml`,
+	};
 }

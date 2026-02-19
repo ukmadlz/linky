@@ -1,20 +1,20 @@
 import {
-  getActiveEndpointsForUser,
-  createWebhookDelivery,
+	createWebhookDelivery,
+	getActiveEndpointsForUser,
 } from "@/lib/db/queries";
 import { deliverWebhook } from "./deliver";
 
 export type WebhookEvent =
-  | "page.viewed"
-  | "link.clicked"
-  | "page.updated"
-  | "block.created"
-  | "block.deleted";
+	| "page.viewed"
+	| "link.clicked"
+	| "page.updated"
+	| "block.created"
+	| "block.deleted";
 
 interface EmitOptions {
-  userId: string;
-  event: WebhookEvent;
-  payload: Record<string, unknown>;
+	userId: string;
+	event: WebhookEvent;
+	payload: Record<string, unknown>;
 }
 
 /**
@@ -23,32 +23,26 @@ interface EmitOptions {
  * and attempts delivery. Fire-and-forget — does not block the request path.
  */
 export async function emitWebhook(options: EmitOptions): Promise<void> {
-  const { userId, event, payload } = options;
+	const { userId, event, payload } = options;
 
-  let endpoints;
-  try {
-    endpoints = await getActiveEndpointsForUser(userId, event);
-  } catch {
-    return; // Silently fail — don't break the request
-  }
+	const endpoints = await getActiveEndpointsForUser(userId, event).catch(
+		() => null,
+	);
+	if (!endpoints) return; // Silently fail — don't break the request
 
-  for (const endpoint of endpoints) {
-    let delivery;
-    try {
-      delivery = await createWebhookDelivery({
-        endpointId: endpoint.id,
-        event,
-        payload: {
-          event,
-          timestamp: new Date().toISOString(),
-          data: payload,
-        },
-      });
-    } catch {
-      continue;
-    }
+	for (const endpoint of endpoints) {
+		const delivery = await createWebhookDelivery({
+			endpointId: endpoint.id,
+			event,
+			payload: {
+				event,
+				timestamp: new Date().toISOString(),
+				data: payload,
+			},
+		}).catch(() => null);
+		if (!delivery) continue;
 
-    // Deliver asynchronously — don't await
-    deliverWebhook(delivery.id, endpoint).catch(console.error);
-  }
+		// Deliver asynchronously — don't await
+		deliverWebhook(delivery.id, endpoint).catch(console.error);
+	}
 }

@@ -3,248 +3,253 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    /* biohasl.ink Light Mode - Warm off-white palette */
-    --background: 30 20% 97%;
-    --foreground: 234 25% 23%;
+	:root {
+		/* biohasl.ink Light Mode - Warm off-white palette */
+		--background: 30 20% 97%;
+		--foreground: 234 25% 23%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 234 25% 23%;
+		--card: 0 0% 100%;
+		--card-foreground: 234 25% 23%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 234 25% 23%;
+		--popover: 0 0% 100%;
+		--popover-foreground: 234 25% 23%;
 
-    /* Purple accent #5f4dc5 */
-    --primary: 250 47% 54%;
-    --primary-foreground: 0 0% 100%;
+		/* Purple accent #5f4dc5 */
+		--primary: 250 47% 54%;
+		--primary-foreground: 0 0% 100%;
 
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 234 25% 23%;
+		--secondary: 220 14% 96%;
+		--secondary-foreground: 234 25% 23%;
 
-    --muted: 220 14% 96%;
-    --muted-foreground: 234 14% 46%;
+		--muted: 220 14% 96%;
+		--muted-foreground: 234 14% 46%;
 
-    --accent: 250 47% 54%;
-    --accent-foreground: 0 0% 100%;
+		--accent: 250 47% 54%;
+		--accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+		--destructive: 0 84% 60%;
+		--destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 250 47% 54%;
+		--border: 220 13% 91%;
+		--input: 220 13% 91%;
+		--ring: 250 47% 54%;
 
-    --radius: 0.5rem;
+		--radius: 0.5rem;
 
-    --chart-1: 250 47% 54%;
-    --chart-2: 228 100% 65%;
-    --chart-3: 142 71% 45%;
-    --chart-4: 24 95% 60%;
-    --chart-5: 0 84% 60%;
+		--chart-1: 250 47% 54%;
+		--chart-2: 228 100% 65%;
+		--chart-3: 142 71% 45%;
+		--chart-4: 24 95% 60%;
+		--chart-5: 0 84% 60%;
 
-    /* Public page theme CSS variables (overridden per page) */
-    --bg-color: #f7f5f4;
-    --text-color: #292d4c;
-    --heading-color: #292d4c;
-    --btn-color: #5f4dc5;
-    --btn-text-color: #ffffff;
-    --btn-radius: 0.5rem;
-    --social-icon-color: #5f4dc5;
-    --max-width: 480px;
-    --block-spacing: 0.75rem;
-  }
+		/* Public page theme CSS variables (overridden per page) */
+		--bg-color: #f7f5f4;
+		--text-color: #292d4c;
+		--heading-color: #292d4c;
+		--btn-color: #5f4dc5;
+		--btn-text-color: #ffffff;
+		--btn-radius: 0.5rem;
+		--social-icon-color: #5f4dc5;
+		--max-width: 480px;
+		--block-spacing: 0.75rem;
+	}
 
-  .dark {
-    /* biohasl.ink Dark Mode - Midnight theme */
-    --background: 230 50% 4%;
-    --foreground: 214 32% 91%;
+	.dark {
+		/* biohasl.ink Dark Mode - Midnight theme */
+		--background: 230 50% 4%;
+		--foreground: 214 32% 91%;
 
-    --card: 217 33% 12%;
-    --card-foreground: 214 32% 91%;
+		--card: 217 33% 12%;
+		--card-foreground: 214 32% 91%;
 
-    --popover: 217 33% 12%;
-    --popover-foreground: 214 32% 91%;
+		--popover: 217 33% 12%;
+		--popover-foreground: 214 32% 91%;
 
-    --primary: 252 60% 65%;
-    --primary-foreground: 0 0% 100%;
+		--primary: 252 60% 65%;
+		--primary-foreground: 0 0% 100%;
 
-    --secondary: 217 33% 18%;
-    --secondary-foreground: 214 32% 91%;
+		--secondary: 217 33% 18%;
+		--secondary-foreground: 214 32% 91%;
 
-    --muted: 217 33% 18%;
-    --muted-foreground: 215 20% 65%;
+		--muted: 217 33% 18%;
+		--muted-foreground: 215 20% 65%;
 
-    --accent: 252 60% 65%;
-    --accent-foreground: 0 0% 100%;
+		--accent: 252 60% 65%;
+		--accent-foreground: 0 0% 100%;
 
-    --destructive: 0 63% 50%;
-    --destructive-foreground: 0 0% 100%;
+		--destructive: 0 63% 50%;
+		--destructive-foreground: 0 0% 100%;
 
-    --border: 217 33% 18%;
-    --input: 217 33% 18%;
-    --ring: 252 60% 65%;
+		--border: 217 33% 18%;
+		--input: 217 33% 18%;
+		--ring: 252 60% 65%;
 
-    --chart-1: 252 60% 65%;
-    --chart-2: 228 90% 68%;
-    --chart-3: 142 71% 45%;
-    --chart-4: 24 95% 60%;
-    --chart-5: 0 63% 50%;
-  }
+		--chart-1: 252 60% 65%;
+		--chart-2: 228 90% 68%;
+		--chart-3: 142 71% 45%;
+		--chart-4: 24 95% 60%;
+		--chart-5: 0 63% 50%;
+	}
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+	* {
+		@apply border-border;
+	}
+	body {
+		@apply bg-background text-foreground;
+	}
 }
 
 /* Public page theme styles */
 .bio-page {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 2rem 1rem 4rem;
-  min-height: 100vh;
+	background-color: var(--bg-color);
+	color: var(--text-color);
+	max-width: var(--max-width);
+	margin: 0 auto;
+	padding: 2rem 1rem 4rem;
+	min-height: 100vh;
 }
 
 .bio-page .block-wrapper {
-  margin-bottom: var(--block-spacing);
+	margin-bottom: var(--block-spacing);
 }
 
 /* Link block button styles */
 .block-link {
-  display: block;
-  width: 100%;
-  padding: 0.875rem 1.25rem;
-  border-radius: var(--btn-radius);
-  text-align: center;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  text-decoration: none;
+	display: block;
+	width: 100%;
+	padding: 0.875rem 1.25rem;
+	border-radius: var(--btn-radius);
+	text-align: center;
+	font-weight: 500;
+	transition: all 0.2s ease;
+	text-decoration: none;
 }
 
 /* Filled button style */
 .block-link.btn-filled {
-  background-color: var(--btn-color);
-  color: var(--btn-text-color);
+	background-color: var(--btn-color);
+	color: var(--btn-text-color);
 }
 .block-link.btn-filled:hover {
-  filter: brightness(1.1);
-  transform: scale(1.02);
+	filter: brightness(1.1);
+	transform: scale(1.02);
 }
 
 /* Outline button style */
 .block-link.btn-outline {
-  background-color: transparent;
-  color: var(--btn-color);
-  border: 2px solid var(--btn-color);
+	background-color: transparent;
+	color: var(--btn-color);
+	border: 2px solid var(--btn-color);
 }
 .block-link.btn-outline:hover {
-  background-color: color-mix(in srgb, var(--btn-color) 10%, transparent);
-  transform: scale(1.02);
+	background-color: color-mix(in srgb, var(--btn-color) 10%, transparent);
+	transform: scale(1.02);
 }
 
 /* Soft button style */
 .block-link.btn-soft {
-  background-color: color-mix(in srgb, var(--btn-color) 15%, transparent);
-  color: var(--btn-color);
+	background-color: color-mix(in srgb, var(--btn-color) 15%, transparent);
+	color: var(--btn-color);
 }
 .block-link.btn-soft:hover {
-  background-color: color-mix(in srgb, var(--btn-color) 25%, transparent);
-  transform: scale(1.02);
+	background-color: color-mix(in srgb, var(--btn-color) 25%, transparent);
+	transform: scale(1.02);
 }
 
 /* Shadow button style */
 .block-link.btn-shadow {
-  background-color: #ffffff;
-  color: var(--text-color);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+	background-color: #ffffff;
+	color: var(--text-color);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 .block-link.btn-shadow:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
-  transform: translateY(-1px) scale(1.01);
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+	transform: translateY(-1px) scale(1.01);
 }
 
 /* Text block styles */
 .block-text h2 {
-  color: var(--heading-color);
-  font-family: var(--font-playfair), Georgia, serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1.3;
+	color: var(--heading-color);
+	font-family: var(--font-playfair), Georgia, serif;
+	font-size: 1.5rem;
+	font-weight: 700;
+	line-height: 1.3;
 }
 
 .block-text p {
-  color: var(--text-color);
-  font-size: 1rem;
-  line-height: 1.6;
+	color: var(--text-color);
+	font-size: 1rem;
+	line-height: 1.6;
 }
 
 /* Social icons styles */
 .block-social-icons {
-  display: flex;
-  justify-content: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
+	display: flex;
+	justify-content: center;
+	gap: 0.75rem;
+	flex-wrap: wrap;
 }
 
 .block-social-icons a {
-  color: var(--social-icon-color);
-  transition: all 0.2s ease;
+	color: var(--social-icon-color);
+	transition: all 0.2s ease;
 }
 
 .block-social-icons a:hover {
-  transform: scale(1.15);
-  opacity: 0.8;
+	transform: scale(1.15);
+	opacity: 0.8;
 }
 
 /* Divider styles */
 .block-divider hr {
-  border: none;
-  border-top: 1px solid var(--text-color);
-  opacity: 0.2;
+	border: none;
+	border-top: 1px solid var(--text-color);
+	opacity: 0.2;
 }
 
 .block-divider.dots {
-  text-align: center;
-  letter-spacing: 0.5rem;
-  opacity: 0.3;
-  font-size: 1.25rem;
+	text-align: center;
+	letter-spacing: 0.5rem;
+	opacity: 0.3;
+	font-size: 1.25rem;
 }
 
 /* Embed block styles */
 .block-embed {
-  border-radius: 0.5rem;
-  overflow: hidden;
+	border-radius: 0.5rem;
+	overflow: hidden;
 }
 
 .block-embed iframe {
-  width: 100%;
-  border: none;
-  border-radius: 0.5rem;
+	width: 100%;
+	border: none;
+	border-radius: 0.5rem;
 }
 
 /* Block spacing variants */
 .block-spacing-tight .block-wrapper {
-  margin-bottom: 0.5rem;
+	margin-bottom: 0.5rem;
 }
 .block-spacing-normal .block-wrapper {
-  margin-bottom: 0.75rem;
+	margin-bottom: 0.75rem;
 }
 .block-spacing-relaxed .block-wrapper {
-  margin-bottom: 1.25rem;
+	margin-bottom: 1.25rem;
 }
 
 /* Animate float for landing page decorative elements */
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+	0%,
+	100% {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-10px);
+	}
 }
 
 .animate-float {
-  animation: float 4s ease-in-out infinite;
+	animation: float 4s ease-in-out infinite;
 }
