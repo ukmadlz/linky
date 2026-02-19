@@ -816,8 +816,8 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ## Phase 15 — Custom Domains (Future)
 
 ### Task 15.1: Domain schema and verification
-- [ ] `custom_domains` table: id, pageId, domain, isVerified, sslStatus, verifiedAt, createdAt
-- [ ] DNS verification flow: user adds CNAME/A record, platform checks via DNS lookup
+- [x] `custom_domains` table: id, pageId, domain, isVerified, sslStatus, verifiedAt, createdAt
+- [x] DNS verification flow: user adds CNAME/A record, platform checks via DNS lookup
 
 ### Task 15.2: Domain middleware
 - [ ] `middleware.ts` extension: check incoming hostname against `custom_domains` table
