@@ -86,9 +86,9 @@
 - [x] Create `.env.local` template with `DATABASE_URL`, `WORKOS_CLIENT_ID`, `WORKOS_API_KEY`, `SESSION_SECRET`, `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`
 
 ### Task 1.2: Set up shadcn/ui
-- [ ] Initialize shadcn/ui with `npx shadcn@latest init`
-- [ ] Install foundational components: `button`, `input`, `label`, `card`, `dialog`, `dropdown-menu`, `tabs`, `toast`, `separator`, `avatar`, `badge`, `switch`, `select`, `popover`, `command`
-- [ ] Set up `components/ui/` directory
+- [x] Initialize shadcn/ui with `npx shadcn@latest init`
+- [x] Install foundational components: `button`, `input`, `label`, `card`, `dialog`, `dropdown-menu`, `tabs`, `toast`, `separator`, `avatar`, `badge`, `switch`, `select`, `popover`, `command`
+- [x] Set up `components/ui/` directory
 
 ### Task 1.3: Set up self-hosted PostHog (product analytics)
 

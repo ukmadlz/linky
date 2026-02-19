@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    /* Linky Light Mode - Warm off-white */
+    /* Linky Light Mode - Warm off-white palette */
     --background: 30 20% 97%;
     --foreground: 234 25% 23%;
 
@@ -14,11 +14,12 @@
     --popover: 0 0% 100%;
     --popover-foreground: 234 25% 23%;
 
+    /* Purple accent #5f4dc5 */
     --primary: 250 47% 54%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 228 100% 65%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 234 25% 23%;
 
     --muted: 220 14% 96%;
     --muted-foreground: 234 14% 46%;
@@ -67,8 +68,8 @@
     --primary: 252 60% 65%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 228 90% 68%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 217 33% 18%;
+    --secondary-foreground: 214 32% 91%;
 
     --muted: 217 33% 18%;
     --muted-foreground: 215 20% 65%;
