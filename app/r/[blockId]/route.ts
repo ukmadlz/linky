@@ -32,7 +32,7 @@ export async function GET(request: Request, { params }: Params) {
   // 2. Check verification gate
   if (data.verificationEnabled) {
     const cookieStore = await cookies();
-    const verifiedCookie = cookieStore.get(`linky_verified_${blockId}`);
+    const verifiedCookie = cookieStore.get(`bio_verified_${blockId}`);
 
     if (!verifiedCookie || verifiedCookie.value !== "1") {
       return NextResponse.redirect(

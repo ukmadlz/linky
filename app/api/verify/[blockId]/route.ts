@@ -61,7 +61,7 @@ export async function POST(request: Request, { params }: Params) {
     { status: 302 }
   );
 
-  response.cookies.set(`linky_verified_${blockId}`, "1", {
+  response.cookies.set(`bio_verified_${blockId}`, "1", {
     httpOnly: true,
     sameSite: "lax",
     maxAge: 3600, // 1 hour
