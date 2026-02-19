@@ -170,9 +170,9 @@ Resend handles all transactional emails to page owners (not their visitors). Ema
   - [x] Tracks sent milestones to avoid duplicates (add `milestonesSent` jsonb column to `pages` table or use a simple check against last milestone)
 
 ### Task 1.5: Set up PostgreSQL + Drizzle
-- [ ] Create `drizzle.config.ts` pointing to `DATABASE_URL`
-- [ ] Create `lib/db/index.ts` — Drizzle client with `postgres` driver (lazy-init singleton)
-- [ ] Create `lib/db/schema.ts` with MVP tables:
+- [x] Create `drizzle.config.ts` pointing to `DATABASE_URL`
+- [x] Create `lib/db/index.ts` — Drizzle client with `postgres` driver (lazy-init singleton)
+- [x] Create `lib/db/schema.ts` with MVP tables:
 
 **`users`**
 | Column | Type | Notes |
@@ -258,8 +258,8 @@ Resend handles all transactional emails to page owners (not their visitors). Ema
 | isBot | boolean | default false |
 | timestamp | timestamp | default now |
 
-- [ ] Create indexes on: users(email, username), pages(userId, slug), blocks(pageId, position, parentId), click_events(blockId, pageId, timestamp), page_views(pageId, timestamp)
-- [ ] Run `drizzle-kit generate` to create migration files, then `drizzle-kit migrate` to apply them
+- [x] Create indexes on: users(email, username), pages(userId, slug), blocks(pageId, position, parentId), click_events(blockId, pageId, timestamp), page_views(pageId, timestamp)
+- [x] Run `drizzle-kit generate` to create migration files, then `drizzle-kit migrate` to apply them
 
 ### Task 1.6: Database query helpers
 - [ ] Create `lib/db/queries.ts` with typed query functions:
