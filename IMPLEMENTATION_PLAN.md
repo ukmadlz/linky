@@ -567,11 +567,11 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 - [x] Called from a lightweight client component on the public page (`navigator.sendBeacon` on mount)
 
 ### Task 6.6: Request parsing helpers
-- [ ] Create `lib/tracking/parse-request.ts`:
-  - [ ] `parseRequest(request: Request): TrackingData` — extracts referrer, UA, browser, OS, device, language, country/region/city, isBot from request headers
-  - [ ] Centralizes header parsing logic shared between click redirect and page view routes
-  - [ ] Install `ua-parser-js` for reliable UA parsing
-  - [ ] **No IP address in the returned data** — geo is resolved and IP discarded within this function
+- [x] Create `lib/tracking/parse-request.ts`:
+  - [x] `parseRequest(request: Request): TrackingData` — extracts referrer, UA, browser, OS, device, language, country/region/city, isBot from request headers
+  - [x] Centralizes header parsing logic shared between click redirect and page view routes
+  - [x] Install `ua-parser-js` for reliable UA parsing
+  - [x] **No IP address in the returned data** — geo is resolved and IP discarded within this function
 
 ---
 
