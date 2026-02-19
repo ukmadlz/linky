@@ -620,15 +620,15 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
   - [x] POST: accepts `{ orderedIds: string[] }`, bulk-updates positions; capture `block_reordered` to PostHog
 
 ### Task 8.3: Page editor UI
-- [ ] Create `app/(dashboard)/dashboard/page.tsx`:
-  - [ ] Fetch user's page (or create one if none exists)
-  - [ ] Render `PageEditor` component
-- [ ] Create `components/dashboard/PageEditor.tsx`:
-  - [ ] Block list with drag-and-drop reorder (use `@dnd-kit/core` + `@dnd-kit/sortable`)
-  - [ ] Each block shows: type icon, title/preview, visibility toggle, edit button, delete button
-  - [ ] Inline editing: clicking a block opens an edit form (drawer or inline expand)
-  - [ ] Auto-saves on change (debounced PATCH calls)
-  - [ ] Install: `@dnd-kit/core`, `@dnd-kit/sortable`, `@dnd-kit/utilities`
+- [x] Create `app/(dashboard)/dashboard/page.tsx`:
+  - [x] Fetch user's page (or create one if none exists)
+  - [x] Render `PageEditor` component
+- [x] Create `components/dashboard/PageEditor.tsx`:
+  - [x] Block list with drag-and-drop reorder (use `@dnd-kit/core` + `@dnd-kit/sortable`)
+  - [x] Each block shows: type icon, title/preview, visibility toggle, edit button, delete button
+  - [x] Inline editing: clicking a block opens an edit form (drawer or inline expand)
+  - [x] Auto-saves on change (debounced PATCH calls)
+  - [x] Install: `@dnd-kit/core`, `@dnd-kit/sortable`, `@dnd-kit/utilities`
 
 ### Task 8.4: Block palette (add block)
 - [ ] Create `components/dashboard/BlockPalette.tsx`:
