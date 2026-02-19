@@ -1,16 +1,32 @@
 import { PostHogProvider } from "@/components/providers/PostHogProvider";
+import { Sidebar } from "@/components/dashboard/Sidebar";
+import { TopBar } from "@/components/dashboard/TopBar";
+import { requireAuth } from "@/lib/auth";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // TODO: Phase 7 — add full sidebar layout, top bar, auth protection
-  // PostHogProvider is loaded here so it only runs on dashboard routes,
-  // never on public pages.
+  const user = await requireAuth();
+
   return (
     <PostHogProvider>
-      <div className="min-h-screen bg-background">{children}</div>
+      <div className="flex min-h-screen">
+        {/* Left sidebar (desktop) + mobile bottom nav */}
+        <Sidebar />
+
+        {/* Main content column */}
+        <div className="flex flex-1 flex-col">
+          {/* Top bar with user avatar + logout */}
+          <TopBar user={user} />
+
+          {/* Page content */}
+          <main className="flex-1 overflow-auto bg-[#f7f5f4] pb-20 md:pb-0">
+            {children}
+          </main>
+        </div>
+      </div>
     </PostHogProvider>
   );
 }
