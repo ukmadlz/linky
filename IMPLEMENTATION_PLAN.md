@@ -696,12 +696,12 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ## Phase 10 — Polish & Launch Readiness
 
 ### Task 10.1: Landing page
-- [ ] Create `app/page.tsx`:
-  - [ ] Hero section: large serif headline with gradient text accent, sans-serif subline, prominent CTA button — layered background with warm radial glows (Status AI-inspired, lighter)
-  - [ ] Phone mockup showing an example Linky page (screenshot or live render)
-  - [ ] Feature sections: 3 columns with icons, alternating text/image rows for key features (blocks, integrations, themes)
-  - [ ] Scroll-triggered fade-in animations on sections
-  - [ ] Footer with links, minimal branding
+- [x] Create `app/page.tsx`:
+  - [x] Hero section: large serif headline with gradient text accent, sans-serif subline, prominent CTA button — layered background with warm radial glows (Status AI-inspired, lighter)
+  - [x] Phone mockup showing an example Linky page (screenshot or live render)
+  - [x] Feature sections: 3 columns with icons, alternating text/image rows for key features (blocks, integrations, themes)
+  - [x] Scroll-triggered fade-in animations on sections
+  - [x] Footer with links, minimal branding
 
 ### Task 10.2: Loading states and error handling
 - [ ] Add loading skeletons to dashboard pages (`loading.tsx` files)
