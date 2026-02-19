@@ -731,13 +731,13 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
   - [x] Aggregates from `click_events` and `page_views` tables
 
 ### Task 11.2: Analytics dashboard page
-- [ ] Create `app/(dashboard)/analytics/page.tsx`:
-  - [ ] Summary cards: views, clicks, CTR
-  - [ ] Click timeseries chart (per day)
-  - [ ] Top links table (by clicks)
-  - [ ] Top referrers table
-  - [ ] Time range selector (7d / 30d / 90d)
-  - [ ] Use a lightweight chart library (e.g., `recharts`)
+- [x] Create `app/(dashboard)/analytics/page.tsx`:
+  - [x] Summary cards: views, clicks, CTR
+  - [x] Click timeseries chart (per day)
+  - [x] Top links table (by clicks)
+  - [x] Top referrers table
+  - [x] Time range selector (7d / 30d / 90d)
+  - [x] Use a lightweight chart library (e.g., `recharts`)
 
 ---
 
