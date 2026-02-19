@@ -710,10 +710,10 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 - [x] Add optimistic updates to block reorder
 
 ### Task 10.3: Responsive design pass
-- [ ] Dashboard: sidebar → bottom nav on mobile
-- [ ] Page editor: stack preview below editor on mobile
-- [ ] Public page: already mobile-first (single column, max-width constrained)
-- [ ] Theme editor: stack controls above preview on mobile
+- [x] Dashboard: sidebar → bottom nav on mobile
+- [x] Page editor: stack preview below editor on mobile
+- [x] Public page: already mobile-first (single column, max-width constrained)
+- [x] Theme editor: stack controls above preview on mobile
 
 ### Task 10.4: SEO and metadata
 - [ ] `app/layout.tsx`: default metadata (title, description, OG image for the marketing site)
