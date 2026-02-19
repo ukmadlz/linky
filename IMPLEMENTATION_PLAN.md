@@ -132,17 +132,17 @@ PostHog is used for **product usage analytics** (how users interact with the das
 
 Resend handles all transactional emails to page owners (not their visitors). Emails are built with React Email for type-safe, component-based templates.
 
-- [ ] Create `lib/resend.ts` — Resend client singleton:
-  - [ ] Initialize with `RESEND_API_KEY`
-  - [ ] Export `sendEmail({ to, subject, react })` helper that wraps `resend.emails.send()` with default `from` address from `RESEND_FROM_EMAIL`
-  - [ ] Non-blocking: all email sends are fire-and-forget (no `await` in request path — use `waitUntil` or catch-and-log)
-- [ ] Create `emails/` directory for React Email templates:
-  - [ ] `emails/WelcomeEmail.tsx` — sent on first signup; branded header, "Welcome to Linky" heading, quick-start tips (add your first link, customize your theme, share your page), CTA button to dashboard
-  - [ ] `emails/WeeklyStatsEmail.tsx` — weekly digest; page views, total clicks, top 3 clicked links, comparison to previous week (up/down arrows), CTA to full analytics
-  - [ ] `emails/MilestoneEmail.tsx` — triggered on milestones; e.g., "Your page just hit 100 views!" or "You reached 50 link clicks this week!", celebratory tone, CTA to dashboard
-  - [ ] `emails/PagePublishedEmail.tsx` — sent when user first publishes their page; confirmation with public URL, share tips (copy link, add to Instagram bio), QR code preview (Phase 2)
-- [ ] All templates use `@react-email/components` (Html, Head, Body, Container, Section, Text, Button, Img, Hr) with inline styles matching the Linky brand (warm off-white bg, purple accent, DM Sans font stack)
-- [ ] Create `lib/email/send-welcome.ts`, `lib/email/send-weekly-stats.ts`, `lib/email/send-milestone.ts`, `lib/email/send-page-published.ts` — thin wrappers that render the template and call `sendEmail()`
+- [x] Create `lib/resend.ts` — Resend client singleton:
+  - [x] Initialize with `RESEND_API_KEY`
+  - [x] Export `sendEmail({ to, subject, react })` helper that wraps `resend.emails.send()` with default `from` address from `RESEND_FROM_EMAIL`
+  - [x] Non-blocking: all email sends are fire-and-forget (no `await` in request path — use `waitUntil` or catch-and-log)
+- [x] Create `emails/` directory for React Email templates:
+  - [x] `emails/WelcomeEmail.tsx` — sent on first signup; branded header, "Welcome to Linky" heading, quick-start tips (add your first link, customize your theme, share your page), CTA button to dashboard
+  - [x] `emails/WeeklyStatsEmail.tsx` — weekly digest; page views, total clicks, top 3 clicked links, comparison to previous week (up/down arrows), CTA to full analytics
+  - [x] `emails/MilestoneEmail.tsx` — triggered on milestones; e.g., "Your page just hit 100 views!" or "You reached 50 link clicks this week!", celebratory tone, CTA to dashboard
+  - [x] `emails/PagePublishedEmail.tsx` — sent when user first publishes their page; confirmation with public URL, share tips (copy link, add to Instagram bio), QR code preview (Phase 2)
+- [x] All templates use `@react-email/components` (Html, Head, Body, Container, Section, Text, Button, Img, Hr) with inline styles matching the Linky brand (warm off-white bg, purple accent, DM Sans font stack)
+- [x] Create `lib/email/send-welcome.ts`, `lib/email/send-weekly-stats.ts`, `lib/email/send-milestone.ts`, `lib/email/send-page-published.ts` — thin wrappers that render the template and call `sendEmail()`
 
 **Notification triggers**:
 
@@ -153,15 +153,15 @@ Resend handles all transactional emails to page owners (not their visitors). Ema
 | Weekly Stats | Cron job (every Monday) | API route / Vercel Cron (Task 1.4a below) |
 | Milestone | View/click count crosses threshold | Checked during click redirect / page view tracking (Tasks 6.4, 6.5) |
 
-- [ ] Create `app/api/cron/weekly-stats/route.ts`:
-  - [ ] Protected by a `CRON_SECRET` env var (verify `Authorization` header)
-  - [ ] Query all users with published pages
-  - [ ] For each user: aggregate last 7 days of views + clicks, compare to prior 7 days
-  - [ ] Send `WeeklyStatsEmail` via Resend (batch with `resend.batch.send()` for efficiency)
-  - [ ] Add `CRON_SECRET` to `.env.local` template
-- [ ] Create `lib/email/check-milestones.ts`:
-  - [ ] `checkAndSendMilestones(pageId, metric, newCount)` — checks if count crosses a milestone threshold (100, 500, 1000, 5000, 10000 views/clicks)
-  - [ ] Tracks sent milestones to avoid duplicates (add `milestonesSent` jsonb column to `pages` table or use a simple check against last milestone)
+- [x] Create `app/api/cron/weekly-stats/route.ts`:
+  - [x] Protected by a `CRON_SECRET` env var (verify `Authorization` header)
+  - [x] Query all users with published pages
+  - [x] For each user: aggregate last 7 days of views + clicks, compare to prior 7 days
+  - [x] Send `WeeklyStatsEmail` via Resend (batch with `resend.batch.send()` for efficiency)
+  - [x] Add `CRON_SECRET` to `.env.local` template
+- [x] Create `lib/email/check-milestones.ts`:
+  - [x] `checkAndSendMilestones(pageId, metric, newCount)` — checks if count crosses a milestone threshold (100, 500, 1000, 5000, 10000 views/clicks)
+  - [x] Tracks sent milestones to avoid duplicates (add `milestonesSent` jsonb column to `pages` table or use a simple check against last milestone)
 
 ### Task 1.5: Set up PostgreSQL + Drizzle
 - [ ] Create `drizzle.config.ts` pointing to `DATABASE_URL`
