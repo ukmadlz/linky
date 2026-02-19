@@ -523,13 +523,13 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
   - [x] Protect with `requireAuth()`
 
 ### Task 7.2: Settings page
-- [ ] Create `app/(dashboard)/settings/page.tsx`:
-  - [ ] Profile form: name, bio, username (with availability check), avatar URL
-  - [ ] Account section: email (read-only from WorkOS), sign out button
-  - [ ] Danger zone: delete account (Phase 2)
-- [ ] Create `app/api/user/profile/route.ts`:
-  - [ ] GET: return current user profile
-  - [ ] PATCH: update name, bio, username, avatarUrl (validate username uniqueness); capture `settings_updated` to PostHog
+- [x] Create `app/(dashboard)/settings/page.tsx`:
+  - [x] Profile form: name, bio, username (with availability check), avatar URL
+  - [x] Account section: email (read-only from WorkOS), sign out button
+  - [x] Danger zone: delete account (Phase 2)
+- [x] Create `app/api/user/profile/route.ts`:
+  - [x] GET: return current user profile
+  - [x] PATCH: update name, bio, username, avatarUrl (validate username uniqueness); capture `settings_updated` to PostHog
 
 ---
 
