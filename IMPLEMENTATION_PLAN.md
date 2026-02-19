@@ -685,11 +685,11 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
   - [x] Saves to `pages.themeId` + `pages.themeOverrides` via PATCH
 
 ### Task 9.3: Live preview component
-- [ ] Create `components/dashboard/LivePreview.tsx`:
-  - [ ] Renders a scaled-down mobile preview of the public page
-  - [ ] Uses the same `BlockRenderer` components as the public page
-  - [ ] Applies CSS variables from the current theme state in real-time
-  - [ ] Framed in a phone-shaped container
+- [x] Create `components/dashboard/LivePreview.tsx`:
+  - [x] Renders a scaled-down mobile preview of the public page
+  - [x] Uses the same `BlockRenderer` components as the public page
+  - [x] Applies CSS variables from the current theme state in real-time
+  - [x] Framed in a phone-shaped container
 
 ---
 
