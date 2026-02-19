@@ -637,32 +637,32 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
   - [x] Clicking a type creates a new block with default data and appends it to the page
 
 ### Task 8.5: Block editor forms
-- [ ] Create `components/dashboard/block-editors/LinkEditor.tsx`:
-  - [ ] Fields: URL (input), title (input), thumbnail URL (input, optional)
-  - [ ] Auto-fetch page title + favicon when URL is entered
-  - [ ] **Verification section** (collapsible, off by default):
-    - [ ] Toggle switch: "Require verification before this link opens"
-    - [ ] When enabled, show mode selector:
+- [x] Create `components/dashboard/block-editors/LinkEditor.tsx`:
+  - [x] Fields: URL (input), title (input), thumbnail URL (input, optional)
+  - [x] Auto-fetch page title + favicon when URL is entered
+  - [x] **Verification section** (collapsible, off by default):
+    - [x] Toggle switch: "Require verification before this link opens"
+    - [x] When enabled, show mode selector:
       - `age` — "Age gate (18+): visitor must enter their date of birth"
       - `acknowledge` — "Content warning: visitor must click to confirm before continuing"
-    - [ ] Preview text shown below: e.g. "Visitors will see an age verification screen before being redirected"
-- [ ] Create `components/dashboard/block-editors/TextEditor.tsx`:
-  - [ ] Fields: content (textarea), variant (select: heading/paragraph), alignment (button group)
-- [ ] Create `components/dashboard/block-editors/EmbedEditor.tsx`:
-  - [ ] Fields: URL (input) — on paste/blur, call `/api/embeds/resolve` and show preview
-  - [ ] Display: provider name, embed preview (iframe or thumbnail)
-- [ ] Create `components/dashboard/block-editors/SocialIconsEditor.tsx`:
-  - [ ] Repeatable row: platform (select from list), URL (input)
-  - [ ] Add/remove icons
-  - [ ] Size and style selectors
-- [ ] Create `components/dashboard/block-editors/DividerEditor.tsx`:
-  - [ ] Style selector: line / space / dots
-- [ ] Create `components/dashboard/block-editors/CustomCodeEditor.tsx`:
-  - [ ] HTML editor: `<textarea>` or code editor (e.g., `@uiw/react-textarea-code-editor`) with syntax highlighting
-  - [ ] CSS editor: separate `<textarea>` for custom styles
-  - [ ] Live preview panel showing sanitized output
-  - [ ] Warning banner explaining which tags/attributes are allowed
-  - [ ] On save: HTML is sanitized server-side before storage, `sanitized: true` flag set
+    - [x] Preview text shown below: e.g. "Visitors will see an age verification screen before being redirected"
+- [x] Create `components/dashboard/block-editors/TextEditor.tsx`:
+  - [x] Fields: content (textarea), variant (select: heading/paragraph), alignment (button group)
+- [x] Create `components/dashboard/block-editors/EmbedEditor.tsx`:
+  - [x] Fields: URL (input) — on paste/blur, call `/api/embeds/resolve` and show preview
+  - [x] Display: provider name, embed preview (iframe or thumbnail)
+- [x] Create `components/dashboard/block-editors/SocialIconsEditor.tsx`:
+  - [x] Repeatable row: platform (select from list), URL (input)
+  - [x] Add/remove icons
+  - [x] Size and style selectors
+- [x] Create `components/dashboard/block-editors/DividerEditor.tsx`:
+  - [x] Style selector: line / space / dots
+- [x] Create `components/dashboard/block-editors/CustomCodeEditor.tsx`:
+  - [x] HTML editor: `<textarea>` or code editor (e.g., `@uiw/react-textarea-code-editor`) with syntax highlighting
+  - [x] CSS editor: separate `<textarea>` for custom styles
+  - [x] Live preview panel showing sanitized output
+  - [x] Warning banner explaining which tags/attributes are allowed
+  - [x] On save: HTML is sanitized server-side before storage, `sanitized: true` flag set
 
 ---
 
