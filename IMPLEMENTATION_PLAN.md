@@ -425,13 +425,13 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
   - [x] Export `getBlockDef(type)` helper
 
 ### Task 3.3: Block renderer components (public page)
-- [ ] `components/blocks/BlockRenderer.tsx` — switch on `block.type`, dispatch to typed component
-- [ ] `components/blocks/LinkBlock.tsx` — server component; renders `<a>` linking to `/r/[blockId]` (redirect route) instead of the destination URL directly; this ensures every click is tracked server-side with full request headers before redirecting
-- [ ] `components/blocks/TextBlock.tsx` — server component; renders heading (`<h2>`) or paragraph (`<p>`) with alignment
-- [ ] `components/blocks/EmbedBlock.tsx` — server component; renders sanitized oEmbed HTML or sandboxed iframe with lazy loading; falls back to styled link
-- [ ] `components/blocks/SocialIconsBlock.tsx` — server component; renders row of platform icons (use `lucide-react` or custom SVGs for Twitter, Instagram, TikTok, YouTube, GitHub, LinkedIn, etc.)
-- [ ] `components/blocks/DividerBlock.tsx` — server component; renders `<hr>`, spacer `<div>`, or dotted separator
-- [ ] `components/blocks/CustomCodeBlock.tsx` — server component; renders sanitized user HTML inside a scoped container with user CSS applied via `<style scoped>` or a CSS-in-JS wrapper; no raw `<script>` execution
+- [x] `components/blocks/BlockRenderer.tsx` — switch on `block.type`, dispatch to typed component
+- [x] `components/blocks/LinkBlock.tsx` — server component; renders `<a>` linking to `/r/[blockId]` (redirect route) instead of the destination URL directly; this ensures every click is tracked server-side with full request headers before redirecting
+- [x] `components/blocks/TextBlock.tsx` — server component; renders heading (`<h2>`) or paragraph (`<p>`) with alignment
+- [x] `components/blocks/EmbedBlock.tsx` — server component; renders sanitized oEmbed HTML or sandboxed iframe with lazy loading; falls back to styled link
+- [x] `components/blocks/SocialIconsBlock.tsx` — server component; renders row of platform icons (use `lucide-react` or custom SVGs for Twitter, Instagram, TikTok, YouTube, GitHub, LinkedIn, etc.)
+- [x] `components/blocks/DividerBlock.tsx` — server component; renders `<hr>`, spacer `<div>`, or dotted separator
+- [x] `components/blocks/CustomCodeBlock.tsx` — server component; renders sanitized user HTML inside a scoped container with user CSS applied via `<style scoped>` or a CSS-in-JS wrapper; no raw `<script>` execution
 
 ---
 
