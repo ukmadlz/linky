@@ -102,7 +102,7 @@
 }
 
 /* Public page theme styles */
-.linky-page {
+.bio-page {
   background-color: var(--bg-color);
   color: var(--text-color);
   max-width: var(--max-width);
@@ -111,7 +111,7 @@
   min-height: 100vh;
 }
 
-.linky-page .block-wrapper {
+.bio-page .block-wrapper {
   margin-bottom: var(--block-spacing);
 }
 

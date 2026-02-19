@@ -1,6 +1,6 @@
 export default function PublicPageLoading() {
   return (
-    <div className="linky-page" style={{ backgroundColor: "#f7f5f4" }}>
+    <div className="bio-page" style={{ backgroundColor: "#f7f5f4" }}>
       <div className="flex animate-pulse flex-col items-center gap-4 pt-8">
         {/* Avatar skeleton */}
         <div className="h-24 w-24 rounded-full bg-slate-200" />

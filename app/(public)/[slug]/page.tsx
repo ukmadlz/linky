@@ -73,7 +73,7 @@ export default async function PublicPage({ params }: PublicPageProps) {
       {/* Lightweight client-side page view beacon */}
       <PageViewTracker pageId={page.id} />
 
-      <div className="linky-page" style={cssVars as CSSProperties}>
+      <div className="bio-page" style={cssVars as CSSProperties}>
         {/* Page header: avatar, display name, bio */}
         <PageHeader
           name={user?.name ?? null}
