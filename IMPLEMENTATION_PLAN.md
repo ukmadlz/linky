@@ -6,6 +6,12 @@
 
 ---
 
+## Build Verification Policy
+
+> **After every task**, run `npm run build` before marking the task complete. A successful TypeScript compilation and Next.js build with zero errors is a hard requirement. If the build fails, fix the errors before checking off the task or moving on to the next one.
+
+---
+
 ## Design Direction
 
 **Inspiration**: [The Real Roots](https://www.therealroots.com/) (typography & warmth), [Status AI](https://www.statusai.com/) (dark gradients & motion), [Gather](https://www.gather.town/) (color system & interactive polish)
@@ -778,3 +784,117 @@ After each phase, verify:
 - [ ] **Phase 8**: Can add/edit/reorder/delete all block types in editor
 - [ ] **Phase 9**: Theme presets switch live, custom overrides persist
 - [ ] **Phase 10**: Landing page renders, loading states work, mobile layout correct
+- [ ] **Phase 16**: All unit tests pass (`npm run test`); build passes (`npm run build`)
+
+---
+
+## Phase 16 — Unit Tests
+
+### Task 16.1: Testing infrastructure setup
+- [ ] Install Vitest, `@vitejs/plugin-react`, `@testing-library/react`, `@testing-library/user-event`, `@testing-library/jest-dom`, `msw` (Mock Service Worker for API mocking)
+- [ ] Create `vitest.config.ts` with jsdom environment, path alias matching `tsconfig.json`, and `setupFiles` pointing to a test setup file
+- [ ] Create `tests/setup.ts` — imports `@testing-library/jest-dom/matchers`, extends Vitest `expect`, sets up MSW server lifecycle (`beforeAll` / `afterEach` / `afterAll`)
+- [ ] Add `"test": "vitest run"` and `"test:watch": "vitest"` scripts to `package.json`
+- [ ] Create `tests/mocks/db.ts` — vi.mock for `lib/db/queries` so unit tests never hit a real database
+- [ ] Create `tests/mocks/handlers.ts` — MSW request handlers for the internal API routes used by client components
+
+### Task 16.2: Block schema unit tests
+- [ ] Create `tests/unit/blocks/schemas.test.ts`:
+  - [ ] `linkBlockSchema`: valid URL + title passes; missing URL fails; invalid URL fails; optional fields (`thumbnailUrl`, `icon`) are truly optional
+  - [ ] `textBlockSchema`: valid content + variant + align passes; invalid variant enum fails; invalid align enum fails
+  - [ ] `embedBlockSchema`: valid `oembed` and `iframe` embedTypes pass; missing `originalUrl` fails; unknown `embedType` fails
+  - [ ] `socialIconsBlockSchema`: valid icons array passes; empty icons array fails; invalid platform URL fails; invalid size/style enum fails
+  - [ ] `dividerBlockSchema`: all three style values pass; unknown style fails
+  - [ ] `customCodeBlockSchema`: valid html + optional css passes; missing html fails
+
+### Task 16.3: Theme resolution unit tests
+- [ ] Create `tests/unit/themes/resolve.test.ts`:
+  - [ ] `resolveTheme("default", {})` returns the default preset unchanged
+  - [ ] `resolveTheme("midnight", { buttonColor: "#ff0000" })` returns midnight preset with `buttonColor` overridden to `#ff0000` and all other midnight values intact
+  - [ ] `resolveTheme("unknown-id", {})` falls back to the default preset
+  - [ ] Sparse overrides do not wipe non-overridden preset fields
+- [ ] Create `tests/unit/themes/to-css-vars.test.ts`:
+  - [ ] `themeToCssVars(defaultTheme)` returns an object with all expected CSS variable keys (`--bg-color`, `--text-color`, `--heading-color`, `--btn-color`, `--btn-text-color`, `--btn-radius`, `--btn-style`, `--social-icon-color`, `--max-width`, `--block-spacing`)
+  - [ ] Values match the theme config properties
+
+### Task 16.4: Embed resolver unit tests
+- [ ] Create `tests/unit/embeds/providers.test.ts`:
+  - [ ] `resolveIframe("https://www.youtube.com/watch?v=dQw4w9WgXcQ")` returns a result with `iframeUrl` containing `youtube.com/embed/dQw4w9WgXcQ`
+  - [ ] `resolveIframe("https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT")` returns a Spotify embed src
+  - [ ] `resolveIframe("https://vimeo.com/148751763")` returns a Vimeo player embed src
+  - [ ] `resolveIframe("https://example.com")` returns `null` (not a known pattern)
+- [ ] Create `tests/unit/embeds/sanitize.test.ts`:
+  - [ ] `sanitizeEmbedHtml` strips non-iframe tags, keeps `<iframe>` with allowlisted `src`
+  - [ ] `sanitizeEmbedHtml` strips `<iframe>` whose `src` is not on the allowlist
+  - [ ] `sanitizeCustomHtml` keeps allowed tags (`p`, `a`, `strong`, etc.) and strips `<script>`, `onclick`, `javascript:` hrefs
+  - [ ] `scopeCustomCss` prefixes all selectors with the container ID
+
+### Task 16.5: API route unit tests — user profile
+- [ ] Create `tests/unit/api/user/profile.test.ts` using MSW to intercept `lib/db` calls:
+  - [ ] GET `/api/user/profile` returns 401 when no session
+  - [ ] GET `/api/user/profile` returns 200 with user JSON when session is valid
+  - [ ] PATCH `/api/user/profile` with valid body updates user and returns 200
+  - [ ] PATCH `/api/user/profile` with taken username returns 409
+
+### Task 16.6: API route unit tests — pages
+- [ ] Create `tests/unit/api/pages.test.ts`:
+  - [ ] GET `/api/pages` returns 401 without session; returns user's pages array with valid session
+  - [ ] POST `/api/pages` creates a page and returns 201 with the new page; returns 400 if slug is taken
+  - [ ] PATCH `/api/pages/[pageId]` updates `isPublished` and returns 200; returns 403 for a page owned by another user
+  - [ ] DELETE `/api/pages/[pageId]` deletes page and returns 204; returns 403 for wrong user
+
+### Task 16.7: API route unit tests — blocks
+- [ ] Create `tests/unit/api/blocks.test.ts`:
+  - [ ] POST `/api/pages/[pageId]/blocks` with a valid `link` block body creates block and returns 201
+  - [ ] POST with an invalid block type returns 400
+  - [ ] POST with a body that fails the Zod schema returns 422
+  - [ ] PATCH `/api/pages/[pageId]/blocks/[blockId]` updates block data and returns 200
+  - [ ] DELETE `/api/pages/[pageId]/blocks/[blockId]` removes block and returns 204
+  - [ ] POST `/api/pages/[pageId]/blocks/reorder` with `orderedIds` returns 200
+
+### Task 16.8: API route unit tests — embeds
+- [ ] Create `tests/unit/api/embeds.test.ts`:
+  - [ ] POST `/api/embeds/resolve` with a YouTube URL returns `{ embedType: "iframe", providerName: "YouTube", iframeUrl: ... }`
+  - [ ] POST `/api/embeds/resolve` with an unrecognized URL returns a `custom` embedType fallback
+  - [ ] POST `/api/embeds/resolve` with a missing `url` body field returns 400
+
+### Task 16.9: Component tests — block renderers
+- [ ] Create `tests/unit/components/blocks/LinkBlock.test.tsx`:
+  - [ ] Renders an anchor tag with `href` pointing to `/r/[blockId]`
+  - [ ] Displays the link title
+  - [ ] Does not render when `isVisible` is false
+- [ ] Create `tests/unit/components/blocks/TextBlock.test.tsx`:
+  - [ ] Renders `<h2>` for `variant: "heading"` and `<p>` for `variant: "paragraph"`
+  - [ ] Applies correct text-alignment class for each `align` value
+- [ ] Create `tests/unit/components/blocks/DividerBlock.test.tsx`:
+  - [ ] Renders `<hr>` for `style: "line"`, a spacer `<div>` for `"space"`, dots for `"dots"`
+- [ ] Create `tests/unit/components/blocks/SocialIconsBlock.test.tsx`:
+  - [ ] Renders one anchor per icon in the data array
+  - [ ] Each anchor has the correct `href`
+
+### Task 16.10: Component tests — dashboard editors
+- [ ] Create `tests/unit/components/dashboard/LinkEditor.test.tsx`:
+  - [ ] Renders URL and title fields
+  - [ ] Verification toggle is hidden by default; shows mode selector after enabling
+  - [ ] Selecting `age` mode shows the "Age gate" description; `acknowledge` shows its description
+- [ ] Create `tests/unit/components/dashboard/TextEditor.test.tsx`:
+  - [ ] Renders content textarea, variant select, and alignment buttons
+  - [ ] Changing variant select fires the `onChange` callback with the updated value
+- [ ] Create `tests/unit/components/dashboard/DividerEditor.test.tsx`:
+  - [ ] All three style options are present and selectable
+- [ ] Create `tests/unit/components/dashboard/SocialIconsEditor.test.tsx`:
+  - [ ] "Add icon" button appends a new row
+  - [ ] Removing a row fires `onChange` with the icon removed from the array
+
+### Task 16.11: Component tests — public page components
+- [ ] Create `tests/unit/components/public/PageHeader.test.tsx`:
+  - [ ] Renders avatar, display name, and bio
+  - [ ] Falls back to initials when `avatarUrl` is absent
+- [ ] Create `tests/unit/components/public/LinkyBranding.test.tsx`:
+  - [ ] Renders "Made with Linky" text
+  - [ ] Contains a link to the marketing site
+
+### Task 16.12: Run full test suite and confirm coverage
+- [ ] Run `npm run test` — all tests pass with zero failures
+- [ ] Run `npm run build` — zero TypeScript and build errors
+- [ ] Confirm test count is at least 60 individual test cases across all test files
