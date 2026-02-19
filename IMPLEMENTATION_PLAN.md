@@ -438,9 +438,9 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ## Phase 4 — Integration/Embed System
 
 ### Task 4.1: oEmbed resolver
-- [ ] Create `lib/embeds/oembed.ts`:
-  - [ ] `KNOWN_PROVIDERS` map: domain → oEmbed endpoint URL (YouTube, Spotify, Vimeo, SoundCloud, Twitter/X)
-  - [ ] `resolveOEmbed(url: string): Promise<OEmbedResult>`:
+- [x] Create `lib/embeds/oembed.ts`:
+  - [x] `KNOWN_PROVIDERS` map: domain → oEmbed endpoint URL (YouTube, Spotify, Vimeo, SoundCloud, Twitter/X)
+  - [x] `resolveOEmbed(url: string): Promise<OEmbedResult>`:
     1. Check known providers map → fetch oEmbed JSON
     2. Fetch URL HTML → parse `<link rel="alternate" type="application/json+oembed">` → fetch endpoint
     3. Return `{ providerName, embedType, oembedData, embedHtml }`
