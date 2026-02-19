@@ -799,9 +799,9 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 - [x] Add `webhook_deliveries` table: id, endpointId, event, payload, statusCode, response, attempts, deliveredAt, createdAt
 
 ### Task 14.2: Webhook event system
-- [ ] Define events: `page.viewed`, `link.clicked`, `page.updated`, `block.created`, `block.deleted`
-- [ ] Create `lib/webhooks/emit.ts` — queues webhook deliveries when events occur
-- [ ] Create `lib/webhooks/deliver.ts` — reads secret from Vault via `readSecret(endpoint.secretVaultId)`, signs payload with HMAC-SHA256, delivers to endpoint URL, retries (3x exponential backoff); secret value held only in memory for duration of the request
+- [x] Define events: `page.viewed`, `link.clicked`, `page.updated`, `block.created`, `block.deleted`
+- [x] Create `lib/webhooks/emit.ts` — queues webhook deliveries when events occur
+- [x] Create `lib/webhooks/deliver.ts` — reads secret from Vault via `readSecret(endpoint.secretVaultId)`, signs payload with HMAC-SHA256, delivers to endpoint URL, retries (3x exponential backoff); secret value held only in memory for duration of the request
 
 ### Task 14.3: Webhook management UI
 - [ ] Dashboard page to manage endpoints: add/edit/delete URLs, select events
