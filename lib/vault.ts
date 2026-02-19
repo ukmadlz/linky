@@ -26,6 +26,9 @@ export async function storeSecret(
 export async function readSecret(vaultObjectId: string): Promise<string> {
   const workos = getWorkOS();
   const object = await workos.vault.readObject({ id: vaultObjectId });
+  if (!object.value) {
+    throw new Error(`Vault object ${vaultObjectId} has no value`);
+  }
   return object.value;
 }
 

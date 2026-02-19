@@ -326,12 +326,12 @@ deleteSecret(vaultObjectId: string): Promise<void>
 - [x] `app/api/auth/session/route.ts` — GET: return current session user or 401
 
 ### Task 2.3: Auth middleware + helpers
-- [ ] Create `lib/auth.ts` — `requireAuth()` helper that reads session and returns user or throws/redirects
-- [ ] Create `middleware.ts` — protect `/dashboard/*`, `/api/pages/*`, `/api/user/*` routes (redirect unauthenticated to `/login`)
+- [x] Create `lib/auth.ts` — `requireAuth()` helper that reads session and returns user or throws/redirects
+- [x] Create `middleware.ts` — protect `/dashboard/*`, `/api/pages/*`, `/api/user/*` routes (redirect unauthenticated to `/login`)
 
 ### Task 2.4: Login page
-- [ ] `app/(auth)/login/page.tsx` — centered card on warm off-white bg, serif "Welcome to Linky" heading, sans-serif subtext, "Sign in with Google" button (filled style with Google icon), subtle brand illustration or gradient glow behind card
-- [ ] `app/(auth)/layout.tsx` — full-height centered layout with warm background
+- [x] `app/(auth)/login/page.tsx` — centered card on warm off-white bg, serif "Welcome to Linky" heading, sans-serif subtext, "Sign in with Google" button (filled style with Google icon), subtle brand illustration or gradient glow behind card
+- [x] `app/(auth)/layout.tsx` — full-height centered layout with warm background
 
 ---
 

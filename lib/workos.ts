@@ -1,4 +1,4 @@
-import WorkOS from "@workos-inc/node";
+import { WorkOS } from "@workos-inc/node";
 
 let _client: WorkOS | null = null;
 
