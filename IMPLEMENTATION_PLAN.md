@@ -326,10 +326,10 @@ deleteSecret(vaultObjectId: string): Promise<void>
 > **Security model**: Each user's secrets are cryptographically isolated in Vault via their WorkOS user ID as context. Raw secret values are never written to the Linky database — only opaque Vault object IDs. If the DB is compromised, secrets remain encrypted and inaccessible.
 
 ### Task 2.2: Auth API routes
-- [ ] `app/api/auth/oauth/route.ts` — GET: redirect to WorkOS OAuth (Google provider)
-- [ ] `app/api/auth/callback/route.ts` — GET: exchange code for user profile, find-or-create user in DB, set session, capture `user_signed_up` (if new) or `user_logged_in` via PostHog server client, send welcome email via Resend (if new user), redirect to `/dashboard`
-- [ ] `app/api/auth/logout/route.ts` — POST: destroy session, redirect to `/`
-- [ ] `app/api/auth/session/route.ts` — GET: return current session user or 401
+- [x] `app/api/auth/oauth/route.ts` — GET: redirect to WorkOS OAuth (Google provider)
+- [x] `app/api/auth/callback/route.ts` — GET: exchange code for user profile, find-or-create user in DB, set session, capture `user_signed_up` (if new) or `user_logged_in` via PostHog server client, send welcome email via Resend (if new user), redirect to `/dashboard`
+- [x] `app/api/auth/logout/route.ts` — POST: destroy session, redirect to `/`
+- [x] `app/api/auth/session/route.ts` — GET: return current session user or 401
 
 ### Task 2.3: Auth middleware + helpers
 - [ ] Create `lib/auth.ts` — `requireAuth()` helper that reads session and returns user or throws/redirects
