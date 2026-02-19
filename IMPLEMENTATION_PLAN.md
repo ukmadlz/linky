@@ -94,20 +94,20 @@
 
 PostHog is used for **product usage analytics** (how users interact with the dashboard — feature adoption, editor usage, conversion funnels). This is separate from the link click/page view tracking stored in our DB (which powers the end-user analytics dashboard).
 
-- [ ] Create `lib/posthog/client.ts` — browser-side PostHog client:
-  - [ ] Initialize `posthog-js` with `NEXT_PUBLIC_POSTHOG_KEY` and `NEXT_PUBLIC_POSTHOG_HOST` (self-hosted instance URL)
-  - [ ] Disable autocapture, session recording, and heatmaps (opt-in only) — keep it lean
-  - [ ] Enable `capture_pageview: false` (we'll send manual pageviews for dashboard routes only)
-- [ ] Create `lib/posthog/server.ts` — server-side PostHog client:
-  - [ ] Initialize `posthog-node` with the same host/key
-  - [ ] Lazy-init singleton pattern (same as DB client)
-  - [ ] Used for server-side event capture (e.g., user signup, page created, block created)
-- [ ] Create `components/providers/PostHogProvider.tsx` — client component:
-  - [ ] Wraps `posthog-js` initialization in a React context provider
-  - [ ] Identifies the user on login (`posthog.identify(userId, { email, username })`)
-  - [ ] Resets on logout (`posthog.reset()`)
-  - [ ] Only loaded in the dashboard layout (not on public pages — no tracking visitors)
-- [ ] Add `PostHogProvider` to `app/(dashboard)/layout.tsx`
+- [x] Create `lib/posthog/client.ts` — browser-side PostHog client:
+  - [x] Initialize `posthog-js` with `NEXT_PUBLIC_POSTHOG_KEY` and `NEXT_PUBLIC_POSTHOG_HOST` (self-hosted instance URL)
+  - [x] Disable autocapture, session recording, and heatmaps (opt-in only) — keep it lean
+  - [x] Enable `capture_pageview: false` (we'll send manual pageviews for dashboard routes only)
+- [x] Create `lib/posthog/server.ts` — server-side PostHog client:
+  - [x] Initialize `posthog-node` with the same host/key
+  - [x] Lazy-init singleton pattern (same as DB client)
+  - [x] Used for server-side event capture (e.g., user signup, page created, block created)
+- [x] Create `components/providers/PostHogProvider.tsx` — client component:
+  - [x] Wraps `posthog-js` initialization in a React context provider
+  - [x] Identifies the user on login (`posthog.identify(userId, { email, username })`)
+  - [x] Resets on logout (`posthog.reset()`)
+  - [x] Only loaded in the dashboard layout (not on public pages — no tracking visitors)
+- [x] Add `PostHogProvider` to `app/(dashboard)/layout.tsx`
 
 **Key product events to track**:
 
