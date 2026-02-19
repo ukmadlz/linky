@@ -869,14 +869,14 @@ After each phase, verify:
   - [x] `customCodeBlockSchema`: valid html + optional css passes; missing html fails
 
 ### Task 16.3: Theme resolution unit tests
-- [ ] Create `tests/unit/themes/resolve.test.ts`:
-  - [ ] `resolveTheme("default", {})` returns the default preset unchanged
-  - [ ] `resolveTheme("midnight", { buttonColor: "#ff0000" })` returns midnight preset with `buttonColor` overridden to `#ff0000` and all other midnight values intact
-  - [ ] `resolveTheme("unknown-id", {})` falls back to the default preset
-  - [ ] Sparse overrides do not wipe non-overridden preset fields
-- [ ] Create `tests/unit/themes/to-css-vars.test.ts`:
-  - [ ] `themeToCssVars(defaultTheme)` returns an object with all expected CSS variable keys (`--bg-color`, `--text-color`, `--heading-color`, `--btn-color`, `--btn-text-color`, `--btn-radius`, `--btn-style`, `--social-icon-color`, `--max-width`, `--block-spacing`)
-  - [ ] Values match the theme config properties
+- [x] Create `tests/unit/themes/resolve.test.ts`:
+  - [x] `resolveTheme("default", {})` returns the default preset unchanged
+  - [x] `resolveTheme("midnight", { buttonColor: "#ff0000" })` returns midnight preset with `buttonColor` overridden to `#ff0000` and all other midnight values intact
+  - [x] `resolveTheme("unknown-id", {})` falls back to the default preset
+  - [x] Sparse overrides do not wipe non-overridden preset fields
+- [x] Create `tests/unit/themes/to-css-vars.test.ts`:
+  - [x] `themeToCssVars(defaultTheme)` returns an object with all expected CSS variable keys (`--bg-color`, `--text-color`, `--heading-color`, `--btn-color`, `--btn-text-color`, `--btn-radius`, `--btn-style`, `--social-icon-color`, `--max-width`, `--block-spacing`)
+  - [x] Values match the theme config properties
 
 ### Task 16.4: Embed resolver unit tests
 - [ ] Create `tests/unit/embeds/providers.test.ts`:
