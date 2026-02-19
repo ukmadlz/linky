@@ -833,18 +833,18 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 
 After each phase, verify:
 
-- [ ] **Phase 1**: `drizzle-kit generate` creates migration files, `drizzle-kit migrate` applies them, tables exist in DB; PostHog client initializes in dashboard without errors, events appear in self-hosted PostHog instance; Resend client sends a test email successfully; React Email templates render correctly in dev preview (`npx react-email dev`)
-- [ ] **Phase 2**: `/login` → OAuth flow → session set → redirect to `/dashboard`
-- [ ] **Phase 2.5**: New user OAuth flow: login → callback → `/onboarding` → username input with live availability check → submit → session updated with username → redirect to `/dashboard`; returning user with username bypasses onboarding and goes directly to `/dashboard`; returning user without username is sent to `/onboarding`; `/dashboard` is inaccessible (redirects to `/onboarding`) until username is set; username check returns `available: false` for taken usernames and reserved words; duplicate submit to `/api/auth/onboarding` returns 409 on second call
-- [ ] **Phase 3**: Block Zod schemas validate correct/incorrect data — verified by `tests/unit/blocks/schemas.test.ts` (27 tests)
-- [ ] **Phase 4**: `/api/embeds/resolve` returns embed data for YouTube, Spotify URLs — verified by `tests/unit/api/embeds.test.ts` and `tests/unit/embeds/providers.test.ts`
-- [ ] **Phase 5**: `resolveTheme("midnight", { buttonColor: "#ff0000" })` returns merged config — verified by `tests/unit/themes/resolve.test.ts`
-- [ ] **Phase 6**: `/{username}` renders page with blocks, themed correctly; clicking a link redirects via `/r/[blockId]` → 302 to destination with `click_events` row (browser, OS, device, country, language populated, no IP stored); page view tracked on load; verified link shows `/verify/[blockId]` interstitial (age mode rejects DOB under 18, acknowledge mode passes on Continue), sets 1hr cookie, then redirects normally
-- [ ] **Phase 7**: Dashboard layout renders with navigation, settings form saves — block editors verified by `tests/unit/components/dashboard/` (4 component test files)
-- [ ] **Phase 8**: Can add/edit/reorder/delete all block types in editor — API verified by `tests/unit/api/blocks.test.ts`; block schemas verified by `tests/unit/blocks/schemas.test.ts`
-- [ ] **Phase 9**: Theme presets switch live, custom overrides persist — verified by `tests/unit/themes/resolve.test.ts` and `tests/unit/themes/to-css-vars.test.ts`
-- [ ] **Phase 10**: Landing page renders, loading states work, mobile layout correct — public components verified by `tests/unit/components/public/`
-- [ ] **Phase 16**: All unit tests pass (`npm run test`); build passes (`npm run build`)
+- [x] **Phase 1**: `drizzle-kit generate` creates migration files, `drizzle-kit migrate` applies them, tables exist in DB; PostHog client initializes in dashboard without errors, events appear in self-hosted PostHog instance; Resend client sends a test email successfully; React Email templates render correctly in dev preview (`npx react-email dev`)
+- [x] **Phase 2**: `/login` → OAuth flow → session set → redirect to `/dashboard`
+- [x] **Phase 2.5**: New user OAuth flow: login → callback → `/onboarding` → username input with live availability check → submit → session updated with username → redirect to `/dashboard`; returning user with username bypasses onboarding and goes directly to `/dashboard`; returning user without username is sent to `/onboarding`; `/dashboard` is inaccessible (redirects to `/onboarding`) until username is set; username check returns `available: false` for taken usernames and reserved words; duplicate submit to `/api/auth/onboarding` returns 409 on second call
+- [x] **Phase 3**: Block Zod schemas validate correct/incorrect data — verified by `tests/unit/blocks/schemas.test.ts` (27 tests)
+- [x] **Phase 4**: `/api/embeds/resolve` returns embed data for YouTube, Spotify URLs — verified by `tests/unit/api/embeds.test.ts` and `tests/unit/embeds/providers.test.ts`
+- [x] **Phase 5**: `resolveTheme("midnight", { buttonColor: "#ff0000" })` returns merged config — verified by `tests/unit/themes/resolve.test.ts`
+- [x] **Phase 6**: `/{username}` renders page with blocks, themed correctly; clicking a link redirects via `/r/[blockId]` → 302 to destination with `click_events` row (browser, OS, device, country, language populated, no IP stored); page view tracked on load; verified link shows `/verify/[blockId]` interstitial (age mode rejects DOB under 18, acknowledge mode passes on Continue), sets 1hr cookie, then redirects normally
+- [x] **Phase 7**: Dashboard layout renders with navigation, settings form saves — block editors verified by `tests/unit/components/dashboard/` (4 component test files)
+- [x] **Phase 8**: Can add/edit/reorder/delete all block types in editor — API verified by `tests/unit/api/blocks.test.ts`; block schemas verified by `tests/unit/blocks/schemas.test.ts`
+- [x] **Phase 9**: Theme presets switch live, custom overrides persist — verified by `tests/unit/themes/resolve.test.ts` and `tests/unit/themes/to-css-vars.test.ts`
+- [x] **Phase 10**: Landing page renders, loading states work, mobile layout correct — public components verified by `tests/unit/components/public/`
+- [x] **Phase 16**: All unit tests pass (`npm run test`); build passes (`npm run build`)
 - [ ] **Phase 17**: No remaining "linky"/"linky.page"/"linky.app" references in source (confirmed by grep); all UI shows `biohasl.ink` branding; session cookie renamed to `bio_session`; verification cookies use `bio_verified_*` prefix; `SiteBranding` component replaces `LinkyBranding`; all tests pass; build passes
 
 ---
