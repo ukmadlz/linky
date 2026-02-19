@@ -820,8 +820,8 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 - [x] DNS verification flow: user adds CNAME/A record, platform checks via DNS lookup
 
 ### Task 15.2: Domain middleware
-- [ ] `middleware.ts` extension: check incoming hostname against `custom_domains` table
-- [ ] Route custom domain requests to the correct page
+- [x] `middleware.ts` extension: check incoming hostname against `custom_domains` table
+- [x] Route custom domain requests to the correct page
 
 ### Task 15.3: SSL provisioning
 - [ ] Integration with hosting provider's SSL (e.g., Vercel automatic SSL)
