@@ -610,14 +610,14 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
   - [x] DELETE: delete page
 
 ### Task 8.2: Block CRUD API routes
-- [ ] `app/api/pages/[pageId]/blocks/route.ts`:
-  - [ ] GET: list all blocks for page (include hidden, for editor)
-  - [ ] POST: create block (validate type + data against Zod schema, auto-assign position); capture `block_added` to PostHog
-- [ ] `app/api/pages/[pageId]/blocks/[blockId]/route.ts`:
-  - [ ] PATCH: update block (data, isVisible, type-specific fields)
-  - [ ] DELETE: delete block; capture `block_deleted` to PostHog
-- [ ] `app/api/pages/[pageId]/blocks/reorder/route.ts`:
-  - [ ] POST: accepts `{ orderedIds: string[] }`, bulk-updates positions; capture `block_reordered` to PostHog
+- [x] `app/api/pages/[pageId]/blocks/route.ts`:
+  - [x] GET: list all blocks for page (include hidden, for editor)
+  - [x] POST: create block (validate type + data against Zod schema, auto-assign position); capture `block_added` to PostHog
+- [x] `app/api/pages/[pageId]/blocks/[blockId]/route.ts`:
+  - [x] PATCH: update block (data, isVisible, type-specific fields)
+  - [x] DELETE: delete block; capture `block_deleted` to PostHog
+- [x] `app/api/pages/[pageId]/blocks/reorder/route.ts`:
+  - [x] POST: accepts `{ orderedIds: string[] }`, bulk-updates positions; capture `block_reordered` to PostHog
 
 ### Task 8.3: Page editor UI
 - [ ] Create `app/(dashboard)/dashboard/page.tsx`:
