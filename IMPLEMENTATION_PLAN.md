@@ -762,30 +762,30 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ## Phase 13 — Extended Features (Phase 2)
 
 ### Task 13.1: Additional block types
-- [ ] `image` block: `{ url, alt, linkUrl? }` — standalone image with optional click-through
-- [ ] `email_collect` block: `{ provider: "mailchimp" | "kit" | ..., embedCode }` — embedded signup form
-- [ ] `group` block: `{ title, isCollapsed }` — collapsible section containing child blocks (uses `parentId`)
+- [x] `image` block: `{ url, alt, linkUrl? }` — standalone image with optional click-through
+- [x] `email_collect` block: `{ provider: "mailchimp" | "kit" | ..., embedCode }` — embedded signup form
+- [x] `group` block: `{ title, isCollapsed }` — collapsible section containing child blocks (uses `parentId`)
 
 ### Task 13.2: Block scheduling
-- [ ] Add scheduling UI to block editor: start date/time, end date/time
-- [ ] Filter blocks by schedule in public page query (`WHERE scheduledStart IS NULL OR scheduledStart <= NOW()`)
+- [x] Add scheduling UI to block editor: start date/time, end date/time
+- [x] Filter blocks by schedule in public page query (`WHERE scheduledStart IS NULL OR scheduledStart <= NOW()`)
 
 ### Task 13.3: Additional embed providers
-- [ ] Add iframe patterns for: Calendly, Typeform, Gumroad, Stripe Payment Links, Apple Music, TikTok, Twitch
-- [ ] Add oEmbed endpoints for any that support it
+- [x] Add iframe patterns for: Calendly, Typeform, Gumroad, Stripe Payment Links, Apple Music, TikTok, Twitch
+- [x] Add oEmbed endpoints for any that support it
 
 ### Task 13.4: Multiple pages per user
-- [ ] Update dashboard to show page list
-- [ ] Add page creation flow with custom slug
-- [ ] Update navigation
+- [x] Update dashboard to show page list
+- [x] Add page creation flow with custom slug
+- [x] Update navigation
 
 ### Task 13.5: QR code generation
-- [ ] Add QR code button to dashboard that generates a QR code for the public page URL
-- [ ] Use `qrcode` package, render as downloadable SVG/PNG
+- [x] Add QR code button to dashboard that generates a QR code for the public page URL
+- [x] Use `qrcode` package, render as downloadable SVG/PNG
 
 ### Task 13.6: SEO controls
-- [ ] Add SEO section to page settings: custom title, description, OG image upload
-- [ ] Wire into `generateMetadata` on public page
+- [x] Add SEO section to page settings: custom title, description, OG image upload
+- [x] Wire into `generateMetadata` on public page
 
 ---
 
