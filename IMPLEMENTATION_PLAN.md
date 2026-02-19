@@ -716,9 +716,9 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 - [x] Theme editor: stack controls above preview on mobile
 
 ### Task 10.4: SEO and metadata
-- [ ] `app/layout.tsx`: default metadata (title, description, OG image for the marketing site)
-- [ ] Public pages: dynamic metadata from page fields via `generateMetadata`
-- [ ] Add `robots.txt` and `sitemap.xml` (Phase 2)
+- [x] `app/layout.tsx`: default metadata (title, description, OG image for the marketing site)
+- [x] Public pages: dynamic metadata from page fields via `generateMetadata`
+- [x] Add `robots.txt` and `sitemap.xml` (Phase 2)
 
 ---
 
