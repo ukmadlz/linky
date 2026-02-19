@@ -483,12 +483,12 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
   - [x] Export `themePresets: Record<string, ThemeConfig>`
 
 ### Task 5.2: Theme resolution and CSS variables
-- [ ] Create `lib/themes/resolve.ts`:
-  - [ ] `resolveTheme(themeId: string, overrides: Partial<ThemeConfig>): ThemeConfig`
-  - [ ] Merges preset with sparse user overrides
-- [ ] Create `lib/themes/to-css-vars.ts`:
-  - [ ] `themeToCssVars(theme: ThemeConfig): Record<string, string>`
-  - [ ] Maps properties to CSS custom properties: `--bg-color`, `--text-color`, `--heading-color`, `--btn-color`, `--btn-text-color`, `--btn-radius`, `--btn-style`, `--social-icon-color`, `--max-width`, `--block-spacing`
+- [x] Create `lib/themes/resolve.ts`:
+  - [x] `resolveTheme(themeId: string, overrides: Partial<ThemeConfig>): ThemeConfig`
+  - [x] Merges preset with sparse user overrides
+- [x] Create `lib/themes/to-css-vars.ts`:
+  - [x] `themeToCssVars(theme: ThemeConfig): Record<string, string>`
+  - [x] Maps properties to CSS custom properties: `--bg-color`, `--text-color`, `--heading-color`, `--btn-color`, `--btn-text-color`, `--btn-radius`, `--btn-style`, `--social-icon-color`, `--max-width`, `--block-spacing`
 
 ### Task 5.3: Theme-aware CSS
 - [ ] Add theme CSS custom property usage to `globals.css`:
