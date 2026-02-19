@@ -3,7 +3,6 @@ import { getWorkOS } from "@/lib/workos";
 import { getUserByWorkosId, createUser } from "@/lib/db/queries";
 import { saveSession } from "@/lib/session";
 import { captureServerEvent } from "@/lib/posthog/server";
-import { sendWelcomeEmail } from "@/lib/email/send-welcome";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -42,29 +41,33 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // Set session
-    await saveSession({ userId: dbUser.id });
+    const hasUsername = !!dbUser.username;
 
-    // PostHog server-side events (non-blocking)
-    const emailDomain = workosUser.email.split("@")[1];
-    captureServerEvent(
-      dbUser.id,
-      isNewUser ? "user_signed_up" : "user_logged_in",
-      isNewUser
-        ? { provider: "google", email_domain: emailDomain }
-        : { provider: "google" }
-    ).catch(console.error);
+    // Set session — include username so middleware can gate without a DB hit
+    await saveSession({ userId: dbUser.id, username: dbUser.username ?? null });
 
-    // Welcome email for new users (fire-and-forget)
-    if (isNewUser) {
-      sendWelcomeEmail({
-        to: dbUser.email,
-        name: dbUser.name ?? undefined,
+    if (hasUsername) {
+      // Returning user with a username — fire logged-in event and send to dashboard
+      captureServerEvent(dbUser.id, "user_logged_in", {
+        provider: "google",
       }).catch(console.error);
+
+      return NextResponse.redirect(
+        `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`
+      );
+    }
+
+    // New user or returning user without username — send to onboarding.
+    // Welcome email, default page creation, and user_signed_up event are all
+    // deferred to onboarding completion (where the username is known).
+    // For returning users without username, skip the signed_up event.
+    if (isNewUser) {
+      // Store email domain so we can fire the event after onboarding
+      // (handled in /api/auth/onboarding)
     }
 
     return NextResponse.redirect(
-      `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`
+      `${process.env.NEXT_PUBLIC_APP_URL}/onboarding`
     );
   } catch (error) {
     console.error("[Auth callback]", error);

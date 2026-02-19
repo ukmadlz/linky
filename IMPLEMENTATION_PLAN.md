@@ -339,6 +339,65 @@ deleteSecret(vaultObjectId: string): Promise<void>
 - [x] `app/(auth)/login/page.tsx` — centered card on warm off-white bg, serif "Welcome to Linky" heading, sans-serif subtext, "Sign in with Google" button (filled style with Google icon), subtle brand illustration or gradient glow behind card
 - [x] `app/(auth)/layout.tsx` — full-height centered layout with warm background
 
+### Task 2.5: Username onboarding flow
+
+New users arrive from OAuth without a username. This task gates dashboard access behind a one-time username-selection step and moves first-signup side effects (default page creation, welcome email, PostHog `user_signed_up`) to onboarding completion where the username is known.
+
+**Session shape change** — add `username` to the session so middleware can gate without a DB round-trip on every request:
+- [x] Update `SessionData` in `lib/session.ts`: add `username?: string | null`
+- [x] Update `saveSession` callers throughout to pass `username` where known
+
+**Auth callback changes** (`app/api/auth/callback/route.ts`):
+- [x] After find-or-create user:
+  - New user (no username): save session `{ userId, username: null }`, redirect to `/onboarding`
+  - Returning user with username: save session `{ userId, username }`, redirect to `/dashboard`
+  - Returning user without username (edge case): save session `{ userId, username: null }`, redirect to `/onboarding`
+- [x] Remove from callback: auto-create default page, send welcome email, capture `user_signed_up` — all moved to onboarding completion (Task 2.5 submit API below)
+- [x] Keep `user_logged_in` PostHog event only for returning users who already have a username
+
+**Middleware** (`proxy.ts` — Next.js proxy/middleware file):
+- [x] Update `proxy.ts` to cover the full protected route set: `/dashboard`, `/appearance`, `/settings`, `/analytics`, `/webhooks`, `/onboarding`, `/api/pages`, `/api/user`, `/api/webhooks`, `/api/analytics`
+- [x] Gate logic:
+  - Unauthenticated (no `session.userId`): redirect to `/login`
+  - Authenticated but `session.username` is null/missing: redirect to `/onboarding` — except when the request is already targeting `/onboarding` or `/api/auth/*` (to avoid redirect loops)
+  - Authenticated with username: allow through
+
+**`requireAuth()` update** (`lib/auth.ts`):
+- [x] After fetching user from DB, if `user.username` is null, redirect to `/onboarding` — second layer of defense for server components that call `requireAuth()` directly
+
+**Onboarding page** (`app/(auth)/onboarding/page.tsx`):
+- [x] Server component; if the user already has a username (session check), redirect immediately to `/dashboard`
+- [x] Client component `OnboardingForm` handles the interactive form:
+  - Linky wordmark at top, "Choose your username" serif heading
+  - Subtext: "This becomes your page URL — choose wisely, you can change it later in settings"
+  - Username input with inline `linky.app/` prefix label
+  - Character rules displayed below input: 3–30 chars, lowercase letters, numbers, hyphens, no leading/trailing hyphens
+  - Real-time availability indicator (300ms debounce): spinner → green checkmark (available) or red × (taken / invalid / reserved), using `GET /api/user/username/check?username=…`
+  - Input pre-populated with a suggestion derived from the user's Google display name (lowercased, spaces → hyphens, non-alphanumeric stripped); user can freely edit
+  - Optional "Display name" field pre-filled from Google profile name
+  - Live URL preview line: `"Your Linky page: linky.app/[username]"` — updates as user types
+  - "Claim @[username]" CTA button (filled purple, `h-11`, disabled until availability is confirmed)
+  - No skip option — username is required to proceed
+
+**Username availability API** (`app/api/user/username/check/route.ts`):
+- [x] `GET ?username=xyz` — validates format then checks DB uniqueness:
+  - Format rules: 3–30 chars, `/^[a-z0-9][a-z0-9-]*[a-z0-9]$/` (single char allowed: `/^[a-z0-9]$/`); not a reserved word (`api`, `r`, `verify`, `login`, `dashboard`, `appearance`, `analytics`, `settings`, `webhooks`)
+  - Returns `{ available: true }` or `{ available: false, reason: "taken" | "invalid" | "reserved" }`
+  - No auth required (called during onboarding before session has a username)
+
+**Onboarding submit API** (`app/api/auth/onboarding/route.ts`):
+- [x] `POST { username: string, name?: string }`:
+  - Requires `session.userId`; returns 401 if absent
+  - Returns 409 if user already has a username (idempotency guard against double-submit)
+  - Validates username format (same rules as check endpoint); returns 422 on format failure
+  - Checks uniqueness; returns 409 with `{ error: "taken" }` on conflict
+  - Updates user record: set `username`, `name` (if provided)
+  - Creates default page (`isDefault: true`, `slug: null`)
+  - Updates session: saves `{ userId, username }` so middleware no longer gates subsequent requests
+  - Sends welcome email via Resend (fire-and-forget)
+  - Captures `user_signed_up` PostHog server event `{ provider: "google", username, email_domain }`
+  - Returns `{ ok: true }` — client redirects to `/dashboard`
+
 ---
 
 ## Phase 3 — Block System Core
@@ -776,6 +835,7 @@ After each phase, verify:
 
 - [x] **Phase 1**: `drizzle-kit generate` creates migration files, `drizzle-kit migrate` applies them, tables exist in DB; PostHog client initializes in dashboard without errors, events appear in self-hosted PostHog instance; Resend client sends a test email successfully; React Email templates render correctly in dev preview (`npx react-email dev`)
 - [x] **Phase 2**: `/login` → OAuth flow → session set → redirect to `/dashboard`
+- [x] **Phase 2.5**: New user OAuth flow: login → callback → `/onboarding` → username input with live availability check → submit → session updated with username → redirect to `/dashboard`; returning user with username bypasses onboarding and goes directly to `/dashboard`; returning user without username is sent to `/onboarding`; `/dashboard` is inaccessible (redirects to `/onboarding`) until username is set; username check returns `available: false` for taken usernames and reserved words; duplicate submit to `/api/auth/onboarding` returns 409 on second call
 - [x] **Phase 3**: Block Zod schemas validate correct/incorrect data — verified by `tests/unit/blocks/schemas.test.ts` (27 tests)
 - [x] **Phase 4**: `/api/embeds/resolve` returns embed data for YouTube, Spotify URLs — verified by `tests/unit/api/embeds.test.ts` and `tests/unit/embeds/providers.test.ts`
 - [x] **Phase 5**: `resolveTheme("midnight", { buttonColor: "#ff0000" })` returns merged config — verified by `tests/unit/themes/resolve.test.ts`

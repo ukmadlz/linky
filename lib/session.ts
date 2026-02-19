@@ -4,6 +4,7 @@ import type { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension
 
 export interface SessionData {
   userId?: string;
+  username?: string | null;
 }
 
 const SESSION_OPTIONS = {

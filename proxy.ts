@@ -9,24 +9,30 @@ const APP_HOSTNAME = new URL(
 ).hostname;
 
 // Protected route prefixes — proxy runs on these
-const PROTECTED_PREFIXES = ["/dashboard", "/appearance", "/settings", "/webhooks"];
+const PROTECTED_PREFIXES = ["/dashboard", "/appearance", "/settings", "/webhooks", "/analytics"];
 const PROTECTED_API_PREFIXES = ["/api/pages", "/api/user", "/api/analytics", "/api/webhooks/endpoints", "/api/webhooks/deliveries", "/api/zapier"];
 
-async function getSessionUserId(
+// Routes that are accessible while authenticated but before username is set
+const ONBOARDING_PREFIX = "/onboarding";
+const ONBOARDING_PASSTHROUGH_PREFIXES = [
+  "/api/auth/",
+  "/api/user/username/check",
+];
+
+async function getSessionData(
   request: NextRequest
-): Promise<string | undefined> {
+): Promise<SessionData | null> {
   const cookieValue = request.cookies.get(SESSION_COOKIE_NAME)?.value;
-  if (!cookieValue) return undefined;
+  if (!cookieValue) return null;
 
   try {
-    const data = await unsealData<SessionData>(cookieValue, {
+    return await unsealData<SessionData>(cookieValue, {
       password:
         process.env.SESSION_SECRET ??
         "fallback-dev-secret-change-in-production",
     });
-    return data.userId;
   } catch {
-    return undefined;
+    return null;
   }
 }
 
@@ -77,20 +83,39 @@ export async function proxy(request: NextRequest) {
   const isProtectedApi = PROTECTED_API_PREFIXES.some((prefix) =>
     pathname.startsWith(prefix)
   );
+  const isOnboardingPage = pathname === ONBOARDING_PREFIX;
+  const isOnboardingApi = pathname === "/api/auth/onboarding";
 
-  if (!isProtectedPage && !isProtectedApi) {
+  if (!isProtectedPage && !isProtectedApi && !isOnboardingPage && !isOnboardingApi) {
     return NextResponse.next();
   }
 
-  const userId = await getSessionUserId(request);
+  const sessionData = await getSessionData(request);
+  const userId = sessionData?.userId;
 
   if (!userId) {
     if (isProtectedApi) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("next", pathname);
+    if (!isOnboardingPage && !isOnboardingApi) {
+      loginUrl.searchParams.set("next", pathname);
+    }
     return NextResponse.redirect(loginUrl);
+  }
+
+  // ── Onboarding gate ────────────────────────────────────────────────────────
+  // Authenticated users without a username must complete onboarding first
+  const hasUsername = !!sessionData?.username;
+
+  if (!hasUsername && !isOnboardingPage && !isOnboardingApi) {
+    // Allow through routes that are needed to complete onboarding
+    const isPassthrough = ONBOARDING_PASSTHROUGH_PREFIXES.some((prefix) =>
+      pathname.startsWith(prefix)
+    );
+    if (!isPassthrough) {
+      return NextResponse.redirect(new URL(ONBOARDING_PREFIX, request.url));
+    }
   }
 
   return NextResponse.next();

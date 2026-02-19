@@ -20,6 +20,11 @@ export async function requireAuth(): Promise<User> {
     redirect("/login");
   }
 
+  // Second-layer guard: if user hasn't completed onboarding, redirect there
+  if (!user.username) {
+    redirect("/onboarding");
+  }
+
   return user;
 }
 
