@@ -905,13 +905,13 @@ After each phase, verify:
   - [x] DELETE `/api/pages/[pageId]` deletes page and returns 204; returns 403 for wrong user
 
 ### Task 16.7: API route unit tests — blocks
-- [ ] Create `tests/unit/api/blocks.test.ts`:
-  - [ ] POST `/api/pages/[pageId]/blocks` with a valid `link` block body creates block and returns 201
-  - [ ] POST with an invalid block type returns 400
-  - [ ] POST with a body that fails the Zod schema returns 422
-  - [ ] PATCH `/api/pages/[pageId]/blocks/[blockId]` updates block data and returns 200
-  - [ ] DELETE `/api/pages/[pageId]/blocks/[blockId]` removes block and returns 204
-  - [ ] POST `/api/pages/[pageId]/blocks/reorder` with `orderedIds` returns 200
+- [x] Create `tests/unit/api/blocks.test.ts`:
+  - [x] POST `/api/pages/[pageId]/blocks` with a valid `link` block body creates block and returns 201
+  - [x] POST with an invalid block type returns 400
+  - [x] POST with a body that fails the Zod schema returns 422
+  - [x] PATCH `/api/pages/[pageId]/blocks/[blockId]` updates block data and returns 200
+  - [x] DELETE `/api/pages/[pageId]/blocks/[blockId]` removes block and returns 204
+  - [x] POST `/api/pages/[pageId]/blocks/reorder` with `orderedIds` returns 200
 
 ### Task 16.8: API route unit tests — embeds
 - [ ] Create `tests/unit/api/embeds.test.ts`:
