@@ -845,7 +845,7 @@ After each phase, verify:
 - [x] **Phase 9**: Theme presets switch live, custom overrides persist — verified by `tests/unit/themes/resolve.test.ts` and `tests/unit/themes/to-css-vars.test.ts`
 - [x] **Phase 10**: Landing page renders, loading states work, mobile layout correct — public components verified by `tests/unit/components/public/`
 - [x] **Phase 16**: All unit tests pass (`npm run test`); build passes (`npm run build`)
-- [ ] **Phase 17**: No remaining "linky"/"linky.page"/"linky.app" references in source (confirmed by grep); all UI shows `biohasl.ink` branding; session cookie renamed to `bio_session`; verification cookies use `bio_verified_*` prefix; `SiteBranding` component replaces `LinkyBranding`; all tests pass; build passes
+- [x] **Phase 17**: No remaining "linky"/"linky.page"/"linky.app" references in source (confirmed by grep); all UI shows `biohasl.ink` branding; session cookie renamed to `bio_session`; verification cookies use `bio_verified_*` prefix; `SiteBranding` component replaces `LinkyBranding`; all tests pass; build passes
 
 ---
 
