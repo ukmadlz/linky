@@ -669,9 +669,9 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ## Phase 9 — Theme Editor
 
 ### Task 9.1: Appearance page
-- [ ] Create `app/(dashboard)/appearance/page.tsx`:
-  - [ ] Two-column layout: theme controls on left, live preview on right
-  - [ ] Render `ThemeEditor` + `LivePreview`
+- [x] Create `app/(dashboard)/appearance/page.tsx`:
+  - [x] Two-column layout: theme controls on left, live preview on right
+  - [x] Render `ThemeEditor` + `LivePreview`
 
 ### Task 9.2: Theme editor component
 - [ ] Create `components/dashboard/ThemeEditor.tsx`:
