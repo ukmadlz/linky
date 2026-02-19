@@ -471,16 +471,16 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ## Phase 5 — Theming System
 
 ### Task 5.1: Theme types and presets
-- [ ] Create `lib/themes/types.ts`:
-  - [ ] `ThemeConfig` interface: backgroundColor, textColor, headingColor, buttonStyle ("filled" | "outline" | "soft" | "shadow"), buttonColor, buttonTextColor, buttonRadius ("none" | "sm" | "md" | "lg" | "full"), fontFamily, socialIconColor, maxWidth ("sm" | "md" | "lg"), blockSpacing ("tight" | "normal" | "relaxed")
-- [ ] Create `lib/themes/presets.ts`:
-  - [ ] 5 presets aligned with the design direction:
+- [x] Create `lib/themes/types.ts`:
+  - [x] `ThemeConfig` interface: backgroundColor, textColor, headingColor, buttonStyle ("filled" | "outline" | "soft" | "shadow"), buttonColor, buttonTextColor, buttonRadius ("none" | "sm" | "md" | "lg" | "full"), fontFamily, socialIconColor, maxWidth ("sm" | "md" | "lg"), blockSpacing ("tight" | "normal" | "relaxed")
+- [x] Create `lib/themes/presets.ts`:
+  - [x] 5 presets aligned with the design direction:
     - `default` — warm off-white bg (`#f7f5f4`), dark navy text (`#292d4c`), purple accent (`#5f4dc5`), DM Sans, filled buttons, rounded-lg
     - `midnight` — deep gradient dark bg (black → `blue-950`), slate-100 text, bright purple/blue accent, DM Sans, outline buttons with glow, rounded-lg — inspired by Status AI
     - `forest` — soft sage green bg, dark green text, earth-tone accent, DM Sans, soft buttons, rounded-md
     - `sunset` — warm peach/cream bg, dark warm gray text, coral/orange accent, Playfair Display headings, filled buttons, rounded-full (pill)
     - `minimal` — pure white bg, pure black text, no accent color (black buttons), Inter font, shadow button style, rounded-none (sharp corners)
-  - [ ] Export `themePresets: Record<string, ThemeConfig>`
+  - [x] Export `themePresets: Record<string, ThemeConfig>`
 
 ### Task 5.2: Theme resolution and CSS variables
 - [ ] Create `lib/themes/resolve.ts`:
