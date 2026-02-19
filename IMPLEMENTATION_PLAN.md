@@ -373,33 +373,33 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ## Phase 4 — Integration/Embed System
 
 ### Task 4.1: oEmbed resolver
-- [ ] Create `lib/embeds/oembed.ts`:
-  - [ ] `KNOWN_PROVIDERS` map: domain → oEmbed endpoint URL (YouTube, Spotify, Vimeo, SoundCloud, Twitter/X)
-  - [ ] `resolveOEmbed(url: string): Promise<OEmbedResult>`:
+- [x] Create `lib/embeds/oembed.ts`:
+  - [x] `KNOWN_PROVIDERS` map: domain → oEmbed endpoint URL (YouTube, Spotify, Vimeo, SoundCloud, Twitter/X)
+  - [x] `resolveOEmbed(url: string): Promise<OEmbedResult>`:
     1. Check known providers map → fetch oEmbed JSON
     2. Fetch URL HTML → parse `<link rel="alternate" type="application/json+oembed">` → fetch endpoint
     3. Return `{ providerName, embedType, oembedData, embedHtml }`
 
 ### Task 4.2: Iframe provider patterns
-- [ ] Create `lib/embeds/providers.ts`:
-  - [ ] `IFRAME_PATTERNS`: array of `{ match: RegExp, transform: (url, match) → iframeSrc, aspectRatio, providerName }`
-  - [ ] MVP patterns: YouTube (`/watch?v=` → `/embed/`), Spotify (`/track|album|playlist/` → `/embed/`), Vimeo (`/\d+` → `/player.vimeo.com/video/`), SoundCloud, Google Maps
-  - [ ] `resolveIframe(url: string): IframeResult | null`
+- [x] Create `lib/embeds/providers.ts`:
+  - [x] `IFRAME_PATTERNS`: array of `{ match: RegExp, transform: (url, match) → iframeSrc, aspectRatio, providerName }`
+  - [x] MVP patterns: YouTube (`/watch?v=` → `/embed/`), Spotify (`/track|album|playlist/` → `/embed/`), Vimeo (`/\d+` → `/player.vimeo.com/video/`), SoundCloud, Google Maps
+  - [x] `resolveIframe(url: string): IframeResult | null`
 
 ### Task 4.3: Embed sanitization
-- [ ] Create `lib/embeds/sanitize.ts`:
-  - [ ] `ALLOWED_IFRAME_DOMAINS` allowlist: youtube.com, youtube-nocookie.com, player.vimeo.com, open.spotify.com, w.soundcloud.com, platform.twitter.com, google.com/maps, calendly.com
-  - [ ] `sanitizeEmbedHtml(html: string): string` — strip all tags except `<iframe>` with `src` on allowlist; use a lightweight HTML parser (or regex for iframes specifically)
-  - [ ] `sanitizeCustomHtml(html: string): string` — for `custom_code` blocks; allow safe HTML tags (`div`, `span`, `p`, `a`, `img`, `ul`, `ol`, `li`, `h1`–`h6`, `strong`, `em`, `br`, `iframe` with allowlisted `src`); strip `<script>`, event handlers (`on*` attributes), `javascript:` URLs
-  - [ ] `scopeCustomCss(css: string, containerId: string): string` — prefix all CSS selectors with the block's container ID to prevent style leaking to the rest of the page
+- [x] Create `lib/embeds/sanitize.ts`:
+  - [x] `ALLOWED_IFRAME_DOMAINS` allowlist: youtube.com, youtube-nocookie.com, player.vimeo.com, open.spotify.com, w.soundcloud.com, platform.twitter.com, google.com/maps, calendly.com
+  - [x] `sanitizeEmbedHtml(html: string): string` — strip all tags except `<iframe>` with `src` on allowlist; use a lightweight HTML parser (or regex for iframes specifically)
+  - [x] `sanitizeCustomHtml(html: string): string` — for `custom_code` blocks; allow safe HTML tags (`div`, `span`, `p`, `a`, `img`, `ul`, `ol`, `li`, `h1`–`h6`, `strong`, `em`, `br`, `iframe` with allowlisted `src`); strip `<script>`, event handlers (`on*` attributes), `javascript:` URLs
+  - [x] `scopeCustomCss(css: string, containerId: string): string` — prefix all CSS selectors with the block's container ID to prevent style leaking to the rest of the page
 
 ### Task 4.4: Unified embed resolution endpoint
-- [ ] Create `lib/embeds/resolve.ts`:
-  - [ ] `resolveEmbed(url: string): Promise<EmbedBlockData>`:
+- [x] Create `lib/embeds/resolve.ts`:
+  - [x] `resolveEmbed(url: string): Promise<EmbedBlockData>`:
     1. Try `resolveIframe(url)` for known patterns (fastest, best quality)
     2. Try `resolveOEmbed(url)` for oEmbed-capable URLs
     3. Fallback: return `{ originalUrl, providerName: "Unknown", embedType: "custom" }` (renders as styled link)
-- [ ] Create `app/api/embeds/resolve/route.ts` — POST: accepts `{ url }`, returns resolved embed data; capture `embed_resolved` to PostHog
+- [x] Create `app/api/embeds/resolve/route.ts` — POST: accepts `{ url }`, returns resolved embed data; capture `embed_resolved` to PostHog
 
 ---
 
