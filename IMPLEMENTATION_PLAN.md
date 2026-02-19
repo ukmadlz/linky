@@ -804,8 +804,8 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 - [x] Create `lib/webhooks/deliver.ts` — reads secret from Vault via `readSecret(endpoint.secretVaultId)`, signs payload with HMAC-SHA256, delivers to endpoint URL, retries (3x exponential backoff); secret value held only in memory for duration of the request
 
 ### Task 14.3: Webhook management UI
-- [ ] Dashboard page to manage endpoints: add/edit/delete URLs, select events
-- [ ] Delivery log with status, payload preview, retry button
+- [x] Dashboard page to manage endpoints: add/edit/delete URLs, select events
+- [x] Delivery log with status, payload preview, retry button
 
 ### Task 14.4: Zapier integration
 - [ ] REST hooks pattern or polling endpoint for Zapier triggers
