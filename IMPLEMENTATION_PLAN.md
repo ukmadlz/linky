@@ -674,15 +674,15 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
   - [x] Render `ThemeEditor` + `LivePreview`
 
 ### Task 9.2: Theme editor component
-- [ ] Create `components/dashboard/ThemeEditor.tsx`:
-  - [ ] **Preset picker**: grid of 5 theme cards showing color swatches, click to select
-  - [ ] **Custom overrides** (accordion sections):
-    - [ ] Colors: background, text, heading, button, button text, social icons (color pickers)
-    - [ ] Button style: filled / outline / soft / shadow (visual gallery)
-    - [ ] Button radius: none / sm / md / lg / full (visual gallery)
-    - [ ] Font: dropdown of 10-15 popular Google Fonts
-    - [ ] Layout: max width (sm/md/lg), block spacing (tight/normal/relaxed)
-  - [ ] Saves to `pages.themeId` + `pages.themeOverrides` via PATCH
+- [x] Create `components/dashboard/ThemeEditor.tsx`:
+  - [x] **Preset picker**: grid of 5 theme cards showing color swatches, click to select
+  - [x] **Custom overrides** (accordion sections):
+    - [x] Colors: background, text, heading, button, button text, social icons (color pickers)
+    - [x] Button style: filled / outline / soft / shadow (visual gallery)
+    - [x] Button radius: none / sm / md / lg / full (visual gallery)
+    - [x] Font: dropdown of 10-15 popular Google Fonts
+    - [x] Layout: max width (sm/md/lg), block spacing (tight/normal/relaxed)
+  - [x] Saves to `pages.themeId` + `pages.themeOverrides` via PATCH
 
 ### Task 9.3: Live preview component
 - [ ] Create `components/dashboard/LivePreview.tsx`:
