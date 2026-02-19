@@ -256,24 +256,24 @@ Resend handles all transactional emails to page owners (not their visitors). Ema
 - [x] Run `drizzle-kit generate` to create migration files, then `drizzle-kit migrate` to apply them
 
 ### Task 1.6: Database query helpers
-- [ ] Create `lib/db/queries.ts` with typed query functions:
-  - [ ] `getUserByWorkosId(workosUserId)`
-  - [ ] `getUserById(id)`
-  - [ ] `createUser({ email, workosUserId, name?, avatarUrl? })`
-  - [ ] `updateUser(id, data)`
-  - [ ] `getPageBySlug(slug)`
-  - [ ] `getPagesByUserId(userId)`
-  - [ ] `createPage({ userId, slug, title? })`
-  - [ ] `updatePage(id, data)`
-  - [ ] `deletePage(id)`
-  - [ ] `getBlocksByPageId(pageId)` — ordered by position, visible only
-  - [ ] `getAllBlocksByPageId(pageId)` — ordered by position, include hidden (for editor)
-  - [ ] `createBlock({ pageId, type, position, data })`
-  - [ ] `updateBlock(id, data)`
-  - [ ] `deleteBlock(id)`
-  - [ ] `reorderBlocks(pageId, orderedIds[])`
-  - [ ] `recordClick({ blockId, pageId, referrer?, userAgent?, country? })`
-  - [ ] `recordPageView({ pageId, referrer?, userAgent?, country? })`
+- [x] Create `lib/db/queries.ts` with typed query functions:
+  - [x] `getUserByWorkosId(workosUserId)`
+  - [x] `getUserById(id)`
+  - [x] `createUser({ email, workosUserId, name?, avatarUrl? })`
+  - [x] `updateUser(id, data)`
+  - [x] `getPageBySlug(slug)`
+  - [x] `getPagesByUserId(userId)`
+  - [x] `createPage({ userId, slug, title? })`
+  - [x] `updatePage(id, data)`
+  - [x] `deletePage(id)`
+  - [x] `getBlocksByPageId(pageId)` — ordered by position, visible only
+  - [x] `getAllBlocksByPageId(pageId)` — ordered by position, include hidden (for editor)
+  - [x] `createBlock({ pageId, type, position, data })`
+  - [x] `updateBlock(id, data)`
+  - [x] `deleteBlock(id)`
+  - [x] `reorderBlocks(pageId, orderedIds[])`
+  - [x] `recordClick({ blockId, pageId, referrer?, userAgent?, country? })`
+  - [x] `recordPageView({ pageId, referrer?, userAgent?, country? })`
 
 ---
 
