@@ -403,7 +403,7 @@ New users arrive from OAuth without a username. This task gates dashboard access
 ## Phase 3 — Block System Core
 
 ### Task 3.1: Block type schemas (Zod)
-- [ ] Create `lib/blocks/schemas.ts`:
+- [x] Create `lib/blocks/schemas.ts`:
 
 ```
 linkBlockSchema:        { url: string (URL), title: string, thumbnailUrl?: string (URL), icon?: string, verificationEnabled?: boolean, verificationMode?: "age" | "acknowledge" }
@@ -414,7 +414,7 @@ dividerBlockSchema:     { style: "line" | "space" | "dots" }
 customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ```
 
-- [ ] Export `blockDataSchemas: Record<BlockType, ZodSchema>` for validation dispatch
+- [x] Export `blockDataSchemas: Record<BlockType, ZodSchema>` for validation dispatch
 
 > **Note on `custom_code` blocks**: User-provided HTML is sanitized server-side on save. Allowed tags: `<div>`, `<span>`, `<p>`, `<a>`, `<img>`, `<ul>`, `<ol>`, `<li>`, `<h1>`–`<h6>`, `<strong>`, `<em>`, `<br>`, `<iframe>` (src allowlisted). All `<script>` tags and event handlers (`onclick`, etc.) are stripped. Custom CSS is scoped to the block container to prevent style leaking.
 
