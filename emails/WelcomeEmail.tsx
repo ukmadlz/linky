@@ -18,7 +18,7 @@ interface WelcomeEmailProps {
 
 export function WelcomeEmail({
   name = "there",
-  dashboardUrl = "https://linky.app/dashboard",
+  dashboardUrl = "https://biohasl.ink/dashboard",
 }: WelcomeEmailProps) {
   return (
     <Html>
@@ -27,11 +27,11 @@ export function WelcomeEmail({
         <Container style={container}>
           {/* Header */}
           <Section style={header}>
-            <Text style={logo}>Linky</Text>
+            <Text style={logo}>biohasl.ink</Text>
           </Section>
 
           <Section style={content}>
-            <Text style={heading}>Welcome to Linky, {name}!</Text>
+            <Text style={heading}>Welcome to biohasl.ink, {name}!</Text>
             <Text style={paragraph}>
               You&apos;re all set! Your link-in-bio page is ready to customize.
               Here&apos;s how to get started:
@@ -46,7 +46,7 @@ export function WelcomeEmail({
               presets or create your own look with custom colors and fonts.
             </Text>
             <Text style={step}>
-              <strong>3. Share your page</strong> — Add your unique Linky URL to
+              <strong>3. Share your page</strong> — Add your unique biohasl.ink URL to
               your Instagram bio, Twitter profile, or anywhere online.
             </Text>
 
@@ -61,9 +61,9 @@ export function WelcomeEmail({
 
           <Section style={footer}>
             <Text style={footerText}>
-              You received this email because you signed up for Linky.
+              You received this email because you signed up for biohasl.ink.
             </Text>
-            <Text style={footerText}>Linky · Making links beautiful.</Text>
+            <Text style={footerText}>biohasl.ink · Your bio, inked.</Text>
           </Section>
         </Container>
       </Body>

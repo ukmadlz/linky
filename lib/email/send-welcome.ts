@@ -11,7 +11,7 @@ export async function sendWelcomeEmail({
 }) {
   await sendEmail({
     to,
-    subject: "Welcome to Linky! 🎉",
+    subject: "Welcome to biohasl.ink!",
     react: createElement(WelcomeEmail, {
       name,
       dashboardUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,

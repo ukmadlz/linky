@@ -18,8 +18,8 @@ interface PagePublishedEmailProps {
 
 export function PagePublishedEmail({
   name = "there",
-  pageUrl = "https://linky.app/username",
-  dashboardUrl = "https://linky.app/dashboard",
+  pageUrl = "https://biohasl.ink/username",
+  dashboardUrl = "https://biohasl.ink/dashboard",
 }: PagePublishedEmailProps) {
   return (
     <Html>
@@ -27,13 +27,13 @@ export function PagePublishedEmail({
       <Body style={body}>
         <Container style={container}>
           <Section style={header}>
-            <Text style={logo}>Linky</Text>
+            <Text style={logo}>biohasl.ink</Text>
           </Section>
 
           <Section style={content}>
             <Text style={heading}>Your page is live! 🎉</Text>
             <Text style={paragraph}>
-              Congratulations, {name}! Your Linky page is now published and
+              Congratulations, {name}! Your biohasl.ink page is now published and
               ready to share with the world.
             </Text>
 
@@ -69,7 +69,7 @@ export function PagePublishedEmail({
 
           <Section style={footer}>
             <Text style={footerText}>
-              You received this email because you published your Linky page.
+              You received this email because you published your biohasl.ink page.
             </Text>
           </Section>
         </Container>

@@ -27,7 +27,7 @@ export function WeeklyStatsEmail({
   viewsDelta = 0,
   clicksDelta = 0,
   topLinks = [],
-  dashboardUrl = "https://linky.app/dashboard",
+  dashboardUrl = "https://biohasl.ink/dashboard",
 }: WeeklyStatsEmailProps) {
   const formatDelta = (delta: number) => {
     if (delta > 0) return `↑ ${delta} from last week`;
@@ -41,7 +41,7 @@ export function WeeklyStatsEmail({
       <Body style={body}>
         <Container style={container}>
           <Section style={header}>
-            <Text style={logo}>Linky</Text>
+            <Text style={logo}>biohasl.ink</Text>
           </Section>
 
           <Section style={content}>
@@ -84,7 +84,7 @@ export function WeeklyStatsEmail({
 
           <Section style={footer}>
             <Text style={footerText}>
-              You received this email because you have a Linky page.
+              You received this email because you have a biohasl.ink page.
             </Text>
           </Section>
         </Container>

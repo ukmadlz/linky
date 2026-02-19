@@ -21,7 +21,7 @@ export function MilestoneEmail({
   name = "there",
   milestone = 100,
   metric = "views",
-  dashboardUrl = "https://linky.app/dashboard",
+  dashboardUrl = "https://biohasl.ink/dashboard",
 }: MilestoneEmailProps) {
   const metricLabel = metric === "views" ? "page views" : "link clicks";
   const emoji = milestone >= 1000 ? "🎉" : "🚀";
@@ -32,7 +32,7 @@ export function MilestoneEmail({
       <Body style={body}>
         <Container style={container}>
           <Section style={header}>
-            <Text style={logo}>Linky</Text>
+            <Text style={logo}>biohasl.ink</Text>
           </Section>
 
           <Section style={content}>
@@ -41,7 +41,7 @@ export function MilestoneEmail({
               You just hit {milestone.toLocaleString()} {metricLabel}!
             </Text>
             <Text style={paragraph}>
-              Congratulations, {name}! Your Linky page is gaining momentum. Keep
+              Congratulations, {name}! Your biohasl.ink page is gaining momentum. Keep
               sharing your link to reach even more people.
             </Text>
 
@@ -56,7 +56,7 @@ export function MilestoneEmail({
 
           <Section style={footer}>
             <Text style={footerText}>
-              You received this email because you have a Linky page.
+              You received this email because you have a biohasl.ink page.
             </Text>
           </Section>
         </Container>
