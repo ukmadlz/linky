@@ -13,6 +13,8 @@ interface Params {
 const updateBlockSchema = z.object({
   data: z.record(z.unknown()).optional(),
   isVisible: z.boolean().optional(),
+  scheduledStart: z.string().datetime().nullable().optional(),
+  scheduledEnd: z.string().datetime().nullable().optional(),
 });
 
 async function getAuthorizedBlock(blockId: string, pageId: string, userId: string) {
@@ -53,6 +55,18 @@ export async function PATCH(request: Request, { params }: Params) {
 
   if (parsed.data.isVisible !== undefined) {
     updateData.isVisible = parsed.data.isVisible;
+  }
+
+  if (parsed.data.scheduledStart !== undefined) {
+    updateData.scheduledStart = parsed.data.scheduledStart
+      ? new Date(parsed.data.scheduledStart)
+      : null;
+  }
+
+  if (parsed.data.scheduledEnd !== undefined) {
+    updateData.scheduledEnd = parsed.data.scheduledEnd
+      ? new Date(parsed.data.scheduledEnd)
+      : null;
   }
 
   if (parsed.data.data !== undefined) {

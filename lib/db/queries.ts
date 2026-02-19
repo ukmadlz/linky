@@ -1,4 +1,4 @@
-import { eq, asc, sql } from "drizzle-orm";
+import { eq, asc, sql, and, or, lte, isNull } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { db } from "./index";
 import {
@@ -156,12 +156,20 @@ export async function getBlockById(id: string): Promise<Block | null> {
   return block ?? null;
 }
 
-/** Visible blocks only, ordered by position — for public page rendering */
+/** Visible, scheduled-active blocks ordered by position — for public page rendering */
 export async function getBlocksByPageId(pageId: string): Promise<Block[]> {
+  const now = new Date();
   return db
     .select()
     .from(blocks)
-    .where(eq(blocks.pageId, pageId))
+    .where(
+      and(
+        eq(blocks.pageId, pageId),
+        eq(blocks.isVisible, true),
+        or(isNull(blocks.scheduledStart), lte(blocks.scheduledStart, now)),
+        or(isNull(blocks.scheduledEnd), sql`${blocks.scheduledEnd} > NOW()`)
+      )
+    )
     .orderBy(asc(blocks.position));
 }
 
@@ -196,7 +204,7 @@ export async function createBlock(data: {
 
 export async function updateBlock(
   id: string,
-  data: Partial<Pick<Block, "data" | "isVisible" | "position">>
+  data: Partial<Pick<Block, "data" | "isVisible" | "position" | "scheduledStart" | "scheduledEnd">>
 ): Promise<Block | null> {
   const [block] = await db
     .update(blocks)

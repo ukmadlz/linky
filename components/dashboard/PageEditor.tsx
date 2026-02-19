@@ -217,6 +217,11 @@ export function PageEditor({ page, initialBlocks }: PageEditorProps) {
                     onToggleVisibility={() => handleToggleVisibility(block.id)}
                     onDelete={() => handleDeleteBlock(block.id)}
                     onSave={(data) => handleSaveBlock(block.id, data)}
+                    onBlockUpdate={(updated) =>
+                      setBlocks((prev) =>
+                        prev.map((b) => (b.id === updated.id ? updated : b))
+                      )
+                    }
                   />
                 ))}
               </ul>

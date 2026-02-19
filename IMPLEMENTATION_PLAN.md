@@ -702,8 +702,8 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 - [x] `group` block: `{ title, isCollapsed }` — collapsible section containing child blocks (uses `parentId`)
 
 ### Task 13.2: Block scheduling
-- [ ] Add scheduling UI to block editor: start date/time, end date/time
-- [ ] Filter blocks by schedule in public page query (`WHERE scheduledStart IS NULL OR scheduledStart <= NOW()`)
+- [x] Add scheduling UI to block editor: start date/time, end date/time
+- [x] Filter blocks by schedule in public page query (`WHERE scheduledStart IS NULL OR scheduledStart <= NOW()`)
 
 ### Task 13.3: Additional embed providers
 - [ ] Add iframe patterns for: Calendly, Typeform, Gumroad, Stripe Payment Links, Apple Music, TikTok, Twitch

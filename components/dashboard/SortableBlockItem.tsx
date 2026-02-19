@@ -14,9 +14,13 @@ import {
   Share2,
   Minus,
   Code2,
+  Image,
+  Mail,
+  FolderOpen,
 } from "lucide-react";
 import type { Block } from "@/lib/db/schema";
 import { BlockEditorForm } from "./BlockEditorForm";
+import { SchedulingPanel } from "./SchedulingPanel";
 
 const TYPE_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   link: Link,
@@ -25,6 +29,9 @@ const TYPE_ICONS: Record<string, React.ComponentType<{ className?: string }>> = 
   social_icons: Share2,
   divider: Minus,
   custom_code: Code2,
+  image: Image,
+  email_collect: Mail,
+  group: FolderOpen,
 };
 
 const TYPE_LABELS: Record<string, string> = {
@@ -34,6 +41,9 @@ const TYPE_LABELS: Record<string, string> = {
   social_icons: "Social Icons",
   divider: "Divider",
   custom_code: "Custom Code",
+  image: "Image",
+  email_collect: "Email Signup",
+  group: "Group",
 };
 
 function blockPreview(block: Block): string {
@@ -51,6 +61,12 @@ function blockPreview(block: Block): string {
       return `Divider — ${data.style}`;
     case "custom_code":
       return "Custom HTML/CSS";
+    case "image":
+      return (data.alt as string) || (data.url as string) || "Image";
+    case "email_collect":
+      return `${(data.provider as string) ?? "custom"} signup form`;
+    case "group":
+      return (data.title as string) || "Group";
     default:
       return "";
   }
@@ -64,6 +80,7 @@ interface SortableBlockItemProps {
   onToggleVisibility: () => void;
   onDelete: () => void;
   onSave: (data: Record<string, unknown>) => Promise<void>;
+  onBlockUpdate: (block: Block) => void;
 }
 
 export function SortableBlockItem({
@@ -74,6 +91,7 @@ export function SortableBlockItem({
   onToggleVisibility,
   onDelete,
   onSave,
+  onBlockUpdate,
 }: SortableBlockItemProps) {
   const {
     attributes,
@@ -166,8 +184,9 @@ export function SortableBlockItem({
 
       {/* Inline editor form */}
       {isEditing && (
-        <div className="border-t border-slate-100 bg-slate-50 px-4 pb-4 pt-3">
+        <div className="border-t border-slate-100 bg-slate-50 px-4 pb-4 pt-3 flex flex-col gap-4">
           <BlockEditorForm block={block} onSave={onSave} onCancel={onEdit} />
+          <SchedulingPanel block={block} pageId={pageId} onUpdate={onBlockUpdate} />
         </div>
       )}
     </li>
