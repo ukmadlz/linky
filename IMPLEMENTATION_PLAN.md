@@ -601,13 +601,13 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ## Phase 8 — Page Editor
 
 ### Task 8.1: Page CRUD API routes
-- [ ] `app/api/pages/route.ts`:
-  - [ ] GET: list user's pages
-  - [ ] POST: create page (auto-generate slug from username, auto-create page for new users); capture `page_created` to PostHog
-- [ ] `app/api/pages/[pageId]/route.ts`:
-  - [ ] GET: return page with all blocks
-  - [ ] PATCH: update page fields (title, description, isPublished, themeId, themeOverrides); capture `page_published`/`page_unpublished` and `theme_changed` to PostHog when relevant; send PagePublished email via Resend on first publish
-  - [ ] DELETE: delete page
+- [x] `app/api/pages/route.ts`:
+  - [x] GET: list user's pages
+  - [x] POST: create page (auto-generate slug from username, auto-create page for new users); capture `page_created` to PostHog
+- [x] `app/api/pages/[pageId]/route.ts`:
+  - [x] GET: return page with all blocks
+  - [x] PATCH: update page fields (title, description, isPublished, themeId, themeOverrides); capture `page_published`/`page_unpublished` and `theme_changed` to PostHog when relevant; send PagePublished email via Resend on first publish
+  - [x] DELETE: delete page
 
 ### Task 8.2: Block CRUD API routes
 - [ ] `app/api/pages/[pageId]/blocks/route.ts`:
