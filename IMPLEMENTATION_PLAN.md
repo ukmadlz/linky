@@ -338,7 +338,7 @@ deleteSecret(vaultObjectId: string): Promise<void>
 ## Phase 3 — Block System Core
 
 ### Task 3.1: Block type schemas (Zod)
-- [ ] Create `lib/blocks/schemas.ts`:
+- [x] Create `lib/blocks/schemas.ts`:
 
 ```
 linkBlockSchema:        { url: string (URL), title: string, thumbnailUrl?: string (URL), icon?: string, verificationEnabled?: boolean, verificationMode?: "age" | "acknowledge" }
@@ -349,24 +349,24 @@ dividerBlockSchema:     { style: "line" | "space" | "dots" }
 customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ```
 
-- [ ] Export `blockDataSchemas: Record<BlockType, ZodSchema>` for validation dispatch
+- [x] Export `blockDataSchemas: Record<BlockType, ZodSchema>` for validation dispatch
 
 > **Note on `custom_code` blocks**: User-provided HTML is sanitized server-side on save. Allowed tags: `<div>`, `<span>`, `<p>`, `<a>`, `<img>`, `<ul>`, `<ol>`, `<li>`, `<h1>`–`<h6>`, `<strong>`, `<em>`, `<br>`, `<iframe>` (src allowlisted). All `<script>` tags and event handlers (`onclick`, etc.) are stripped. Custom CSS is scoped to the block container to prevent style leaking.
 
 ### Task 3.2: Block type registry
-- [ ] Create `lib/blocks/registry.ts`:
-  - [ ] `BlockTypeDefinition`: `{ type, label, icon (Lucide name), dataSchema, defaultData }`
-  - [ ] Export `blockRegistry: Record<BlockType, BlockTypeDefinition>`
-  - [ ] Export `getBlockDef(type)` helper
+- [x] Create `lib/blocks/registry.ts`:
+  - [x] `BlockTypeDefinition`: `{ type, label, icon (Lucide name), dataSchema, defaultData }`
+  - [x] Export `blockRegistry: Record<BlockType, BlockTypeDefinition>`
+  - [x] Export `getBlockDef(type)` helper
 
 ### Task 3.3: Block renderer components (public page)
-- [ ] `components/blocks/BlockRenderer.tsx` — switch on `block.type`, dispatch to typed component
-- [ ] `components/blocks/LinkBlock.tsx` — server component; renders `<a>` linking to `/r/[blockId]` (redirect route) instead of the destination URL directly; this ensures every click is tracked server-side with full request headers before redirecting
-- [ ] `components/blocks/TextBlock.tsx` — server component; renders heading (`<h2>`) or paragraph (`<p>`) with alignment
-- [ ] `components/blocks/EmbedBlock.tsx` — server component; renders sanitized oEmbed HTML or sandboxed iframe with lazy loading; falls back to styled link
-- [ ] `components/blocks/SocialIconsBlock.tsx` — server component; renders row of platform icons (use `lucide-react` or custom SVGs for Twitter, Instagram, TikTok, YouTube, GitHub, LinkedIn, etc.)
-- [ ] `components/blocks/DividerBlock.tsx` — server component; renders `<hr>`, spacer `<div>`, or dotted separator
-- [ ] `components/blocks/CustomCodeBlock.tsx` — server component; renders sanitized user HTML inside a scoped container with user CSS applied via `<style scoped>` or a CSS-in-JS wrapper; no raw `<script>` execution
+- [x] `components/blocks/BlockRenderer.tsx` — switch on `block.type`, dispatch to typed component
+- [x] `components/blocks/LinkBlock.tsx` — server component; renders `<a>` linking to `/r/[blockId]` (redirect route) instead of the destination URL directly; this ensures every click is tracked server-side with full request headers before redirecting
+- [x] `components/blocks/TextBlock.tsx` — server component; renders heading (`<h2>`) or paragraph (`<p>`) with alignment
+- [x] `components/blocks/EmbedBlock.tsx` — server component; renders sanitized oEmbed HTML or sandboxed iframe with lazy loading; falls back to styled link
+- [x] `components/blocks/SocialIconsBlock.tsx` — server component; renders row of platform icons (use `lucide-react` or custom SVGs for Twitter, Instagram, TikTok, YouTube, GitHub, LinkedIn, etc.)
+- [x] `components/blocks/DividerBlock.tsx` — server component; renders `<hr>`, spacer `<div>`, or dotted separator
+- [x] `components/blocks/CustomCodeBlock.tsx` — server component; renders sanitized user HTML inside a scoped container with user CSS applied via `<style scoped>` or a CSS-in-JS wrapper; no raw `<script>` execution
 
 ---
 
