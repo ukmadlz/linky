@@ -792,11 +792,11 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 ## Phase 14 — Webhooks & Automation (Future)
 
 ### Task 14.1: Webhook schema
-- [ ] Add `webhook_endpoints` table: id, userId, url, **secretVaultId** (Vault object ID — never store raw secret), events (jsonb), isActive, createdAt
-  - [ ] On create: generate HMAC secret, store in Vault via `storeSecret(workosUserId, "webhook_secret", generatedSecret)`, persist returned Vault ID in `secretVaultId`
-  - [ ] On delete: call `deleteSecret(secretVaultId)` to remove from Vault, then delete DB row
-  - [ ] On sign: call `readSecret(secretVaultId)` to retrieve secret at delivery time, sign payload, discard value immediately
-- [ ] Add `webhook_deliveries` table: id, endpointId, event, payload, statusCode, response, attempts, deliveredAt, createdAt
+- [x] Add `webhook_endpoints` table: id, userId, url, **secretVaultId** (Vault object ID — never store raw secret), events (jsonb), isActive, createdAt
+  - [x] On create: generate HMAC secret, store in Vault via `storeSecret(workosUserId, "webhook_secret", generatedSecret)`, persist returned Vault ID in `secretVaultId`
+  - [x] On delete: call `deleteSecret(secretVaultId)` to remove from Vault, then delete DB row
+  - [x] On sign: call `readSecret(secretVaultId)` to retrieve secret at delivery time, sign payload, discard value immediately
+- [x] Add `webhook_deliveries` table: id, endpointId, event, payload, statusCode, response, attempts, deliveredAt, createdAt
 
 ### Task 14.2: Webhook event system
 - [ ] Define events: `page.viewed`, `link.clicked`, `page.updated`, `block.created`, `block.deleted`
