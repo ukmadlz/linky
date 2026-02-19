@@ -74,6 +74,15 @@ export async function updateUser(
 // Page queries
 // ─────────────────────────────────────────────────────────────
 
+export async function getPageById(id: string): Promise<Page | null> {
+  const [page] = await db
+    .select()
+    .from(pages)
+    .where(eq(pages.id, id))
+    .limit(1);
+  return page ?? null;
+}
+
 export async function getPageBySlug(slug: string): Promise<Page | null> {
   const [page] = await db
     .select()

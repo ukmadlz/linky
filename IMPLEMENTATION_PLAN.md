@@ -475,25 +475,25 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
   - [x] If block not found or not visible → redirect to page or return 404
 
 ### Task 6.7: Age/content verification interstitial
-- [ ] `app/verify/[blockId]/page.tsx` — Server component that renders the verification gate:
-  - [ ] Fetch block by ID → get `verificationMode`; 404 if block not found or verification not enabled
-  - [ ] **`age` mode**: Full-page interstitial with:
+- [x] `app/verify/[blockId]/page.tsx` — Server component that renders the verification gate:
+  - [x] Fetch block by ID → get `verificationMode`; 404 if block not found or verification not enabled
+  - [x] **`age` mode**: Full-page interstitial with:
     - Linky logo + block title
     - "This link contains age-restricted content" heading
     - Date of birth picker (day / month / year selects)
     - "Continue" button — submits to the POST handler
     - Small print: "We do not store your date of birth. Age is verified on your device."
-  - [ ] **`acknowledge` mode**: Simpler full-page interstitial with:
+  - [x] **`acknowledge` mode**: Simpler full-page interstitial with:
     - Warning icon + "Mature content" heading
     - "The following link may contain content not suitable for all audiences."
     - "Continue" primary button + "Go back" secondary link
-  - [ ] Styled to match the page owner's theme (fetch page theme from block's pageId)
-  - [ ] No tracking scripts, no PostHog, no analytics on this interstitial
-- [ ] `app/verify/[blockId]/route.ts` — POST: processes the verification form:
-  - [ ] **`age` mode**: Parse submitted DOB, compute age; if < 18, return the interstitial page with an error state ("You must be 18 or older to access this link") — **DOB is never stored**
-  - [ ] **`acknowledge` mode**: Accept immediately (any POST = acknowledged)
-  - [ ] On success: set a `linky_verified_{blockId}` cookie (httpOnly, sameSite: lax, maxAge: 3600 — expires in 1 hour; not persistent across browser sessions)
-  - [ ] Redirect to `/r/[blockId]` — the redirect route will now find the cookie and proceed normally
+  - [x] Styled to match the page owner's theme (fetch page theme from block's pageId)
+  - [x] No tracking scripts, no PostHog, no analytics on this interstitial
+- [x] `app/verify/[blockId]/route.ts` — POST: processes the verification form:
+  - [x] **`age` mode**: Parse submitted DOB, compute age; if < 18, return the interstitial page with an error state ("You must be 18 or older to access this link") — **DOB is never stored**
+  - [x] **`acknowledge` mode**: Accept immediately (any POST = acknowledged)
+  - [x] On success: set a `linky_verified_{blockId}` cookie (httpOnly, sameSite: lax, maxAge: 3600 — expires in 1 hour; not persistent across browser sessions)
+  - [x] Redirect to `/r/[blockId]` — the redirect route will now find the cookie and proceed normally
 
 > **GDPR / Privacy**: The date of birth entered is used only to compute age in memory and is never written to any database or log. The verification cookie contains only a boolean flag (`verified=1`) and the blockId — no personal data. The 1-hour expiry means re-verification is required if the user returns later.
 
