@@ -513,11 +513,11 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
 - [x] Create `app/(public)/[slug]/not-found.tsx` — styled 404 page
 
 ### Task 6.2: Page header component
-- [ ] Create `components/public/PageHeader.tsx`:
-  - [ ] Avatar image (with fallback initials)
-  - [ ] Display name
-  - [ ] Bio text
-  - [ ] Uses theme CSS variables
+- [x] Create `components/public/PageHeader.tsx`:
+  - [x] Avatar image (with fallback initials)
+  - [x] Display name
+  - [x] Bio text
+  - [x] Uses theme CSS variables
 
 ### Task 6.3: Linky branding footer
 - [ ] Create `components/public/LinkyBranding.tsx`:
