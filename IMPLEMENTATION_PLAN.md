@@ -452,11 +452,11 @@ customCodeBlockSchema:  { html: string, css?: string, sanitized: boolean }
   - [x] `resolveIframe(url: string): IframeResult | null`
 
 ### Task 4.3: Embed sanitization
-- [ ] Create `lib/embeds/sanitize.ts`:
-  - [ ] `ALLOWED_IFRAME_DOMAINS` allowlist: youtube.com, youtube-nocookie.com, player.vimeo.com, open.spotify.com, w.soundcloud.com, platform.twitter.com, google.com/maps, calendly.com
-  - [ ] `sanitizeEmbedHtml(html: string): string` — strip all tags except `<iframe>` with `src` on allowlist; use a lightweight HTML parser (or regex for iframes specifically)
-  - [ ] `sanitizeCustomHtml(html: string): string` — for `custom_code` blocks; allow safe HTML tags (`div`, `span`, `p`, `a`, `img`, `ul`, `ol`, `li`, `h1`–`h6`, `strong`, `em`, `br`, `iframe` with allowlisted `src`); strip `<script>`, event handlers (`on*` attributes), `javascript:` URLs
-  - [ ] `scopeCustomCss(css: string, containerId: string): string` — prefix all CSS selectors with the block's container ID to prevent style leaking to the rest of the page
+- [x] Create `lib/embeds/sanitize.ts`:
+  - [x] `ALLOWED_IFRAME_DOMAINS` allowlist: youtube.com, youtube-nocookie.com, player.vimeo.com, open.spotify.com, w.soundcloud.com, platform.twitter.com, google.com/maps, calendly.com
+  - [x] `sanitizeEmbedHtml(html: string): string` — strip all tags except `<iframe>` with `src` on allowlist; use a lightweight HTML parser (or regex for iframes specifically)
+  - [x] `sanitizeCustomHtml(html: string): string` — for `custom_code` blocks; allow safe HTML tags (`div`, `span`, `p`, `a`, `img`, `ul`, `ol`, `li`, `h1`–`h6`, `strong`, `em`, `br`, `iframe` with allowlisted `src`); strip `<script>`, event handlers (`on*` attributes), `javascript:` URLs
+  - [x] `scopeCustomCss(css: string, containerId: string): string` — prefix all CSS selectors with the block's container ID to prevent style leaking to the rest of the page
 
 ### Task 4.4: Unified embed resolution endpoint
 - [ ] Create `lib/embeds/resolve.ts`:
