@@ -61,7 +61,7 @@ const IFRAME_PATTERNS: IframePattern[] = [
   {
     match: /calendly\.com\/([a-zA-Z0-9_-]+(?:\/[a-zA-Z0-9_-]+)?)/,
     transform: (_url, match) =>
-      `https://calendly.com/${match[1]}?embed_domain=linky.page&embed_type=Inline`,
+      `https://calendly.com/${match[1]}?embed_domain=biohasl.ink&embed_type=Inline`,
     aspectRatio: "3/4",
     providerName: "Calendly",
   },
@@ -115,9 +115,9 @@ const IFRAME_PATTERNS: IframePattern[] = [
     match: /twitch\.tv\/([a-zA-Z0-9_]+)(?:\/clip\/([a-zA-Z0-9_-]+))?$/,
     transform: (_url, match) => {
       if (match[2]) {
-        return `https://clips.twitch.tv/embed?clip=${match[2]}&parent=linky.page&autoplay=false`;
+        return `https://clips.twitch.tv/embed?clip=${match[2]}&parent=biohasl.ink&autoplay=false`;
       }
-      return `https://player.twitch.tv/?channel=${match[1]}&parent=linky.page&autoplay=false`;
+      return `https://player.twitch.tv/?channel=${match[1]}&parent=biohasl.ink&autoplay=false`;
     },
     aspectRatio: "16/9",
     providerName: "Twitch",
