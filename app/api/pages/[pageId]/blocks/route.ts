@@ -21,6 +21,9 @@ const BLOCK_TYPES = [
 	"social_icons",
 	"divider",
 	"custom_code",
+	"image",
+	"email_collect",
+	"group",
 ] as const;
 
 const createBlockSchema = z.object({

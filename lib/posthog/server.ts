@@ -19,6 +19,25 @@ function getPostHogClient(): PostHog | null {
 	return _client;
 }
 
+export async function captureServerError(
+	error: unknown,
+	context?: {
+		distinctId?: string;
+		route?: string;
+		properties?: Record<string, unknown>;
+	},
+) {
+	const client = getPostHogClient();
+	if (!client) return;
+
+	client.captureException(error, context?.distinctId ?? "server", {
+		...(context?.route ? { route: context.route } : {}),
+		...(context?.properties ?? {}),
+	});
+
+	await client.flush();
+}
+
 export async function captureServerEvent(
 	distinctId: string,
 	event: string,

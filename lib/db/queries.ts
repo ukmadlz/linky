@@ -177,7 +177,7 @@ export async function getBlockById(id: string): Promise<Block | null> {
 	return block ?? null;
 }
 
-/** Visible, scheduled-active blocks ordered by position — for public page rendering */
+/** Visible, scheduled-active top-level blocks ordered by position — for public page rendering */
 export async function getBlocksByPageId(pageId: string): Promise<Block[]> {
 	const now = new Date();
 	return db
@@ -186,6 +186,7 @@ export async function getBlocksByPageId(pageId: string): Promise<Block[]> {
 		.where(
 			and(
 				eq(blocks.pageId, pageId),
+				isNull(blocks.parentId),
 				eq(blocks.isVisible, true),
 				or(isNull(blocks.scheduledStart), lte(blocks.scheduledStart, now)),
 				or(isNull(blocks.scheduledEnd), sql`${blocks.scheduledEnd} > NOW()`),

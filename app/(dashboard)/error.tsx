@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { posthog } from "@/lib/posthog/client";
 
 export default function DashboardError({
 	error,
@@ -11,6 +12,7 @@ export default function DashboardError({
 }) {
 	useEffect(() => {
 		console.error(error);
+		posthog.captureException(error, { digest: error.digest, location: "dashboard_error_boundary" });
 	}, [error]);
 
 	return (

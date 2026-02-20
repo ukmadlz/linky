@@ -34,11 +34,20 @@ export default async function PageEditorRoute({ params }: Props) {
 					<h1 className="font-display text-2xl font-semibold text-[#292d4c]">
 						{page.title ?? page.slug}
 					</h1>
-					<p className="text-sm text-slate-400">biohasl.ink/{page.slug}</p>
+					<p className="text-sm text-slate-400">
+						biohasl.ink/
+						{page.subSlug
+							? `${user.username}/${page.subSlug}`
+							: page.slug}
+					</p>
 				</div>
 				<QRCodeButton slug={page.slug} pageTitle={page.title} />
 				<a
-					href={`/${page.slug}`}
+					href={
+						page.subSlug
+							? `/${user.username}/${page.subSlug}`
+							: `/${page.slug}`
+					}
 					target="_blank"
 					rel="noopener noreferrer"
 					className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-[#292d4c] transition-colors hover:bg-slate-50"

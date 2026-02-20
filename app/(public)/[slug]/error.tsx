@@ -1,5 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
+import { posthog } from "@/lib/posthog/client";
+
 export default function PublicPageError({
 	error,
 	reset,
@@ -7,6 +10,11 @@ export default function PublicPageError({
 	error: Error & { digest?: string };
 	reset: () => void;
 }) {
+	useEffect(() => {
+		console.error(error);
+		posthog.captureException(error, { digest: error.digest, location: "public_page_error_boundary" });
+	}, [error]);
+
 	return (
 		<div
 			className="flex min-h-screen flex-col items-center justify-center px-4"
