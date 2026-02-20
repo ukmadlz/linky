@@ -29,7 +29,7 @@ export const blockRegistry: Record<BlockType, BlockTypeDefinition> = {
 		description: "A clickable button that links to any URL",
 		dataSchema: linkBlockSchema,
 		defaultData: {
-			url: "",
+			url: "https://example.com",
 			title: "My Link",
 			verificationEnabled: false,
 		},
@@ -53,7 +53,7 @@ export const blockRegistry: Record<BlockType, BlockTypeDefinition> = {
 		description: "Embed YouTube, Spotify, Vimeo, and more",
 		dataSchema: embedBlockSchema,
 		defaultData: {
-			originalUrl: "",
+			originalUrl: "https://youtube.com",
 			providerName: "Unknown",
 			embedType: "custom",
 		},
@@ -65,7 +65,7 @@ export const blockRegistry: Record<BlockType, BlockTypeDefinition> = {
 		description: "A row of social media icons with links",
 		dataSchema: socialIconsBlockSchema,
 		defaultData: {
-			icons: [{ platform: "instagram", url: "" }],
+			icons: [{ platform: "instagram", url: "https://instagram.com" }],
 			size: "md",
 			style: "monochrome",
 		},

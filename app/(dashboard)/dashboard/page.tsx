@@ -10,6 +10,7 @@ export default function DashboardPage() {
 	const [pages, setPages] = useState<Page[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [showCreate, setShowCreate] = useState(false);
+	const [username, setUsername] = useState<string>("");
 
 	useEffect(() => {
 		fetch("/api/pages")
@@ -19,6 +20,13 @@ export default function DashboardPage() {
 				setLoading(false);
 			})
 			.catch(() => setLoading(false));
+
+		fetch("/api/user/profile")
+			.then((r) => r.json())
+			.then((data) => {
+				if (data?.username) setUsername(data.username);
+			})
+			.catch(() => {});
 	}, []);
 
 	return (
@@ -70,7 +78,9 @@ export default function DashboardPage() {
 									{page.title ?? page.slug}
 								</p>
 								<p className="truncate text-sm text-slate-400">
-									biohasl.ink/{page.slug}
+									{page.subSlug && username
+										? `biohasl.ink/${username}/${page.subSlug}`
+										: `biohasl.ink/${page.slug}`}
 								</p>
 							</div>
 
@@ -88,7 +98,11 @@ export default function DashboardPage() {
 							{/* Actions */}
 							<div className="flex flex-shrink-0 items-center gap-2">
 								<Link
-									href={`/${page.slug}`}
+									href={
+										page.subSlug && username
+											? `/${username}/${page.subSlug}`
+											: `/${page.slug}`
+									}
 									target="_blank"
 									rel="noopener noreferrer"
 									className="rounded-md p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
@@ -115,7 +129,9 @@ export default function DashboardPage() {
 				</div>
 			)}
 
-			{showCreate && <CreatePageModal onClose={() => setShowCreate(false)} />}
+			{showCreate && (
+				<CreatePageModal username={username} onClose={() => setShowCreate(false)} />
+			)}
 		</div>
 	);
 }

@@ -8,6 +8,7 @@ import {
 	pgTable,
 	text,
 	timestamp,
+	uniqueIndex,
 	varchar,
 } from "drizzle-orm/pg-core";
 
@@ -74,12 +75,15 @@ export const pages = pgTable(
 		ogImageUrl: text("og_image_url"),
 		// Milestone tracking
 		milestonesSent: jsonb("milestones_sent").default({}).notNull(),
+		// Sub-page URL path component (null for main/top-level pages)
+		subSlug: varchar("sub_slug", { length: 100 }),
 		createdAt: timestamp("created_at").defaultNow().notNull(),
 		updatedAt: timestamp("updated_at").defaultNow().notNull(),
 	},
 	(t) => [
 		index("pages_user_id_idx").on(t.userId),
 		index("pages_slug_idx").on(t.slug),
+		uniqueIndex("pages_user_sub_slug_idx").on(t.userId, t.subSlug),
 	],
 );
 

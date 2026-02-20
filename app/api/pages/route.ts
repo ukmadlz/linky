@@ -2,7 +2,11 @@ import { nanoid } from "nanoid";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAuth } from "@/lib/auth";
-import { createPage, getPageBySlug, getPagesByUserId } from "@/lib/db/queries";
+import {
+	createPage,
+	getPageBySlug,
+	getPagesByUserId,
+} from "@/lib/db/queries";
 import { captureServerEvent } from "@/lib/posthog/server";
 
 export async function GET() {
@@ -19,6 +23,15 @@ const createPageSchema = z.object({
 		.regex(
 			/^[a-z0-9-]+$/,
 			"Slug may only contain lowercase letters, numbers, and hyphens",
+		)
+		.optional(),
+	subSlug: z
+		.string()
+		.min(1)
+		.max(100)
+		.regex(
+			/^[a-z0-9-]+$/,
+			"URL may only contain lowercase letters, numbers, and hyphens",
 		)
 		.optional(),
 	title: z.string().max(200).optional(),
@@ -43,8 +56,26 @@ export async function POST(request: Request) {
 	}
 
 	let slug: string;
+	let subSlug: string | undefined;
 
-	if (body.slug) {
+	if (body.subSlug) {
+		// Sub-page: check uniqueness within this user's pages
+		const existingPages = await getPagesByUserId(user.id);
+		const taken = existingPages.some((p) => p.subSlug === body.subSlug);
+		if (taken) {
+			return NextResponse.json(
+				{ error: "That URL is already taken. Please choose another." },
+				{ status: 409 },
+			);
+		}
+		subSlug = body.subSlug;
+		// Auto-generate a unique global slug for internal use
+		slug = `${user.username ?? nanoid()}-${nanoid(6)}`;
+		// Ensure the auto-generated slug isn't already taken (extremely unlikely but safe)
+		while (await getPageBySlug(slug)) {
+			slug = `${user.username ?? nanoid()}-${nanoid(6)}`;
+		}
+	} else if (body.slug) {
 		// Validate slug is not taken
 		const existing = await getPageBySlug(body.slug);
 		if (existing) {
@@ -68,6 +99,7 @@ export async function POST(request: Request) {
 		userId: user.id,
 		slug,
 		title: body.title,
+		subSlug,
 	});
 
 	// Capture page_created event (non-blocking)

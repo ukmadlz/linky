@@ -102,6 +102,7 @@ export async function createPage(data: {
 	userId: string;
 	slug: string;
 	title?: string;
+	subSlug?: string;
 }): Promise<Page> {
 	const id = nanoid();
 	const [page] = await db
@@ -111,9 +112,23 @@ export async function createPage(data: {
 			userId: data.userId,
 			slug: data.slug,
 			title: data.title,
+			subSlug: data.subSlug,
 		})
 		.returning();
 	return page;
+}
+
+export async function getPageByUserAndSubSlug(
+	username: string,
+	subSlug: string,
+): Promise<Page | null> {
+	const [row] = await db
+		.select({ page: pages })
+		.from(pages)
+		.innerJoin(users, eq(pages.userId, users.id))
+		.where(and(eq(users.username, username), eq(pages.subSlug, subSlug)))
+		.limit(1);
+	return row?.page ?? null;
 }
 
 export async function updatePage(

@@ -6,16 +6,17 @@ import { useState } from "react";
 
 interface CreatePageModalProps {
 	onClose: () => void;
+	username: string;
 }
 
-export function CreatePageModal({ onClose }: CreatePageModalProps) {
-	const [slug, setSlug] = useState("");
+export function CreatePageModal({ onClose, username }: CreatePageModalProps) {
+	const [subSlug, setSubSlug] = useState("");
 	const [title, setTitle] = useState("");
 	const [creating, setCreating] = useState(false);
 	const [error, setError] = useState("");
 	const router = useRouter();
 
-	const sanitizedSlug = slug
+	const sanitizedSubSlug = subSlug
 		.toLowerCase()
 		.replace(/[^a-z0-9-]/g, "-")
 		.replace(/-+/g, "-")
@@ -23,8 +24,8 @@ export function CreatePageModal({ onClose }: CreatePageModalProps) {
 
 	async function handleCreate(e: React.FormEvent) {
 		e.preventDefault();
-		if (!sanitizedSlug) {
-			setError("Slug is required.");
+		if (!sanitizedSubSlug) {
+			setError("URL is required.");
 			return;
 		}
 		setCreating(true);
@@ -34,8 +35,8 @@ export function CreatePageModal({ onClose }: CreatePageModalProps) {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
-					slug: sanitizedSlug,
-					title: title.trim() || sanitizedSlug,
+					subSlug: sanitizedSubSlug,
+					title: title.trim() || sanitizedSubSlug,
 				}),
 			});
 			if (!res.ok) {
@@ -53,6 +54,8 @@ export function CreatePageModal({ onClose }: CreatePageModalProps) {
 			setCreating(false);
 		}
 	}
+
+	const urlPrefix = username ? `biohasl.ink/${username}/` : "biohasl.ink/";
 
 	return (
 		<div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -96,29 +99,29 @@ export function CreatePageModal({ onClose }: CreatePageModalProps) {
 
 					<div className="flex flex-col gap-1.5">
 						<label
-							htmlFor="page-slug"
+							htmlFor="page-sub-slug"
 							className="text-sm font-medium text-slate-700"
 						>
-							URL slug{" "}
+							Page URL{" "}
 							<span className="font-normal text-slate-400">(required)</span>
 						</label>
 						<div className="flex items-center gap-0 rounded-lg border border-slate-200 focus-within:border-[#5f4dc5] focus-within:ring-2 focus-within:ring-[#5f4dc5]/20">
 							<span className="whitespace-nowrap rounded-l-lg border-r border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-400">
-								biohasl.ink/
+								{urlPrefix}
 							</span>
 							<input
-								id="page-slug"
-								value={slug}
-								onChange={(e) => setSlug(e.target.value)}
+								id="page-sub-slug"
+								value={subSlug}
+								onChange={(e) => setSubSlug(e.target.value)}
 								placeholder="my-page"
 								maxLength={100}
 								required
 								className="min-w-0 flex-1 rounded-r-lg bg-transparent px-3 py-2 text-sm focus:outline-none"
 							/>
 						</div>
-						{sanitizedSlug && sanitizedSlug !== slug && (
+						{sanitizedSubSlug && sanitizedSubSlug !== subSlug && (
 							<p className="text-xs text-slate-500">
-								Will be saved as: {sanitizedSlug}
+								Will be saved as: {sanitizedSubSlug}
 							</p>
 						)}
 					</div>
@@ -128,7 +131,7 @@ export function CreatePageModal({ onClose }: CreatePageModalProps) {
 					<div className="flex gap-2 pt-1">
 						<button
 							type="submit"
-							disabled={creating || !sanitizedSlug}
+							disabled={creating || !sanitizedSubSlug}
 							className="flex-1 rounded-lg bg-[#5f4dc5] py-2.5 text-sm font-semibold text-white transition-all hover:brightness-110 disabled:opacity-60"
 						>
 							{creating ? "Creating…" : "Create page"}
