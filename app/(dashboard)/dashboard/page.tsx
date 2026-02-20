@@ -130,7 +130,10 @@ export default function DashboardPage() {
 			)}
 
 			{showCreate && (
-				<CreatePageModal username={username} onClose={() => setShowCreate(false)} />
+				<CreatePageModal
+					username={username}
+					onClose={() => setShowCreate(false)}
+				/>
 			)}
 		</div>
 	);

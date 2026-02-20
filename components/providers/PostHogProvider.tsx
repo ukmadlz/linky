@@ -50,9 +50,10 @@ export function PostHogProvider({
 		};
 
 		const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
-			const error = event.reason instanceof Error
-				? event.reason
-				: new Error(String(event.reason));
+			const error =
+				event.reason instanceof Error
+					? event.reason
+					: new Error(String(event.reason));
 			posthog.captureException(error, { source: "unhandledrejection" });
 		};
 
@@ -61,7 +62,10 @@ export function PostHogProvider({
 
 		return () => {
 			window.removeEventListener("error", handleError);
-			window.removeEventListener("unhandledrejection", handleUnhandledRejection);
+			window.removeEventListener(
+				"unhandledrejection",
+				handleUnhandledRejection,
+			);
 		};
 	}, []);
 

@@ -195,6 +195,25 @@ export async function getBlocksByPageId(pageId: string): Promise<Block[]> {
 		.orderBy(asc(blocks.position));
 }
 
+/** Visible, scheduled-active children of a group block — for public page rendering */
+export async function getChildBlocksByParentId(
+	parentId: string,
+): Promise<Block[]> {
+	const now = new Date();
+	return db
+		.select()
+		.from(blocks)
+		.where(
+			and(
+				eq(blocks.parentId, parentId),
+				eq(blocks.isVisible, true),
+				or(isNull(blocks.scheduledStart), lte(blocks.scheduledStart, now)),
+				or(isNull(blocks.scheduledEnd), sql`${blocks.scheduledEnd} > NOW()`),
+			),
+		)
+		.orderBy(asc(blocks.position));
+}
+
 /** All blocks including hidden, for dashboard editor */
 export async function getAllBlocksByPageId(pageId: string): Promise<Block[]> {
 	return db

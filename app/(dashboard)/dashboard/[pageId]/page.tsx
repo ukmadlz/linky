@@ -36,17 +36,13 @@ export default async function PageEditorRoute({ params }: Props) {
 					</h1>
 					<p className="text-sm text-slate-400">
 						biohasl.ink/
-						{page.subSlug
-							? `${user.username}/${page.subSlug}`
-							: page.slug}
+						{page.subSlug ? `${user.username}/${page.subSlug}` : page.slug}
 					</p>
 				</div>
 				<QRCodeButton slug={page.slug} pageTitle={page.title} />
 				<a
 					href={
-						page.subSlug
-							? `/${user.username}/${page.subSlug}`
-							: `/${page.slug}`
+						page.subSlug ? `/${user.username}/${page.subSlug}` : `/${page.slug}`
 					}
 					target="_blank"
 					rel="noopener noreferrer"

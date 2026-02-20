@@ -41,6 +41,7 @@ export default function RootLayout({
 		<html lang="en" suppressHydrationWarning>
 			<body
 				className={`${dmSans.variable} ${playfair.variable} ${fragmentMono.variable} font-sans antialiased`}
+				suppressHydrationWarning
 			>
 				{children}
 			</body>

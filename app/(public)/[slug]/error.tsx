@@ -12,7 +12,10 @@ export default function PublicPageError({
 }) {
 	useEffect(() => {
 		console.error(error);
-		posthog.captureException(error, { digest: error.digest, location: "public_page_error_boundary" });
+		posthog.captureException(error, {
+			digest: error.digest,
+			location: "public_page_error_boundary",
+		});
 	}, [error]);
 
 	return (

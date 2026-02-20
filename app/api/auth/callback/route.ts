@@ -72,7 +72,9 @@ export async function GET(request: NextRequest) {
 		);
 	} catch (error) {
 		console.error("[Auth callback]", error);
-		captureServerError(error, { route: "/api/auth/callback" }).catch(console.error);
+		captureServerError(error, { route: "/api/auth/callback" }).catch(
+			console.error,
+		);
 		return NextResponse.redirect(
 			`${process.env.NEXT_PUBLIC_APP_URL}/login?error=auth_failed`,
 		);

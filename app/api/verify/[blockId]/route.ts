@@ -12,20 +12,20 @@ export async function POST(request: Request, { params }: Params) {
 	const block = await getBlockById(blockId);
 
 	if (!block) {
-		return NextResponse.redirect(new URL("/", request.url), { status: 302 });
+		return NextResponse.json({ error: "not_found" }, { status: 404 });
 	}
 
 	const data = block.data as unknown as LinkBlockData;
 
 	if (!data.verificationEnabled || !data.verificationMode) {
-		return NextResponse.redirect(new URL("/", request.url), { status: 302 });
+		return NextResponse.json({ error: "not_found" }, { status: 404 });
 	}
 
 	const mode = data.verificationMode;
 
+	const formData = await request.formData();
+
 	if (mode === "age") {
-		// Parse submitted DOB from form body
-		const formData = await request.formData();
 		const day = Number(formData.get("day"));
 		const month = Number(formData.get("month"));
 		const year = Number(formData.get("year"));
@@ -38,10 +38,7 @@ export async function POST(request: Request, { params }: Params) {
 			Number.isNaN(month) ||
 			Number.isNaN(year)
 		) {
-			return NextResponse.redirect(
-				new URL(`/verify/${blockId}?error=invalid`, request.url),
-				{ status: 302 },
-			);
+			return NextResponse.json({ error: "invalid" }, { status: 400 });
 		}
 
 		// Compute age — DOB is never stored
@@ -54,18 +51,14 @@ export async function POST(request: Request, { params }: Params) {
 		}
 
 		if (age < 18) {
-			return NextResponse.redirect(
-				new URL(`/verify/${blockId}?error=underage`, request.url),
-				{ status: 302 },
-			);
+			return NextResponse.json({ error: "underage" }, { status: 400 });
 		}
 	}
 
-	// Verification passed (age ≥ 18, or acknowledge mode)
-	// Set httpOnly cookie valid for 1 hour — contains only a boolean flag, no personal data
-	const response = NextResponse.redirect(
-		new URL(`/r/${blockId}`, request.url),
-		{ status: 302 },
+	// Verification passed — set cookie and return the redirect URL for the client
+	const response = NextResponse.json(
+		{ ok: true, redirectUrl: `/r/${blockId}` },
+		{ status: 200 },
 	);
 
 	response.cookies.set(`bio_verified_${blockId}`, "1", {

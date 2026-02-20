@@ -1,55 +1,79 @@
-import { notFound } from "next/navigation";
-import type { LinkBlockData } from "@/lib/blocks/schemas";
-import { getBlockById, getPageById } from "@/lib/db/queries";
-import { resolveTheme } from "@/lib/themes/resolve";
-import { themeToCssVars } from "@/lib/themes/to-css-vars";
-import type { ThemeConfig } from "@/lib/themes/types";
+"use client";
 
-interface VerifyPageProps {
-	params: Promise<{ blockId: string }>;
-	searchParams: Promise<{ error?: string }>;
+import { useEffect, useRef, useState } from "react";
+
+interface VerificationModalProps {
+	blockId: string;
+	verificationMode: "age" | "acknowledge";
+	error?: string;
+	cssVars: Record<string, string>;
+	onClose: () => void;
 }
 
-export default async function VerifyPage({
-	params,
-	searchParams,
-}: VerifyPageProps) {
-	const { blockId } = await params;
-	const { error } = await searchParams;
+export function VerificationModal({
+	blockId,
+	verificationMode,
+	error: initialError,
+	cssVars,
+	onClose,
+}: VerificationModalProps) {
+	const isAge = verificationMode === "age";
+	const [error, setError] = useState<string | undefined>(initialError);
+	const [submitting, setSubmitting] = useState(false);
+	const formRef = useRef<HTMLFormElement>(null);
 
-	const block = await getBlockById(blockId);
+	// Dismiss on Escape key
+	useEffect(() => {
+		const onKey = (e: KeyboardEvent) => {
+			if (e.key === "Escape") onClose();
+		};
+		document.addEventListener("keydown", onKey);
+		return () => document.removeEventListener("keydown", onKey);
+	}, [onClose]);
 
-	if (!block) {
-		notFound();
-	}
+	const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		setError(undefined);
+		setSubmitting(true);
 
-	const data = block.data as unknown as LinkBlockData;
+		try {
+			const formData = new FormData(e.currentTarget);
+			const res = await fetch(`/api/verify/${blockId}`, {
+				method: "POST",
+				body: formData,
+			});
 
-	if (!data.verificationEnabled || !data.verificationMode) {
-		notFound();
-	}
+			const json = await res.json();
 
-	// Fetch page for theming
-	const page = await getPageById(block.pageId);
-
-	let cssVars: Record<string, string> = {};
-	if (page) {
-		const theme = resolveTheme(
-			page.themeId ?? "default",
-			(page.themeOverrides as Partial<ThemeConfig>) ?? {},
-		);
-		cssVars = themeToCssVars(theme);
-	}
-
-	const isAge = data.verificationMode === "age";
+			if (!res.ok) {
+				setError(json.error ?? "invalid");
+			} else {
+				// Verification passed — open destination in a new tab and close the modal
+				window.open(json.redirectUrl, "_blank", "noopener,noreferrer");
+				onClose();
+			}
+		} catch {
+			setError("invalid");
+		} finally {
+			setSubmitting(false);
+		}
+	};
 
 	return (
-		<div
-			className="flex min-h-screen flex-col items-center justify-center px-4 py-16"
-			style={{ backgroundColor: cssVars["--bg-color"] || "#f7f5f4" }}
-		>
+		<div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+			{/* Backdrop */}
+			{/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop dismiss */}
 			<div
-				className="w-full max-w-sm rounded-xl p-8 shadow-md"
+				className="absolute inset-0"
+				style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+				onClick={onClose}
+			/>
+
+			{/* Dialog */}
+			<div
+				role="dialog"
+				aria-modal="true"
+				className="relative w-full max-w-sm rounded-xl p-8 shadow-xl"
 				style={{ backgroundColor: "#ffffff" }}
 			>
 				{/* Header */}
@@ -90,10 +114,9 @@ export default async function VerifyPage({
 					</div>
 				)}
 
-				<form method="POST" action={`/api/verify/${blockId}`}>
+				<form ref={formRef} onSubmit={handleSubmit}>
 					{isAge ? (
 						<>
-							{/* Age verification: DOB fields */}
 							<p
 								className="mb-3 text-xs font-medium"
 								style={{ color: cssVars["--text-color"] || "#292d4c" }}
@@ -168,14 +191,15 @@ export default async function VerifyPage({
 							</div>
 							<button
 								type="submit"
-								className="w-full rounded-lg py-2.5 text-sm font-semibold transition-all duration-200 hover:brightness-110"
+								disabled={submitting}
+								className="w-full rounded-lg py-2.5 text-sm font-semibold transition-all duration-200 hover:brightness-110 disabled:opacity-60"
 								style={{
 									backgroundColor: cssVars["--btn-color"] || "#5f4dc5",
 									color: cssVars["--btn-text-color"] || "#ffffff",
 									borderRadius: cssVars["--btn-radius"] || "0.5rem",
 								}}
 							>
-								Continue
+								{submitting ? "Verifying…" : "Continue"}
 							</button>
 							<p
 								className="mt-4 text-center text-xs"
@@ -190,20 +214,21 @@ export default async function VerifyPage({
 						</>
 					) : (
 						<>
-							{/* Acknowledge mode */}
 							<button
 								type="submit"
-								className="w-full rounded-lg py-2.5 text-sm font-semibold transition-all duration-200 hover:brightness-110"
+								disabled={submitting}
+								className="w-full rounded-lg py-2.5 text-sm font-semibold transition-all duration-200 hover:brightness-110 disabled:opacity-60"
 								style={{
 									backgroundColor: cssVars["--btn-color"] || "#5f4dc5",
 									color: cssVars["--btn-text-color"] || "#ffffff",
 									borderRadius: cssVars["--btn-radius"] || "0.5rem",
 								}}
 							>
-								Continue
+								{submitting ? "Loading…" : "Continue"}
 							</button>
-							<a
-								href={`/${page?.slug ?? ""}`}
+							<button
+								type="button"
+								onClick={onClose}
 								className="mt-3 block w-full rounded-lg border py-2.5 text-center text-sm font-medium transition-all duration-200"
 								style={{
 									borderColor: "#e5e7eb",
@@ -211,7 +236,7 @@ export default async function VerifyPage({
 								}}
 							>
 								Go back
-							</a>
+							</button>
 						</>
 					)}
 				</form>

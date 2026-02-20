@@ -1,7 +1,12 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import type { LinkBlockData } from "@/lib/blocks/schemas";
-import { getBlockById, getPageClickCount, recordClick } from "@/lib/db/queries";
+import {
+	getBlockById,
+	getPageById,
+	getPageClickCount,
+	recordClick,
+} from "@/lib/db/queries";
 import { checkAndSendMilestones } from "@/lib/email/check-milestones";
 import { parseRequest } from "@/lib/tracking/parse-request";
 
@@ -35,9 +40,12 @@ export async function GET(request: Request, { params }: Params) {
 		const verifiedCookie = cookieStore.get(`bio_verified_${blockId}`);
 
 		if (!verifiedCookie || verifiedCookie.value !== "1") {
-			return NextResponse.redirect(new URL(`/verify/${blockId}`, request.url), {
-				status: 302,
-			});
+			const page = await getPageById(block.pageId);
+			const slug = page?.slug ?? "";
+			return NextResponse.redirect(
+				new URL(`/${slug}?verify=${blockId}`, request.url),
+				{ status: 302 },
+			);
 		}
 	}
 

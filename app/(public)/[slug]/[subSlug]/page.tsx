@@ -7,6 +7,7 @@ import { PageViewTracker } from "@/components/public/PageViewTracker";
 import { SiteBranding } from "@/components/public/SiteBranding";
 import {
 	getBlocksByPageId,
+	getChildBlocksByParentId,
 	getPageByUserAndSubSlug,
 	getUserById,
 } from "@/lib/db/queries";
@@ -63,10 +64,21 @@ export default async function SubPage({ params }: SubPageProps) {
 		notFound();
 	}
 
-	const [user, blocks] = await Promise.all([
+	const [user, topLevelBlocks] = await Promise.all([
 		getUserById(page.userId),
 		getBlocksByPageId(page.id),
 	]);
+
+	// Attach children to group blocks so they render correctly
+	const blocks = await Promise.all(
+		topLevelBlocks.map(async (block) => {
+			if (block.type === "group") {
+				const children = await getChildBlocksByParentId(block.id);
+				return { ...block, children };
+			}
+			return block;
+		}),
+	);
 
 	const theme = resolveTheme(
 		page.themeId ?? "default",

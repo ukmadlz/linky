@@ -2,11 +2,7 @@ import { nanoid } from "nanoid";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAuth } from "@/lib/auth";
-import {
-	createPage,
-	getPageBySlug,
-	getPagesByUserId,
-} from "@/lib/db/queries";
+import { createPage, getPageBySlug, getPagesByUserId } from "@/lib/db/queries";
 import { captureServerEvent } from "@/lib/posthog/server";
 
 export async function GET() {

@@ -101,7 +101,7 @@ export function QRCodeButton({ slug, pageTitle }: QRCodeButtonProps) {
 								<div className="h-48 w-48 animate-pulse rounded-lg bg-slate-200" />
 							) : svgData ? (
 								<div
-									className="h-48 w-48"
+									className="h-48 w-48 [&>svg]:h-full [&>svg]:w-full"
 									// biome-ignore lint/security/noDangerouslySetInnerHtml: SVG from qrcode library
 									dangerouslySetInnerHTML={{ __html: svgData }}
 								/>

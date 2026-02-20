@@ -12,7 +12,10 @@ export default function DashboardError({
 }) {
 	useEffect(() => {
 		console.error(error);
-		posthog.captureException(error, { digest: error.digest, location: "dashboard_error_boundary" });
+		posthog.captureException(error, {
+			digest: error.digest,
+			location: "dashboard_error_boundary",
+		});
 	}, [error]);
 
 	return (
