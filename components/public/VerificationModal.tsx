@@ -63,6 +63,7 @@ export function VerificationModal({
 		<div className="fixed inset-0 z-50 flex items-center justify-center px-4">
 			{/* Backdrop */}
 			{/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop dismiss */}
+			{/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop dismiss */}
 			<div
 				className="absolute inset-0"
 				style={{ backgroundColor: "rgba(0,0,0,0.5)" }}

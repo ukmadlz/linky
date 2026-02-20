@@ -15,10 +15,7 @@ interface ModalState {
 }
 
 interface VerificationContextValue {
-	openModal: (
-		blockId: string,
-		verificationMode: "age" | "acknowledge",
-	) => void;
+	openModal: (blockId: string, verificationMode: "age" | "acknowledge") => void;
 }
 
 const VerificationContext = createContext<VerificationContextValue>({

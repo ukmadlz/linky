@@ -21,10 +21,7 @@ export function LinkBlock({ block, buttonStyle = "filled" }: LinkBlockProps) {
 				type="button"
 				className={`block-link btn-${buttonStyle}`}
 				onClick={() =>
-					openModal(
-						block.id,
-						data.verificationMode as "age" | "acknowledge",
-					)
+					openModal(block.id, data.verificationMode as "age" | "acknowledge")
 				}
 			>
 				{data.title}
