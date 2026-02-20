@@ -6,13 +6,13 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to Railway
     runs-on: ubuntu-latest
+    container: ghcr.io/railwayapp/cli:latest
+    env:
+      SVC_ID: my-service-id
+      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
-      - name: Install Railway CLI
-        run: npm install -g @railway/cli
-      - name: Deploy to Railway
-        run: railway up --service "${{ vars.RAILWAY_SERVICE_NAME }}" --environment production --detach
+      - uses: actions/checkout@v3
+      - run: railway up --service="${{ vars.RAILWAY_SERVICE_NAME }}" --environment production --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
