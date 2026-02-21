@@ -5,6 +5,7 @@ import { BlockRenderer } from "@/components/blocks/BlockRenderer";
 import { PageHeader } from "@/components/public/PageHeader";
 import { PageViewTracker } from "@/components/public/PageViewTracker";
 import { SiteBranding } from "@/components/public/SiteBranding";
+import { getAuthUser } from "@/lib/auth";
 import {
 	getBlocksByPageId,
 	getChildBlocksByParentId,
@@ -60,8 +61,11 @@ export default async function SubPage({ params }: SubPageProps) {
 	const { slug: username, subSlug } = await params;
 	const page = await getPageByUserAndSubSlug(username, subSlug);
 
-	if (!page || !page.isPublished) {
-		notFound();
+	if (!page) notFound();
+
+	if (!page.isPublished) {
+		const viewer = await getAuthUser();
+		if (viewer?.id !== page.userId) notFound();
 	}
 
 	const [user, topLevelBlocks] = await Promise.all([

@@ -1,9 +1,11 @@
 "use client";
 
-import { BarChart2, ExternalLink, Plus } from "lucide-react";
+import { BarChart2, Copy, ExternalLink, Plus } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { CreatePageModal } from "@/components/dashboard/CreatePageModal";
+import { PublishButton } from "@/components/dashboard/PublishButton";
+import { RenameSlugModal } from "@/components/dashboard/RenameSlugModal";
 import type { Page } from "@/lib/db/schema";
 
 export default function DashboardPage() {
@@ -11,6 +13,8 @@ export default function DashboardPage() {
 	const [loading, setLoading] = useState(true);
 	const [showCreate, setShowCreate] = useState(false);
 	const [username, setUsername] = useState<string>("");
+	const [duplicatingId, setDuplicatingId] = useState<string | null>(null);
+	const [renamingPage, setRenamingPage] = useState<Page | null>(null);
 
 	useEffect(() => {
 		fetch("/api/pages")
@@ -28,6 +32,29 @@ export default function DashboardPage() {
 			})
 			.catch(() => {});
 	}, []);
+
+	async function handleDuplicate(pageId: string) {
+		setDuplicatingId(pageId);
+		try {
+			const res = await fetch(`/api/pages/${pageId}/duplicate`, {
+				method: "POST",
+			});
+			if (!res.ok) throw new Error("Duplicate failed");
+			const newPage: Page = await res.json();
+			const data = await fetch("/api/pages").then((r) => r.json());
+			setPages(Array.isArray(data) ? data : []);
+			setRenamingPage(newPage);
+		} catch (err) {
+			console.error(err);
+		} finally {
+			setDuplicatingId(null);
+		}
+	}
+
+	function handleRenameSlugSave(updated: Page) {
+		setPages((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
+		setRenamingPage(null);
+	}
 
 	return (
 		<div className="mx-auto max-w-3xl p-6 lg:p-8">
@@ -117,6 +144,50 @@ export default function DashboardPage() {
 								>
 									<BarChart2 className="h-4 w-4" />
 								</Link>
+								<button
+									type="button"
+									onClick={() => handleDuplicate(page.id)}
+									disabled={duplicatingId === page.id}
+									className="rounded-md p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 disabled:opacity-50"
+									title="Duplicate page"
+								>
+									{duplicatingId === page.id ? (
+										<svg
+											className="h-4 w-4 animate-spin"
+											viewBox="0 0 24 24"
+											fill="none"
+										>
+											<circle
+												className="opacity-25"
+												cx="12"
+												cy="12"
+												r="10"
+												stroke="currentColor"
+												strokeWidth="4"
+											/>
+											<path
+												className="opacity-75"
+												fill="currentColor"
+												d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z"
+											/>
+										</svg>
+									) : (
+										<Copy className="h-4 w-4" />
+									)}
+								</button>
+								<PublishButton
+									pageId={page.id}
+									isPublished={page.isPublished}
+									onToggle={(next) =>
+										setPages((prev) =>
+											prev.map((p) =>
+												p.id === page.id
+													? { ...p, isPublished: next }
+													: p,
+											),
+										)
+									}
+								/>
 								<Link
 									href={`/dashboard/${page.id}`}
 									className="rounded-lg bg-[#5f4dc5]/10 px-3 py-1.5 text-xs font-semibold text-[#5f4dc5] transition-colors hover:bg-[#5f4dc5]/20"
@@ -133,6 +204,15 @@ export default function DashboardPage() {
 				<CreatePageModal
 					username={username}
 					onClose={() => setShowCreate(false)}
+				/>
+			)}
+
+			{renamingPage && (
+				<RenameSlugModal
+					page={renamingPage}
+					username={username}
+					onSave={handleRenameSlugSave}
+					onSkip={() => setRenamingPage(null)}
 				/>
 			)}
 		</div>

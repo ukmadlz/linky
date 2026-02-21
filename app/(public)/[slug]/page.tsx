@@ -7,6 +7,7 @@ import { PageViewTracker } from "@/components/public/PageViewTracker";
 import { SiteBranding } from "@/components/public/SiteBranding";
 import { VerificationProvider } from "@/components/public/VerificationContext";
 import type { LinkBlockData } from "@/lib/blocks/schemas";
+import { getAuthUser } from "@/lib/auth";
 import {
 	getBlocksByPageId,
 	getChildBlocksByParentId,
@@ -67,8 +68,11 @@ export default async function PublicPage({
 	const { verify: verifyBlockId, error } = await searchParams;
 	const page = await getPageBySlug(slug);
 
-	if (!page || !page.isPublished) {
-		notFound();
+	if (!page) notFound();
+
+	if (!page.isPublished) {
+		const viewer = await getAuthUser();
+		if (viewer?.id !== page.userId) notFound();
 	}
 
 	const [user, topLevelBlocks] = await Promise.all([

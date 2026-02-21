@@ -5,6 +5,7 @@ import {
 	deletePage,
 	getAllBlocksByPageId,
 	getPageById,
+	getPagesByUserId,
 	getUserById,
 	updatePage,
 } from "@/lib/db/queries";
@@ -25,6 +26,15 @@ const updatePageSchema = z.object({
 	seoTitle: z.string().max(200).nullable().optional(),
 	seoDescription: z.string().max(500).nullable().optional(),
 	ogImageUrl: z.string().url().max(500).nullable().optional().or(z.literal("")),
+	subSlug: z
+		.string()
+		.min(1)
+		.max(100)
+		.regex(
+			/^[a-z0-9-]+$/,
+			"URL may only contain lowercase letters, numbers, and hyphens",
+		)
+		.optional(),
 });
 
 async function getAuthorizedPage(pageId: string, userId: string) {
@@ -72,6 +82,19 @@ export async function PATCH(request: Request, { params }: Params) {
 
 	const data = result.data;
 
+	if (data.subSlug !== undefined) {
+		const userPages = await getPagesByUserId(user.id);
+		const taken = userPages.some(
+			(p) => p.subSlug === data.subSlug && p.id !== page.id,
+		);
+		if (taken) {
+			return NextResponse.json(
+				{ error: "That URL is already taken. Please choose another." },
+				{ status: 409 },
+			);
+		}
+	}
+
 	const updated = await updatePage(page.id, {
 		title: data.title,
 		description: data.description,
@@ -85,6 +108,7 @@ export async function PATCH(request: Request, { params }: Params) {
 		...(data.ogImageUrl !== undefined
 			? { ogImageUrl: data.ogImageUrl || null }
 			: {}),
+		...(data.subSlug !== undefined ? { subSlug: data.subSlug } : {}),
 	});
 
 	if (!updated) {

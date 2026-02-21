@@ -2,6 +2,7 @@ import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageEditor } from "@/components/dashboard/PageEditor";
+import { PublishButton } from "@/components/dashboard/PublishButton";
 import { QRCodeButton } from "@/components/dashboard/QRCodeButton";
 import { SEOPanel } from "@/components/dashboard/SEOPanel";
 import { requireAuth } from "@/lib/auth";
@@ -40,6 +41,7 @@ export default async function PageEditorRoute({ params }: Props) {
 					</p>
 				</div>
 				<QRCodeButton slug={page.slug} pageTitle={page.title} />
+				<PublishButton pageId={page.id} isPublished={page.isPublished} />
 				<a
 					href={
 						page.subSlug ? `/${user.username}/${page.subSlug}` : `/${page.slug}`

@@ -145,6 +145,7 @@ export async function updatePage(
 			| "seoDescription"
 			| "ogImageUrl"
 			| "milestonesSent"
+			| "subSlug"
 		>
 	> & {
 		seoTitle?: string | null;
@@ -276,6 +277,35 @@ export async function reorderBlocks(
 				.set({ position: i, updatedAt: new Date() })
 				.where(eq(blocks.id, orderedIds[i]));
 		}
+	});
+}
+
+export async function duplicatePageBlocks(
+	sourcePageId: string,
+	targetPageId: string,
+): Promise<void> {
+	const sourceBlocks = await getAllBlocksByPageId(sourcePageId);
+	if (sourceBlocks.length === 0) return;
+
+	const idMap: Record<string, string> = {};
+	for (const block of sourceBlocks) {
+		idMap[block.id] = nanoid();
+	}
+
+	await db.transaction(async (tx) => {
+		await tx.insert(blocks).values(
+			sourceBlocks.map((block) => ({
+				id: idMap[block.id],
+				pageId: targetPageId,
+				parentId: block.parentId ? (idMap[block.parentId] ?? null) : null,
+				type: block.type,
+				position: block.position,
+				isVisible: block.isVisible,
+				data: block.data,
+				scheduledStart: block.scheduledStart,
+				scheduledEnd: block.scheduledEnd,
+			})),
+		);
 	});
 }
 
